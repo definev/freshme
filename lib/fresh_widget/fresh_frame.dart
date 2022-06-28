@@ -11,7 +11,7 @@ class FreshFrame extends HookWidget {
     Key? key,
     required this.angle,
     required this.child,
-    this.padding = const EdgeInsets.fromLTRB(4, 4, 4, 4),
+    this.padding = const EdgeInsets.all(6),
   }) : super(key: key);
 
   final FreshAngle angle;

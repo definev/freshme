@@ -19,7 +19,10 @@ class FreshTextButton extends HookWidget {
     return SizedBox(
       height: 48,
       child: TextButton(
-        style: TextButton.styleFrom(shape: const RoundedRectangleBorder()),
+        style: TextButton.styleFrom(
+          shape: const RoundedRectangleBorder(),
+          padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+        ),
         onPressed: () {
           if (pressed.value) return;
           pressed.value = true;

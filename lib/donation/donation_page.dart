@@ -1,13 +1,13 @@
-import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
+import 'package:freshme/donation/widgets/donation_app_bar.dart';
 import 'package:freshme/fresh_widget/fresh_chip.dart';
 import 'package:freshme/fresh_widget/fresh_frame.dart';
 import 'package:freshme/fresh_widget/fresh_text_button.dart';
-import 'package:freshme/fresh_widget/progress_bar.dart';
-import 'package:freshme/fresh_widget/search_box.dart';
+import 'package:freshme/fresh_widget/fresh_progress_bar.dart';
+import 'package:freshme/fresh_widget/fresh_search_box.dart';
+import 'package:freshme/resources/resources.dart';
 import 'package:gap/gap.dart';
-import 'package:line_icons/line_icon.dart';
 
 class DonationPage extends StatelessWidget {
   const DonationPage({Key? key}) : super(key: key);
@@ -16,104 +16,9 @@ class DonationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        height: 48,
-                        width: 48,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 10,
-                            ),
-                          ],
-                        ),
-                        padding: const EdgeInsets.all(2),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(24),
-                          child: Image.network(
-                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH61cjT9_c32YY_rDdPPa35oK-mrdeCJtspA&usqp=CAU',
-                          ),
-                        ),
-                      ),
-                      const Gap(12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Good afternoon',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          Text(
-                            'Huy Nguyen',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 48,
-                    width: 48,
-                    child: Stack(
-                      children: [
-                        const Center(
-                          child: Icon(
-                            CommunityMaterialIcons.bell_outline,
-                            size: 28,
-                          ),
-                        ),
-                        Center(
-                          child: Transform.translate(
-                            offset: const Offset(7, -6),
-                            child: SizedBox(
-                              height: 14,
-                              width: 14,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    width: 2,
-                                  ),
-                                  color: Colors.redAccent.shade100,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    '1',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(
-                                          color: Colors.black,
-                                          fontSize: 8,
-                                          fontWeight: FontWeight.w900,
-                                        ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const DonationAppBar(),
             PaddedColumn(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 64),
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,25 +44,25 @@ class DonationPage extends StatelessWidget {
                       ),
                 ),
                 const Gap(15),
-                const SearchBox(),
+                const FreshSearchBox(),
                 const Gap(20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     DonationActionTile(
                       color: const Color(0xFFbfdadd),
-                      image: Image.asset('assets/donate.png'),
+                      image: Image.asset(Images.donation),
                       title: 'Donations',
                     ),
                     DonationActionTile(
                       color: const Color(0xFFFFD5C9),
-                      image: LineIcon.camera(),
+                      image: Image.asset(Images.photoCamera),
                       title: 'Send your love',
                       isCenter: true,
                     ),
                     DonationActionTile(
                       color: const Color(0xFFfde387).withOpacity(0.3),
-                      image: Image.asset('assets/donation.png'),
+                      image: Image.asset(Images.cardboard),
                       title: 'Raise Funds',
                     ),
                   ],
@@ -277,7 +182,7 @@ class DonationPage extends StatelessWidget {
                                   const FreshProgressBar(
                                     percent: 0.4,
                                     direction: Axis.horizontal,
-                                    length: 200 * 1.4 - 12,
+                                    length: 220 * 1.4 - 12,
                                     thickness: 12,
                                   ),
                                   const Gap(5),
@@ -344,7 +249,9 @@ class DonationActionTile extends StatelessWidget {
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: color,
-                shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(16),
+
+                // shape: BoxShape.circle,
               ),
               child: SizedBox(
                 height: 56,
