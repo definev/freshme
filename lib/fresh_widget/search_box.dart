@@ -16,7 +16,7 @@ class SearchBox extends StatelessWidget {
             children: [
               Positioned.fill(
                 child: Transform.translate(
-                  offset: Offset(8, 8),
+                  offset: const Offset(8, 8),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.amber,
@@ -28,14 +28,14 @@ class SearchBox extends StatelessWidget {
               DottedBorder(
                 strokeWidth: 2,
                 borderType: BorderType.RRect,
-                dashPattern: [3, 3, 1],
+                dashPattern: const [3, 3, 1],
                 strokeCap: StrokeCap.round,
-                radius: Radius.circular(2),
+                radius: const Radius.circular(2),
                 child: Container(
-                  decoration: BoxDecoration(color: Colors.white),
+                  decoration: const BoxDecoration(color: Colors.white),
                   child: TextField(
                     cursorColor: Theme.of(context).primaryColor,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(16, 8, 16, 14),
                       hintText: 'Search here ...',
                       border: InputBorder.none,

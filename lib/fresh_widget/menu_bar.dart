@@ -18,44 +18,39 @@ class MenuBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border.all(width: 2),
-            color: Color(0xFF127681),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 20,
-                color: Color(0xFF127681).withOpacity(0.2),
-                offset: Offset(0, 5),
-              ),
-            ],
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border.all(width: 2),
+        color: const Color(0xFF127681),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 20,
+            color: const Color(0xFF127681).withOpacity(0.2),
+            offset: const Offset(0, 5),
           ),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: 48,
-              minHeight: 48,
-              maxWidth: 400,
-            ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: SeparatedRow(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  separatorBuilder: () => const Gap(8),
-                  children: [
-                    for (int item = 0; item < items.length; item += 1)
-                      MenuItemButton(
-                        show: item == selected,
-                        item: items[item],
-                        onPressed: () => onSelected(item),
-                      ),
-                  ],
-                ),
-              ),
+        ],
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxHeight: 64,
+          minHeight: 64,
+          maxWidth: 400,
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SeparatedRow(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              separatorBuilder: () => const Gap(8),
+              children: [
+                for (int item = 0; item < items.length; item += 1)
+                  MenuItemButton(
+                    show: item == selected,
+                    item: items[item],
+                    onPressed: () => onSelected(item),
+                  ),
+              ],
             ),
           ),
         ),
@@ -88,25 +83,22 @@ class MenuItemButton extends StatelessWidget {
     return ElevatedButton(
       style: show
           ? ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
+              foregroundColor: Colors.white, shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero,
                 side: BorderSide(width: show ? 2 : 0),
-              ),
-              primary: Color(0xFFfac70d),
-              onPrimary: Colors.white,
-              padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+              ), backgroundColor: const Color(0xFFfac70d),
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
               elevation: 0,
               shadowColor: Colors.white,
             )
           : TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
+              foregroundColor: Colors.white, shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
-              primary: Colors.white,
               shadowColor: Colors.transparent,
               surfaceTintColor: Colors.transparent,
-              backgroundColor: Color(0xFFfac70d).withOpacity(0.0),
-              padding: EdgeInsets.fromLTRB(16, 12, 16, 12),
+              backgroundColor: const Color(0xFFfac70d).withOpacity(0.0),
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
               elevation: 0,
             ),
       onPressed: onPressed,
@@ -120,7 +112,7 @@ class MenuItemButton extends StatelessWidget {
                 duration: 300.ms,
                 curve: Curves.decelerate,
                 tween: ColorTween(
-                  begin: Color(0xFF127681),
+                  begin: const Color(0xFF127681),
                   end: show ? Colors.black : Colors.white,
                 ),
                 builder: (context, value, child) {
@@ -130,7 +122,7 @@ class MenuItemButton extends StatelessWidget {
                   );
                 }),
             if (show) ...[
-              Gap(10),
+              const Gap(10),
               Text(
                 item.title,
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(
