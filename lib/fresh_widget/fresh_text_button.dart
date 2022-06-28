@@ -18,44 +18,46 @@ class FreshTextButton extends HookWidget {
 
     return SizedBox(
       height: 48,
-      child: TextButton(
-        style: TextButton.styleFrom(
-          shape: const RoundedRectangleBorder(),
-          padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-        ),
-        onPressed: () {
-          if (pressed.value) return;
-          pressed.value = true;
-          Future.delayed(300.ms, () {
-            pressed.value = false;
-            onPressed();
-          });
-        },
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              widthFactor: 1.0,
-              child: Text(text),
-            ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: TweenAnimationBuilder<double>(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: TextButton(
+          style: TextButton.styleFrom(
+            shape: const RoundedRectangleBorder(),
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+          ),
+          onPressed: () {
+            if (pressed.value) return;
+            pressed.value = true;
+            Future.delayed(300.ms, () {
+              pressed.value = false;
+              onPressed();
+            });
+          },
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.center,
+                widthFactor: 1.0,
+                child: Text(text),
+              ),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: TweenAnimationBuilder<double>(
                     duration: 300.ms,
                     tween: Tween(begin: 1, end: pressed.value ? 0 : 1),
                     curve: Curves.easeOutCirc,
-                    builder: (context, value, child) {
-                      return Divider(
-                        height: 1,
-                        thickness: 2,
-                        endIndent: 30 * value,
-                        color: const Color(0xFFfac70d),
-                      );
-                    }),
+                    builder: (context, value, child) => Divider(
+                      height: 1,
+                      thickness: 2,
+                      endIndent: 30 * value,
+                      color: const Color(0xFFfac70d),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

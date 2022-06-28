@@ -54,59 +54,74 @@ class SplashScreen extends StatelessWidget {
                       height: 200,
                       padding: const EdgeInsets.all(20),
                       alignment: Alignment.bottomCenter,
-                      child: SeparatedRow(
-                        separatorBuilder: () => const Gap(20),
-                        children: AnimateList(
-                          effects: [
-                            const FadeEffect(),
-                            const MoveEffect(),
-                          ],
-                          children: [
-                            Expanded(
-                              child: DottedButton(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(CommunityMaterialIcons.google),
-                                  ],
+                      child: LayoutBuilder(builder: (context, constraints) {
+                        return SeparatedRow(
+                          separatorBuilder: () => const Gap(20),
+                          children: AnimateList(
+                            effects: [
+                              const FadeEffect(),
+                              const MoveEffect(),
+                            ],
+                            children: [
+                              Expanded(
+                                child: DottedButton(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(CommunityMaterialIcons.google),
+                                      if (constraints.maxWidth > 400) ...[
+                                        const Gap(10),
+                                        const Text('Google'),
+                                      ],
+                                    ],
+                                  ),
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => const HomeScreen())),
                                 ),
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => const HomeScreen())),
                               ),
-                            ),
-                            Expanded(
-                              child: DottedButton(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(CommunityMaterialIcons.facebook),
-                                  ],
+                              Expanded(
+                                child: DottedButton(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                          CommunityMaterialIcons.facebook),
+                                      if (constraints.maxWidth > 400) ...[
+                                        const Gap(10),
+                                        const Text('Facebook'),
+                                      ],
+                                    ],
+                                  ),
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => const HomeScreen())),
                                 ),
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => const HomeScreen())),
                               ),
-                            ),
-                            Expanded(
-                              child: DottedButton(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(CommunityMaterialIcons.apple),
-                                  ],
+                              Expanded(
+                                child: DottedButton(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(CommunityMaterialIcons.apple),
+                                      if (constraints.maxWidth > 400) ...[
+                                        const Gap(10),
+                                        const Text('Apple'),
+                                      ],
+                                    ],
+                                  ),
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => const HomeScreen())),
                                 ),
-                                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => const HomeScreen())),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
+                            ],
+                          ),
+                        );
+                      }),
                     ),
                   ),
                   Positioned.fill(
@@ -147,7 +162,7 @@ class SplashScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Gap(20),
+                            const Gap(20),
                             Center(
                               child: SizedBox(
                                 width: 200,
