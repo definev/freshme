@@ -55,7 +55,7 @@ class DottedButton extends HookWidget {
                       surfaceTintColor: MaterialStateProperty.all(Colors.white),
                       animationDuration: 300.ms,
                       padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 16),
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
                       ),
                     ),
                     onPressed: () {

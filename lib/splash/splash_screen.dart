@@ -35,151 +35,141 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 30),
-            child: SplashOrbit(),
-          ),
-          Expanded(
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    margin: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 2),
-                      color: Colors.green.shade200,
-                    ),
-                    width: double.maxFinite,
-                    height: 200,
-                    padding: const EdgeInsets.all(20),
-                    alignment: Alignment.bottomCenter,
-                    child: SeparatedRow(
-                      separatorBuilder: () => const Gap(20),
-                      children: AnimateList(
-                        effects: [
-                          const FadeEffect(),
-                          const MoveEffect(),
-                        ],
-                        children: [
-                          Expanded(
-                            child: DottedButton(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(CommunityMaterialIcons.google),
-                                  Gap(10),
-                                  Text('Google'),
-                                ],
-                              ),
-                              onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => const HomeScreen())),
-                            ),
-                          ),
-                          Expanded(
-                            child: DottedButton(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(CommunityMaterialIcons.facebook),
-                                  Gap(10),
-                                  Text('Facebook'),
-                                ],
-                              ),
-                              onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => const HomeScreen())),
-                            ),
-                          ),
-                          Expanded(
-                            child: DottedButton(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(CommunityMaterialIcons.apple),
-                                  Gap(10),
-                                  Text('Apple'),
-                                ],
-                              ),
-                              onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => const HomeScreen())),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned.fill(
-                  child: Align(
+      body: SafeArea(
+        child: Column(
+          children: [
+            const SplashOrbit(),
+            Expanded(
+              child: Stack(
+                children: [
+                  Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      margin: const EdgeInsets.fromLTRB(35, 16, 35, 110),
-                      padding: const EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.white,
                         border: Border.all(width: 2),
+                        color: Colors.green.shade200,
                       ),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: PageView(
-                              children: [
-                                ListView(
-                                  children: [
-                                    Text(
-                                      'Bắt đầu thay đổi thế giới\nngay từ hôm nay',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ) //
-                                        .animate()
-                                        .fadeIn()
-                                        .move(
-                                          begin: const Offset(0, 20),
-                                          end: Offset.zero,
-                                        ),
-                                    const Gap(20),
-                                    const Text(
-                                      'Hãy ủng hộ FRESHME, cung cấp những vật dụng cũ mà bạn không sử dụng, sứ mệnh của FRESHME sẽ là đưa nó đến những người thực sự cần. Mọi đóng góp của bạn có thể góp phần giúp đỡ trẻ em nghèo và gia đình của các em có được sự bảo vệ, chăm sóc sức khỏe và giáo dục quan trọng.',
-                                      textAlign: TextAlign.center,
-                                    ),
+                      width: double.maxFinite,
+                      height: 200,
+                      padding: const EdgeInsets.all(20),
+                      alignment: Alignment.bottomCenter,
+                      child: SeparatedRow(
+                        separatorBuilder: () => const Gap(20),
+                        children: AnimateList(
+                          effects: [
+                            const FadeEffect(),
+                            const MoveEffect(),
+                          ],
+                          children: [
+                            Expanded(
+                              child: DottedButton(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(CommunityMaterialIcons.google),
                                   ],
                                 ),
-                              ],
-                            ),
-                          ),
-                          Center(
-                            child: SizedBox(
-                              width: 200,
-                              child: DottedButton(
                                 onPressed: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (_) => const HomeScreen())),
-                                child: const Text('Signup Now'),
                               ),
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: DottedButton(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(CommunityMaterialIcons.facebook),
+                                  ],
+                                ),
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const HomeScreen())),
+                              ),
+                            ),
+                            Expanded(
+                              child: DottedButton(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(CommunityMaterialIcons.apple),
+                                  ],
+                                ),
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const HomeScreen())),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(35, 16, 35, 110),
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(width: 2),
+                        ),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: ListView(
+                                padding: EdgeInsets.zero,
+                                children: [
+                                  Text(
+                                    'Bắt đầu thay đổi thế giới\nngay từ hôm nay',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
+                                  ) //
+                                      .animate()
+                                      .fadeIn()
+                                      .move(
+                                        begin: const Offset(0, 20),
+                                        end: Offset.zero,
+                                      ),
+                                  const Gap(20),
+                                  const Text(
+                                    'Hãy ủng hộ FRESHME, cung cấp những vật dụng cũ mà bạn không sử dụng, sứ mệnh của FRESHME sẽ là đưa nó đến những người thực sự cần. Mọi đóng góp của bạn có thể góp phần giúp đỡ trẻ em nghèo và gia đình của các em có được sự bảo vệ, chăm sóc sức khỏe và giáo dục quan trọng.',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Gap(20),
+                            Center(
+                              child: SizedBox(
+                                width: 200,
+                                child: DottedButton(
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => const HomeScreen())),
+                                  child: const Text('Signup Now'),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
