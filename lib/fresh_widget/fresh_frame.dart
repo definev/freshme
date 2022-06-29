@@ -4,7 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-enum FreshAngle { left, right }
+enum FreshAngle { left, right, balance }
 
 class FreshFrame extends HookWidget {
   const FreshFrame({
@@ -37,7 +37,9 @@ class FreshFrame extends HookWidget {
       children: [
         Positioned.fill(
           child: Transform.rotate(
-            angle: _angle[rotateVibrant.value] * 0.15,
+            angle: angle == FreshAngle.balance
+                ? 0.03
+                : _angle[rotateVibrant.value] * 0.15,
             child: Transform.scale(
               scale: 1.01,
               child: Container(
@@ -51,7 +53,9 @@ class FreshFrame extends HookWidget {
         ),
         Positioned.fill(
           child: Transform.rotate(
-            angle: _angle[rotateVibrant.value] * 0.05,
+            angle: angle == FreshAngle.balance
+                ? 0
+                : _angle[rotateVibrant.value] * 0.05,
             child: DottedBorder(
               strokeWidth: 2,
               borderType: BorderType.RRect,

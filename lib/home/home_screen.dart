@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,19 +17,21 @@ class HomeScreen extends HookWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Navigator(
-              initialRoute: '/',
-              onGenerateRoute: (route) {
-                return MaterialPageRoute(
-                  builder: (_) => const DonationPage(),
-                );
-              },
+            child: PageTransitionSwitcher(
+              transitionBuilder: (child, animation, secondaryAnimation) =>
+                  SharedAxisTransition(
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                transitionType: SharedAxisTransitionType.horizontal,
+                child: child,
+              ),
+              child: const DonationPage(),
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
               child: FreshMenuBar(
                 onSelected: (value) => selectMenu.value = value,
                 selected: selectMenu.value,

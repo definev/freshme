@@ -18,40 +18,42 @@ class FreshMenuBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.all(width: 2),
-        color: const Color(0xFF127681),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 20,
-            color: const Color(0xFF127681).withOpacity(0.2),
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: ClipRect(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxHeight: 64,
-            minHeight: 64,
-            maxWidth: 400,
-          ),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SeparatedRow(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                separatorBuilder: () => const Gap(8),
-                children: [
-                  for (int item = 0; item < items.length; item += 1)
-                    MenuItemButton(
-                      show: item == selected,
-                      item: items[item],
-                      onPressed: () => onSelected(item),
-                    ),
-                ],
+    return SafeArea(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border.all(width: 2),
+          color: const Color(0xFF127681),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 20,
+              color: const Color(0xFF127681).withOpacity(0.2),
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: ClipRect(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxHeight: 64,
+              minHeight: 64,
+              maxWidth: 400,
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SeparatedRow(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  separatorBuilder: () => const Gap(8),
+                  children: [
+                    for (int item = 0; item < items.length; item += 1)
+                      MenuItemButton(
+                        show: item == selected,
+                        item: items[item],
+                        onPressed: () => onSelected(item),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -1,9 +1,14 @@
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart' hide MenuItem;
+import 'package:freshme/camera/fresh_ml_controller.dart';
 import 'package:freshme/splash/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+
   runApp(const MyApp());
 }
 

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class DottedButton extends HookWidget {
-  const DottedButton({
+class FreshDottedButton extends HookWidget {
+  const FreshDottedButton({
     Key? key,
     required this.child,
     required this.onPressed,

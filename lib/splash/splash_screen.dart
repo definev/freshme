@@ -38,149 +38,174 @@ class SplashScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const SplashOrbit(),
             Expanded(
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      margin: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 2),
-                        color: Colors.green.shade200,
-                      ),
-                      width: double.maxFinite,
-                      height: 200,
-                      padding: const EdgeInsets.all(20),
+              flex: 4,
+              child: const SplashOrbit().animate().fadeIn(),
+            ),
+            Expanded(
+              flex: 5,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: Stack(
+                  children: [
+                    Align(
                       alignment: Alignment.bottomCenter,
-                      child: LayoutBuilder(builder: (context, constraints) {
-                        return SeparatedRow(
-                          separatorBuilder: () => const Gap(20),
-                          children: AnimateList(
-                            effects: [
-                              const FadeEffect(),
-                              const MoveEffect(),
-                            ],
+                      child: Container(
+                        margin: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 2),
+                          color: Colors.green.shade200,
+                        ),
+                        width: double.maxFinite,
+                        height: 200,
+                        padding: const EdgeInsets.all(20),
+                        alignment: Alignment.bottomCenter,
+                        child: LayoutBuilder(builder: (context, constraints) {
+                          return SeparatedRow(
+                            separatorBuilder: () => const Gap(20),
+                            children: AnimateList(
+                              effects: [
+                                const FadeEffect(),
+                                const MoveEffect(),
+                              ],
+                              children: [
+                                Expanded(
+                                  child: FreshDottedButton(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                            CommunityMaterialIcons.google),
+                                        if (constraints.maxWidth > 400) ...[
+                                          const Gap(10),
+                                          const Text('Google'),
+                                        ],
+                                      ],
+                                    ),
+                                    onPressed: () => Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const HomeScreen(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: FreshDottedButton(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                            CommunityMaterialIcons.facebook),
+                                        if (constraints.maxWidth > 400) ...[
+                                          const Gap(10),
+                                          const Text('Facebook'),
+                                        ],
+                                      ],
+                                    ),
+                                    onPressed: () => Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const HomeScreen(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: FreshDottedButton(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                            CommunityMaterialIcons.apple),
+                                        if (constraints.maxWidth > 400) ...[
+                                          const Gap(10),
+                                          const Text('Apple'),
+                                        ],
+                                      ],
+                                    ),
+                                    onPressed: () => Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const HomeScreen(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ) //
+                          .animate()
+                          .move(),
+                    ),
+                    Positioned.fill(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(35, 16, 35, 110),
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(width: 2),
+                          ),
+                          child: Column(
                             children: [
                               Expanded(
-                                child: DottedButton(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(CommunityMaterialIcons.google),
-                                      if (constraints.maxWidth > 400) ...[
-                                        const Gap(10),
-                                        const Text('Google'),
-                                      ],
-                                    ],
-                                  ),
-                                  onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => const HomeScreen())),
+                                child: ListView(
+                                  padding: EdgeInsets.zero,
+                                  children: [
+                                    Text(
+                                      'Bắt đầu thay đổi thế giới\nngay từ hôm nay',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ) //
+                                        .animate()
+                                        .fadeIn()
+                                        .move(
+                                          begin: const Offset(0, 20),
+                                          end: Offset.zero,
+                                        ),
+                                    const Gap(20),
+                                    const Text(
+                                      'Hãy ủng hộ FRESHME, cung cấp những vật dụng cũ mà bạn không sử dụng, sứ mệnh của FRESHME sẽ là đưa nó đến những người thực sự cần. Mọi đóng góp của bạn có thể góp phần giúp đỡ trẻ em nghèo và gia đình của các em có được sự bảo vệ, chăm sóc sức khỏe và giáo dục quan trọng.',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Expanded(
-                                child: DottedButton(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                          CommunityMaterialIcons.facebook),
-                                      if (constraints.maxWidth > 400) ...[
-                                        const Gap(10),
-                                        const Text('Facebook'),
-                                      ],
-                                    ],
-                                  ),
-                                  onPressed: () => Navigator.push(
+                              const Gap(20),
+                              Center(
+                                child: SizedBox(
+                                  width: 200,
+                                  child: FreshDottedButton(
+                                    onPressed: () => Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (_) => const HomeScreen())),
-                                ),
-                              ),
-                              Expanded(
-                                child: DottedButton(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(CommunityMaterialIcons.apple),
-                                      if (constraints.maxWidth > 400) ...[
-                                        const Gap(10),
-                                        const Text('Apple'),
-                                      ],
-                                    ],
+                                        builder: (_) => const HomeScreen(),
+                                      ),
+                                    ),
+                                    child: const Text('Signup Now'),
                                   ),
-                                  onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => const HomeScreen())),
                                 ),
                               ),
                             ],
                           ),
-                        );
-                      }),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(35, 16, 35, 110),
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(width: 2),
-                        ),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: ListView(
-                                padding: EdgeInsets.zero,
-                                children: [
-                                  Text(
-                                    'Bắt đầu thay đổi thế giới\nngay từ hôm nay',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium!
-                                        .copyWith(fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.center,
-                                  ) //
-                                      .animate()
-                                      .fadeIn()
-                                      .move(
-                                        begin: const Offset(0, 20),
-                                        end: Offset.zero,
-                                      ),
-                                  const Gap(20),
-                                  const Text(
-                                    'Hãy ủng hộ FRESHME, cung cấp những vật dụng cũ mà bạn không sử dụng, sứ mệnh của FRESHME sẽ là đưa nó đến những người thực sự cần. Mọi đóng góp của bạn có thể góp phần giúp đỡ trẻ em nghèo và gia đình của các em có được sự bảo vệ, chăm sóc sức khỏe và giáo dục quan trọng.',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Gap(20),
-                            Center(
-                              child: SizedBox(
-                                width: 200,
-                                child: DottedButton(
-                                  onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => const HomeScreen())),
-                                  child: const Text('Signup Now'),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        ) //
+                            .animate()
+                            .move(),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -266,16 +291,19 @@ class _SplashOrbitState extends State<SplashOrbit> {
           ),
           child: LayoutBuilder(
             builder: (context, constraints) {
+              final maxDimension =
+                  min(constraints.maxHeight, constraints.maxWidth);
+
               return SizedBox(
-                height: constraints.maxWidth,
-                width: constraints.maxWidth,
+                height: maxDimension,
+                width: maxDimension,
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
                     Center(
                       child: SizedBox(
-                        height: constraints.maxWidth,
-                        width: constraints.maxWidth,
+                        height: maxDimension,
+                        width: maxDimension,
                         child: LoopAnimation<TimelineValue<_OrbitProps>>(
                           tween: _orbitTween,
                           duration: 3000.seconds,
@@ -288,7 +316,7 @@ class _SplashOrbitState extends State<SplashOrbit> {
                                   child: PlayAnimation<double>(
                                     tween: Tween(
                                       begin: 0.0,
-                                      end: 250.0 / 300 * constraints.maxWidth,
+                                      end: 250.0 / 300 * maxDimension,
                                     ),
                                     duration: 300.ms,
                                     curve: Curves.ease,
@@ -310,7 +338,7 @@ class _SplashOrbitState extends State<SplashOrbit> {
                                     child: PlayAnimation<double>(
                                       tween: Tween(
                                         begin: 0.0,
-                                        end: 250.0 / 300 * constraints.maxWidth,
+                                        end: 250.0 / 300 * maxDimension,
                                       ),
                                       duration: 300.ms,
                                       curve: Curves.ease,
@@ -334,7 +362,7 @@ class _SplashOrbitState extends State<SplashOrbit> {
                                     child: PlayAnimation<double>(
                                       tween: Tween(
                                         begin: 0.0,
-                                        end: 250.0 / 300 * constraints.maxWidth,
+                                        end: 250.0 / 300 * maxDimension,
                                       ),
                                       duration: 300.ms,
                                       curve: Curves.ease,
@@ -354,12 +382,8 @@ class _SplashOrbitState extends State<SplashOrbit> {
                                 ),
                                 for (final orbit in orbits)
                                   Positioned(
-                                    left: orbit.offset.dx *
-                                        constraints.maxWidth /
-                                        300,
-                                    top: orbit.offset.dy *
-                                        constraints.maxWidth /
-                                        300,
+                                    left: orbit.offset.dx * maxDimension / 300,
+                                    top: orbit.offset.dy * maxDimension / 300,
                                     child: Transform.rotate(
                                       angle: -value.get(_OrbitProps.rotate),
                                       child: PlayAnimation<double>(
@@ -370,12 +394,10 @@ class _SplashOrbitState extends State<SplashOrbit> {
                                             Opacity(
                                           opacity: value,
                                           child: Container(
-                                            height: orbit.size *
-                                                constraints.maxWidth /
-                                                300,
-                                            width: orbit.size *
-                                                constraints.maxWidth /
-                                                300,
+                                            height:
+                                                orbit.size * maxDimension / 300,
+                                            width:
+                                                orbit.size * maxDimension / 300,
                                             decoration: BoxDecoration(
                                               color: orbit.color,
                                               shape: BoxShape.circle,
@@ -383,12 +405,8 @@ class _SplashOrbitState extends State<SplashOrbit> {
                                             ),
                                             alignment: Alignment.center,
                                             child: SizedBox(
-                                              height: 30 *
-                                                  constraints.maxWidth /
-                                                  300,
-                                              width: 30 *
-                                                  constraints.maxWidth /
-                                                  300,
+                                              height: 30 * maxDimension / 300,
+                                              width: 30 * maxDimension / 300,
                                               child: Image.asset(orbit.image),
                                             ),
                                           ),
@@ -403,7 +421,7 @@ class _SplashOrbitState extends State<SplashOrbit> {
                       ),
                     ),
                     Center(
-                      child: _circleImage(constraints.maxWidth),
+                      child: _circleImage(maxDimension),
                     ),
                   ],
                 ),

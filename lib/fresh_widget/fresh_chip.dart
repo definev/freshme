@@ -6,11 +6,13 @@ class FreshChip extends StatelessWidget {
     required this.child,
     required this.onPressed,
     required this.color,
+    this.height = 30,
   }) : super(key: key);
 
   final Widget child;
   final VoidCallback onPressed;
   final Color color;
+  final double height;
 
   static const colors = [
     Colors.red,
@@ -21,12 +23,14 @@ class FreshChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 30,
+      height: height,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white, surfaceTintColor: color, backgroundColor: color,
+          foregroundColor: Colors.white,
+          surfaceTintColor: color,
+          backgroundColor: color,
           shape: const RoundedRectangleBorder(
-            side: BorderSide(color: Colors.black, width: 1),
+            side: BorderSide(color: Colors.black, width: 2),
           ),
         ),
         onPressed: onPressed,
