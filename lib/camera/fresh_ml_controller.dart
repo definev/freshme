@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freshme/camera/translator.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
@@ -27,7 +26,7 @@ Future<String> _getModel(String assetPath) async {
   return file.path;
 }
 
-late List<CameraDescription> cameras;
+List<CameraDescription> cameras = [];
 
 class FreshMLController {
   FreshMLController._();
@@ -83,11 +82,6 @@ class FreshMLController {
     }
     final bytes = allBytes.done().buffer.asUint8List();
 
-    print('IMAGE DATA: '
-        '\n | H: ${cameraImage.height}'
-        '\n | W: ${cameraImage.width}'
-        '\n | FORMAT: ${cameraImage.format.group.name}');
-
     final Size imageSize =
         Size(cameraImage.width.toDouble(), cameraImage.height.toDouble());
 
@@ -122,52 +116,23 @@ class FreshMLController {
     return inputImage;
   }
 
-  Future<void> _detectingCameraImage(CameraImage image) async {
-    final objects = await _objectDetector.processImage(_convertImage(image));
-
-    for (DetectedObject detectedObject in objects) {
-      final rect = detectedObject.boundingBox;
-      final trackingId = detectedObject.trackingId;
-
-      for (Label label in detectedObject.labels) {
-        print('LABEL: ${label.text} ${label.confidence}');
-      }
-    }
-    Future.delayed(
-      Duration.zero,
-      _objectDetector.close,
-    );
-  }
-
-  Future<void> detect([CameraImage? image]) async {
-    bool isCaptured = false;
-    if (image != null) {
-      _detectingCameraImage(image);
-      return;
-    }
-    cameraController.startImageStream(
-      (image) async {
-        if (isCaptured) return;
-        isCaptured = true;
-        print('DETECTED IMAGE!!!');
-        await _detectingCameraImage(image);
-        await cameraController.stopImageStream();
-      },
-    );
-  }
-
   final _objectStreamController =
       StreamController<List<DetectedObject>>.broadcast();
   Stream<List<DetectedObject>> get objectStream =>
       _objectStreamController.stream;
 
+  InputImageRotation? imageRotation;
+  Size? imageDimension;
+
   void startStreamImage() {
     List<DetectedObject> objects = [];
     cameraController.startImageStream(
       (image) async {
-        objects = await _objectDetector.processImage(
-          _convertImage(image),
-        );
+        final convertedImage = _convertImage(image);
+        imageRotation ??= convertedImage.inputImageData!.imageRotation;
+        imageDimension ??= convertedImage.inputImageData!.size;
+
+        objects = await _objectDetector.processImage(convertedImage);
 
         _objectStreamController.sink.add(objects);
       },

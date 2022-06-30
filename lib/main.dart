@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart' hide MenuItem;
@@ -7,8 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  cameras = await availableCameras();
-
+  if (Platform.isAndroid || Platform.isIOS) {
+    cameras = await availableCameras();
+  }
   runApp(const MyApp());
 }
 

@@ -39,6 +39,7 @@ class _SendYourLovePageState extends State<SendYourLovePage>
   void initState() {
     super.initState();
     () async {
+      if (cameras.isEmpty) return;
       controller = await FreshMLController.startController(
         cameras[0],
         onSuccess: (controller) {
@@ -52,10 +53,8 @@ class _SendYourLovePageState extends State<SendYourLovePage>
           if (e is CameraException) {
             switch (e.code) {
               case 'CameraAccessDenied':
-                print('User denied camera access.');
                 break;
               default:
-                print('Handle other errors.');
                 break;
             }
           }
@@ -90,25 +89,24 @@ class _SendYourLovePageState extends State<SendYourLovePage>
                       ),
               ),
               Positioned.fill(
-                child: LayoutBuilder(builder: (context, constraints) {
-                  return StreamBuilder<List<DetectedObject>?>(
-                    stream: controller?.objectStream,
-                    builder: (context, snapshot) {
-                      final data = snapshot.data;
-                      if (data == null || data.isEmpty) {
-                        return const SizedBox();
-                      }
+                child: StreamBuilder<List<DetectedObject>?>(
+                  stream: controller?.objectStream,
+                  builder: (context, snapshot) {
+                    final data = snapshot.data;
+                    if (data == null || data.isEmpty) {
+                      return const SizedBox();
+                    }
 
-                      return CustomPaint(
-                        painter: ObjectDetectorPainter(
-                          data,
-                          InputImageRotation.rotation0deg,
-                          constraints.biggest,
-                        ),
-                      );
-                    },
-                  );
-                }),
+                    return CustomPaint(
+                      painter: ObjectDetectorPainter(
+                        data,
+                        controller?.imageRotation ??
+                            InputImageRotation.rotation0deg,
+                        controller?.imageDimension ?? const Size(0, 0),
+                      ),
+                    );
+                  },
+                ),
               ),
               SafeArea(
                 child: Column(
@@ -123,7 +121,8 @@ class _SendYourLovePageState extends State<SendYourLovePage>
                             width: 56,
                             child: FreshDottedButton(
                               onPressed: () => Navigator.pop(context),
-                              child: Icon(CommunityMaterialIcons.arrow_left),
+                              child:
+                                  const Icon(CommunityMaterialIcons.arrow_left),
                             ),
                           ),
                         ],
@@ -144,15 +143,15 @@ class _SendYourLovePageState extends State<SendYourLovePage>
               padding: const EdgeInsets.fromLTRB(32, 0, 16, 0),
               child: FreshChip(
                 height: 56,
-                child: Text('Chụp đồ của bạn'),
                 onPressed: () {},
                 color: Theme.of(context).colorScheme.secondary,
+                child: const Text('Chụp đồ của bạn'),
               ),
             ),
           ),
           FloatingActionButton(
-            onPressed: () => controller?.detect(),
-            shape: RoundedRectangleBorder(
+            onPressed: () {},
+            shape: const RoundedRectangleBorder(
               side: BorderSide(
                 color: Colors.black,
                 width: 2,
@@ -160,7 +159,7 @@ class _SendYourLovePageState extends State<SendYourLovePage>
             ),
             backgroundColor: Theme.of(context).colorScheme.primary,
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            child: Icon(CommunityMaterialIcons.camera),
+            child: const Icon(CommunityMaterialIcons.camera),
           ),
         ],
       ),
@@ -171,14 +170,14 @@ class _SendYourLovePageState extends State<SendYourLovePage>
         snap: true,
         maxChildSize: 0.7,
         minChildSize: 0.1,
-        snapSizes: [0.5, 0.7],
+        snapSizes: const [0.5, 0.7],
         builder: (context, scrollController) => DecoratedBox(
-          decoration: BoxDecoration(color: Colors.white),
+          decoration: const BoxDecoration(color: Colors.white),
           child: ListView.builder(
             controller: scrollController,
             itemBuilder: (context, index) => SizedBox(
               height: 0.3 * MediaQuery.of(context).size.height,
-              child: Center(child: Text('Chụp đồ của bạn')),
+              child: const Center(child: Text('Chụp đồ của bạn')),
             ),
           ),
         ),

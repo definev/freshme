@@ -109,14 +109,14 @@ class CampaignDetailPage extends StatelessWidget {
                           separatorBuilder: () => const Gap(10),
                           children: [
                             FreshChip(
-                              child: const Text('Sức khỏe'),
                               onPressed: () {},
                               color: const Color.fromARGB(255, 178, 41, 31),
+                              child: const Text('Sức khỏe'),
                             ),
                             FreshChip(
-                              child: const Text('Môi trường'),
                               onPressed: () {},
                               color: Colors.green,
+                              child: const Text('Môi trường'),
                             ),
                           ],
                         ),
