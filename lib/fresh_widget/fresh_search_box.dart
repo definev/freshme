@@ -19,7 +19,7 @@ class FreshSearchBox extends StatelessWidget {
                   offset: const Offset(8, 8),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.amber,
+                      color: const Color(0xFFfac70d),
                       border: Border.all(width: 2),
                     ),
                   ),

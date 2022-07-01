@@ -1,3 +1,4 @@
+import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,10 +8,22 @@ class FreshDottedButton extends HookWidget {
     Key? key,
     required this.child,
     required this.onPressed,
+    this.radius = 0,
+    this.innerColor = Colors.white,
+    this.innerBorderColor = Colors.black,
+    this.outterColor = const Color(0xFFfac70d),
+    this.innerBordered = true,
+    this.outterBordered = true,
   }) : super(key: key);
 
   final Widget child;
   final VoidCallback onPressed;
+  final double radius;
+  final Color innerColor;
+  final Color outterColor;
+  final Color innerBorderColor;
+  final bool innerBordered;
+  final bool outterBordered;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +37,19 @@ class FreshDottedButton extends HookWidget {
             child: Transform.translate(
               offset: const Offset(4, 4),
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.amber,
-                  border: Border.all(width: 2),
+                decoration: ShapeDecoration(
+                  shape: SmoothRectangleBorder(
+                    borderRadius: SmoothBorderRadius.all(
+                      SmoothRadius(
+                        cornerRadius: radius,
+                        cornerSmoothing: 1,
+                      ),
+                    ),
+                    side: outterBordered
+                        ? const BorderSide(width: 2)
+                        : BorderSide.none,
+                  ),
+                  color: outterColor,
                 ),
               ),
             ),
@@ -41,15 +64,32 @@ class FreshDottedButton extends HookWidget {
                 child: child,
               ),
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(width: 2),
+                decoration: ShapeDecoration(
+                  shape: SmoothRectangleBorder(
+                    borderRadius: SmoothBorderRadius.all(
+                      SmoothRadius(
+                        cornerRadius: radius,
+                        cornerSmoothing: 1,
+                      ),
+                    ),
+                    side: innerBordered
+                        ? BorderSide(width: 2, color: innerBorderColor)
+                        : BorderSide.none,
+                  ),
+                  color: innerColor,
                 ),
                 child: GestureDetector(
                   child: ElevatedButton(
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all(
-                        const RoundedRectangleBorder(),
+                        SmoothRectangleBorder(
+                          borderRadius: SmoothBorderRadius.all(
+                            SmoothRadius(
+                              cornerRadius: radius,
+                              cornerSmoothing: 1,
+                            ),
+                          ),
+                        ),
                       ),
                       backgroundColor: MaterialStateProperty.all(Colors.white),
                       surfaceTintColor: MaterialStateProperty.all(Colors.white),

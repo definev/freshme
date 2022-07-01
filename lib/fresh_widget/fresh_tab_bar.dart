@@ -49,7 +49,7 @@ class _FreshTabBarState extends State<FreshTabBar> {
                 offset: const Offset(4, 4),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.amber,
+                    color: const Color(0xFFfac70d),
                     border: Border.all(width: 2),
                   ),
                 ),

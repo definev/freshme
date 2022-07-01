@@ -51,7 +51,7 @@ class CampaignDetailPage extends StatelessWidget {
           ),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 96),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
               children: [
                 AspectRatio(
                   aspectRatio: 1.4,
