@@ -226,15 +226,17 @@ class _SplashOrbitState extends State<SplashOrbit> {
   }
 
   Widget _circleImage(double maxWidth) {
+    final ratio = maxWidth / 300;
+
     return SizedBox(
-        height: 200 * maxWidth / 300,
-        width: 200 * maxWidth / 300,
+        height: 200 * ratio,
+        width: 200 * ratio,
         child: Stack(
           children: [
             Center(
               child: Container(
-                height: 200,
-                width: 200,
+                height: 200 * ratio,
+                width: 200 * ratio,
                 decoration: BoxDecoration(
                   color: const Color(0xFF84b296),
                   shape: BoxShape.circle,
@@ -244,8 +246,8 @@ class _SplashOrbitState extends State<SplashOrbit> {
             ),
             Center(
               child: Container(
-                height: 160,
-                width: 160,
+                height: 160 * ratio,
+                width: 160 * ratio,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
