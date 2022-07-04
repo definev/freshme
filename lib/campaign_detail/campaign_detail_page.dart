@@ -35,7 +35,7 @@ https://www.facebook.com/CLBThanhNienVanDongHienMauTinhN.../
 ❣ Phó Chủ nhiệm: Mr. Trà - 0334 751 900''';
 
 const _ct =
-    '''[[carousel]](https://raw.githubusercontent.com/dart-lang/site-shared/master/src/_assets/image/flutter/icon/64.png,https://raw.githubusercontent.com/dart-lang/site-shared/master/src/_assets/image/flutter/icon/64.png,https://raw.githubusercontent.com/dart-lang/site-shared/master/src/_assets/image/flutter/icon/64.png,https://raw.githubusercontent.com/dart-lang/site-shared/master/src/_assets/image/flutter/icon/64.png)''';
+    '''[[carousel]](https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg,https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg,https://www.w3schools.com/w3css/img_forest.jpg)''';
 
 class CampaignDetailPage extends StatelessWidget {
   const CampaignDetailPage({super.key});
