@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flextras/flextras.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -89,10 +90,15 @@ class _FreshCarouselState extends State<FreshCarousel>
     controller.addStatusListener((status) {
       if (status != AnimationStatus.completed) {
         _disablePan = true;
+
         setState(() {});
         return;
       }
 
+      if (_lerpPoint == 1) {
+        _currentIndex = _potentialIndex ?? _currentIndex;
+      }
+      _lerpPointAnimatable = Tween(begin: 0, end: 0);
       _scrollState = _ScrollState.none;
       _disablePan = false;
       setState(() {});
@@ -114,6 +120,12 @@ class _FreshCarouselState extends State<FreshCarousel>
   }
 
   @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DoubleProperty('lerpPoint', _lerpPoint));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1.4,
@@ -128,7 +140,6 @@ class _FreshCarouselState extends State<FreshCarousel>
                   _constraints = constraints.biggest;
                   return GestureDetector(
                     onPanStart: (details) {
-                      _controller.value = 0;
                       _startPoint = details.localPosition.dx;
                       _updatePoint = details.localPosition.dx;
                     },
@@ -162,13 +173,15 @@ class _FreshCarouselState extends State<FreshCarousel>
                       _updatePosition(_startPoint, _updatePoint);
                     },
                     onPanEnd: (details) {
+                      _controller.value = 0;
                       if (_lerpPoint > 0.2) {
-                        _lerpPointAnimatable = Tween(begin: _lerpPoint, end: 1);
-                        _currentIndex = _potentialIndex ?? _currentIndex;
                         _controller.duration = 800.ms * (1 - _lerpPoint);
+                        _lerpPointAnimatable = Tween(begin: _lerpPoint, end: 1);
+                        print('MOVE NEXT');
                       } else {
+                        _controller.duration = 200.ms;
                         _lerpPointAnimatable = Tween(begin: _lerpPoint, end: 0);
-                        _controller.duration = 800.ms * _lerpPoint;
+                        print('STILL');
                       }
                       _controller.forward();
                     },
