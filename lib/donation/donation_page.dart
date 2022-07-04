@@ -108,9 +108,9 @@ class DonationPage extends StatelessWidget {
                           index % 2 == 0 ? FreshAngle.right : FreshAngle.left,
                       image:
                           'http://chungtadidau.com/wp-content/uploads/2016/07/quyen-gop-sach-giao-khoa-cho-tre-em-vung-cao-576.jpg',
-                      category: 'Giáo dục',
-                      title: 'Trái tim cho em',
-                      subtitle: 'DH Luật Hà Nội',
+                      category: 'Sức khỏe',
+                      title: 'HÀNH TRÌNH ĐỎ BẮC NINH 2022',
+                      subtitle: 'THPT Hàn Thuyên',
                       finishedGoal: 0.6,
                       onTap: () => Navigator.push(
                         context,

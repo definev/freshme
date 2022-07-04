@@ -6,7 +6,7 @@ class FreshChip extends StatelessWidget {
     required this.child,
     required this.onPressed,
     required this.color,
-    this.height = 30,
+    this.height = 26,
   }) : super(key: key);
 
   final Widget child;
@@ -30,11 +30,18 @@ class FreshChip extends StatelessWidget {
           surfaceTintColor: color,
           backgroundColor: color,
           shape: const RoundedRectangleBorder(
-            side: BorderSide(color: Colors.black, width: 2),
+            side: BorderSide(color: Colors.black, width: 1.5),
           ),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
         ),
         onPressed: onPressed,
-        child: child,
+        child: DefaultTextStyle(
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(color: Colors.white),
+          child: child,
+        ),
       ),
     );
   }

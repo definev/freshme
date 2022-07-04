@@ -113,7 +113,6 @@ class CampaignDetailCard extends StatelessWidget {
                       percent: finishedGoal,
                       direction: Axis.horizontal,
                       length: 220 * 1.4 - 12,
-                      thickness: 12,
                     ),
                     const Gap(5),
                     Row(

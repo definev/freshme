@@ -7,8 +7,8 @@ import 'package:freshme/campaign_detail/custom_md.dart';
 import 'package:freshme/fresh_widget/dotted_button.dart';
 import 'package:freshme/fresh_widget/fresh_chip.dart';
 import 'package:freshme/fresh_widget/fresh_frame.dart';
+import 'package:freshme/fresh_widget/fresh_progress_bar.dart';
 import 'package:gap/gap.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'package:url_launcher/url_launcher.dart';
 
 const _content = '''
@@ -20,8 +20,7 @@ const _content = '''
 
 ___
 
-[[carousel]](https://raw.githubusercontent.com/dart-lang/site-shared/master/src/_assets/image/flutter/icon/64.png,https://raw.githubusercontent.com/dart-lang/site-shared/master/src/_assets/image/flutter/icon/64.png,https://raw.githubusercontent.com/dart-lang/site-shared/master/src/_assets/image/flutter/icon/64.png,https://raw.githubusercontent.com/dart-lang/site-shared/master/src/_assets/image/flutter/icon/64.png)
-
+[[carousel]](https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg,https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg,https://www.w3schools.com/w3css/img_forest.jpg)
 ### **HÀNH TRÌNH ĐỎ BẮC NINH 2022**
 ⏰ Thời gian: 7h30 đến 16h00 ngày 07/7/2022
 📍 Địa điểm: Trung tâm Văn hoá - Thể thao Tp. Bắc Ninh (phường Kinh Bắc - Tp. Bắc Ninh - tỉnh Bắc Ninh)
@@ -33,9 +32,6 @@ https://www.facebook.com/CLBThanhNienVanDongHienMauTinhN.../
 ☎️☎️☎️ Hotline: 
 ❣ Chủ nhiệm: Mrs. Trang - 0974 886 447
 ❣ Phó Chủ nhiệm: Mr. Trà - 0334 751 900''';
-
-const _ct =
-    '''[[carousel]](https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg,https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg,https://www.w3schools.com/w3css/img_forest.jpg)''';
 
 class CampaignDetailPage extends StatelessWidget {
   const CampaignDetailPage({super.key});
@@ -69,142 +65,191 @@ class CampaignDetailPage extends StatelessWidget {
           ),
         ],
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  AspectRatio(
-                    aspectRatio: 1.4,
-                    child: FreshFrame(
-                      angle: FreshAngle.balance,
-                      child: SizedBox.expand(
-                        child: Image.network(
-                          'https://www.socialtables.com/wp-content/uploads/2016/10/iStock-540095978.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Gap(16),
-                  Text(
-                    'Chương trình tình nguyện "Máu đỏ 2022"',
-                    style: theme.textTheme.titleLarge!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      height: 1.7,
-                      letterSpacing: 1.3,
-                      wordSpacing: 2,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'CLB Máu - trường ĐH Hà Nội',
-                        style: theme.textTheme.bodySmall,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: const SizedBox(
-                          height: 48,
-                          width: 48,
-                          child: Icon(
-                            CommunityMaterialIcons.heart_outline,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: SeparatedRow(
-                        separatorBuilder: () => const Gap(10),
-                        children: [
-                          FreshChip(
-                            onPressed: () {},
-                            color: const Color.fromARGB(255, 178, 41, 31),
-                            child: const Text('Sức khỏe'),
-                          ),
-                          FreshChip(
-                            onPressed: () {},
-                            color: Colors.green,
-                            child: const Text('Môi trường'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Gap(12),
-                  const Divider(height: 1),
-                  const Gap(6),
-                ],
-              ),
-            ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  MarkdownBody(
-                    data: _ct,
-                    imageDirectory: 'https://raw.githubusercontent.com',
-                    imageBuilder: (uri, title, alt) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: AspectRatio(
-                        aspectRatio: 1.4,
-                        child: FreshFrame(
-                          angle: FreshAngle.balance,
-                          child: Semantics(
-                            tooltip: alt,
-                            attributedLabel: AttributedString(title ?? ''),
-                            child: Image.network(
-                              'https://raw.githubusercontent.com${uri.path}',
-                              fit: BoxFit.cover,
-                              width: double.maxFinite,
+      body: Column(
+        children: [
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        AspectRatio(
+                          aspectRatio: 1.4,
+                          child: FreshFrame(
+                            angle: FreshAngle.balance,
+                            child: SizedBox.expand(
+                              child: Image.network(
+                                'https://www.socialtables.com/wp-content/uploads/2016/10/iStock-540095978.jpg',
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    onTapLink: (text, href, title) {
-                      if (href == null) return;
-                      final uri = Uri.tryParse(href);
-                      if (uri == null) return;
-                      launchUrl(uri);
-                    },
-                    selectable: true,
-                    softLineBreak: true,
-                    styleSheet: MarkdownStyleSheet(
-                      horizontalRuleDecoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(
-                            width: 1.0,
-                            color: theme.dividerColor,
+                        const Gap(16),
+                        Text(
+                          'HÀNH TRÌNH ĐỎ BẮC NINH 2022',
+                          style: theme.textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            height: 1.7,
+                            letterSpacing: 1.3,
+                            wordSpacing: 2,
                           ),
                         ),
-                      ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'THPT Hàn Thuyên',
+                              style: theme.textTheme.bodySmall,
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: const SizedBox(
+                                height: 48,
+                                width: 48,
+                                child: Icon(
+                                  CommunityMaterialIcons.heart_outline,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: SeparatedRow(
+                                  separatorBuilder: () => const Gap(8),
+                                  children: [
+                                    FreshChip(
+                                      onPressed: () {},
+                                      color: const Color.fromARGB(
+                                          255, 178, 41, 31),
+                                      child: const Text('Sức khỏe'),
+                                    ),
+                                    FreshChip(
+                                      onPressed: () {},
+                                      color: Colors.green,
+                                      child: const Text('Môi trường'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const Gap(4),
+                            Row(
+                              children: [
+                                const Icon(
+                                  CommunityMaterialIcons.map_marker_outline,
+                                  size: 18,
+                                ),
+                                const Gap(4),
+                                Text(
+                                  'TP Bắc Ninh, Bắc Ninh',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Gap(30),
+                        const FreshProgressBar(
+                          percent: 0.6,
+                          direction: Axis.horizontal,
+                          length: double.maxFinite,
+                          thickness: 20,
+                        ),
+                        const Gap(12),
+                        const MarkdownBody(
+                          data: '''Mục tiêu: 
+- 500 lít máu''',
+                        ),
+                        const Gap(12),
+                        const Divider(
+                          height: 1,
+                          thickness: 1,
+                          color: Colors.black,
+                        ),
+                        const Gap(12),
+                      ],
                     ),
-                    builders: {
-                      'crs': CarouselBuilder(),
-                    },
-                    blockSyntaxes: [
-                      CarouselSyntax(),
-                    ],
                   ),
-                  const Gap(20),
-                  SafeArea(
-                    top: false,
-                    child: FreshDottedButton(
-                      child: const Text('Ủng hộ'),
-                      onPressed: () {},
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        MarkdownBody(
+                          data: _content,
+                          imageDirectory: 'https://raw.githubusercontent.com',
+                          imageBuilder: (uri, title, alt) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            child: AspectRatio(
+                              aspectRatio: 1.4,
+                              child: FreshFrame(
+                                angle: FreshAngle.balance,
+                                child: Semantics(
+                                  tooltip: alt,
+                                  attributedLabel:
+                                      AttributedString(title ?? ''),
+                                  child: Image.network(
+                                    'https://raw.githubusercontent.com${uri.path}',
+                                    fit: BoxFit.cover,
+                                    width: double.maxFinite,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          onTapLink: (text, href, title) {
+                            if (href == null) return;
+                            final uri = Uri.tryParse(href);
+                            if (uri == null) return;
+                            launchUrl(uri);
+                          },
+                          selectable: true,
+                          softLineBreak: true,
+                          styleSheet: MarkdownStyleSheet(
+                            horizontalRuleDecoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  width: 1.0,
+                                  color: theme.dividerColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                          builders: {
+                            'crs': CarouselBuilder(),
+                          },
+                          blockSyntaxes: [
+                            CarouselSyntax(),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
+              ],
+            ),
+          ),
+          SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: FreshDottedButton(
+                child: const Text('Ủng hộ'),
+                onPressed: () {},
               ),
             ),
           ),

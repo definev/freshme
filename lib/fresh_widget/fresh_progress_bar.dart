@@ -8,7 +8,7 @@ class FreshProgressBar extends HookWidget {
     required this.percent,
     required this.direction,
     required this.length,
-    required this.thickness,
+    this.thickness = 12,
   }) : super(key: key);
 
   final double percent;
