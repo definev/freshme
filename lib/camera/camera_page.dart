@@ -6,15 +6,14 @@ import 'package:freshme/fresh_widget/dotted_button.dart';
 import 'package:freshme/fresh_widget/fresh_chip.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 
-class SendYourLovePage extends StatefulWidget {
-  const SendYourLovePage({super.key});
+class CameraPage extends StatefulWidget {
+  const CameraPage({super.key});
 
   @override
-  State<SendYourLovePage> createState() => _SendYourLovePageState();
+  State<CameraPage> createState() => _CameraPageState();
 }
 
-class _SendYourLovePageState extends State<SendYourLovePage>
-    with WidgetsBindingObserver {
+class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   void onNewCameraSelected(CameraDescription description) {}
 
   FreshMLController? controller;

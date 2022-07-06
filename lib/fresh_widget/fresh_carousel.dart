@@ -102,6 +102,7 @@ class _FreshCarouselState extends State<FreshCarousel>
         _disablePan = true;
 
         setState(() {});
+        
         return;
       }
 
@@ -191,6 +192,7 @@ class _FreshCarouselState extends State<FreshCarousel>
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   _constraints = constraints.biggest;
+       
                   return GestureDetector(
                     onPanStart: (details) {
                       _startPoint = details.localPosition.dx;
@@ -308,6 +310,7 @@ class _FreshCarouselState extends State<FreshCarousel>
               ),
             ),
           ),
+          if (widget.imageUrls.length > 1)
           Align(
             alignment: Alignment.bottomCenter,
             widthFactor: 1.0,

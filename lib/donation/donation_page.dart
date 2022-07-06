@@ -1,6 +1,6 @@
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
-import 'package:freshme/camera/send_your_love_page.dart';
+import 'package:freshme/camera/camera_page.dart';
 import 'package:freshme/campaign_detail/campaign_detail_page.dart';
 import 'package:freshme/donation/dependencies.dart';
 import 'package:freshme/donation/widgets/donation_app_bar.dart';
@@ -65,7 +65,7 @@ class DonationPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const SendYourLovePage(),
+                            builder: (_) => const CameraPage(),
                           ),
                         );
                       },

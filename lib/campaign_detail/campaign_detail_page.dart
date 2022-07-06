@@ -18,8 +18,6 @@ const _content = '''
 🔥 Hãy cùng tham gia hiến máu tại Hành trình Đỏ Bắc Ninh 2022. Đây hứa hẹn sẽ là điểm đến tuyệt vời cho tháng 7 của bạn! 🥳
 👉👉👉 Đừng quên theo dõi fanpage của Máu Bắc Ninh để cập nhật nhanh và chính xác thông tin các điểm hiến máu trên địa bàn tỉnh nhé! ^^
 
-___
-
 [[carousel]](https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg,https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg,https://www.w3schools.com/w3css/img_forest.jpg)
 ### **HÀNH TRÌNH ĐỎ BẮC NINH 2022**
 ⏰ Thời gian: 7h30 đến 16h00 ngày 07/7/2022
@@ -40,220 +38,222 @@ class CampaignDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(CommunityMaterialIcons.arrow_left),
-          ),
-        ),
-        title: Text(
-          'Chi tiết chiến dịch',
-          style:
-              theme.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
+    return SelectionArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
             icon: const Padding(
               padding: EdgeInsets.all(8.0),
-              child: Icon(CommunityMaterialIcons.share),
+              child: Icon(CommunityMaterialIcons.arrow_left),
             ),
           ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        AspectRatio(
-                          aspectRatio: 1.4,
-                          child: FreshFrame(
-                            angle: FreshAngle.balance,
-                            child: SizedBox.expand(
-                              child: Image.network(
-                                'https://www.socialtables.com/wp-content/uploads/2016/10/iStock-540095978.jpg',
-                                fit: BoxFit.cover,
+          title: Text(
+            'Chi tiết chiến dịch',
+            style: theme.textTheme.bodyLarge!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(CommunityMaterialIcons.share),
+              ),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          AspectRatio(
+                            aspectRatio: 1.4,
+                            child: FreshFrame(
+                              angle: FreshAngle.balance,
+                              child: SizedBox.expand(
+                                child: Image.network(
+                                  'https://www.socialtables.com/wp-content/uploads/2016/10/iStock-540095978.jpg',
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const Gap(16),
-                        Text(
-                          'HÀNH TRÌNH ĐỎ BẮC NINH 2022',
-                          style: theme.textTheme.titleLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            height: 1.7,
-                            letterSpacing: 1.3,
-                            wordSpacing: 2,
+                          const Gap(16),
+                          Text(
+                            'HÀNH TRÌNH ĐỎ BẮC NINH 2022',
+                            style: theme.textTheme.titleLarge!.copyWith(
+                              fontWeight: FontWeight.bold,
+                              height: 1.7,
+                              letterSpacing: 1.3,
+                              wordSpacing: 2,
+                            ),
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'THPT Hàn Thuyên',
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: const SizedBox(
-                                height: 48,
-                                width: 48,
-                                child: Icon(
-                                  CommunityMaterialIcons.heart_outline,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'THPT Hàn Thuyên',
+                                style: theme.textTheme.bodySmall,
+                              ),
+                              InkWell(
+                                onTap: () {},
+                                child: const SizedBox(
+                                  height: 48,
+                                  width: 48,
+                                  child: Icon(
+                                    CommunityMaterialIcons.heart_outline,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: SeparatedRow(
-                                  separatorBuilder: () => const Gap(8),
-                                  children: [
-                                    FreshChip(
-                                      onPressed: () {},
-                                      color: const Color.fromARGB(
-                                          255, 178, 41, 31),
-                                      child: const Text('Sức khỏe'),
-                                    ),
-                                    FreshChip(
-                                      onPressed: () {},
-                                      color: Colors.green,
-                                      child: const Text('Môi trường'),
-                                    ),
-                                  ],
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: SeparatedRow(
+                                    separatorBuilder: () => const Gap(8),
+                                    children: [
+                                      FreshChip(
+                                        onPressed: () {},
+                                        color: const Color(0xFFB2291F),
+                                        child: const Text('Sức khỏe'),
+                                      ),
+                                      FreshChip(
+                                        onPressed: () {},
+                                        color: Colors.green,
+                                        child: const Text('Môi trường'),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            const Gap(4),
-                            Row(
-                              children: [
-                                const Icon(
-                                  CommunityMaterialIcons.map_marker_outline,
-                                  size: 18,
-                                ),
-                                const Gap(4),
-                                Text(
-                                  'TP Bắc Ninh, Bắc Ninh',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
+                              const Gap(4),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    CommunityMaterialIcons.map_marker_outline,
+                                    size: 18,
+                                  ),
+                                  const Gap(4),
+                                  Text(
+                                    'TP Bắc Ninh, Bắc Ninh',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
                                           color: Theme.of(context)
                                               .colorScheme
-                                              .onBackground),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const Gap(30),
-                        const FreshProgressBar(
-                          percent: 0.6,
-                          direction: Axis.horizontal,
-                          length: double.maxFinite,
-                          thickness: 20,
-                        ),
-                        const Gap(12),
-                        const MarkdownBody(
-                          data: '''Mục tiêu: 
+                                              .onBackground,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const Gap(30),
+                          const FreshProgressBar(
+                            percent: 0.6,
+                            direction: Axis.horizontal,
+                            length: double.maxFinite,
+                            thickness: 20,
+                          ),
+                          const Gap(12),
+                          const MarkdownBody(
+                            data: '''Mục tiêu: 
 - 500 lít máu''',
-                        ),
-                        const Gap(12),
-                        const Divider(
-                          height: 1,
-                          thickness: 1,
-                          color: Colors.black,
-                        ),
-                        const Gap(12),
-                      ],
+                          ),
+                          const Gap(12),
+                          const Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: Colors.black,
+                          ),
+                          const Gap(12),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        MarkdownBody(
-                          data: _content,
-                          imageDirectory: 'https://raw.githubusercontent.com',
-                          imageBuilder: (uri, title, alt) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: AspectRatio(
-                              aspectRatio: 1.4,
-                              child: FreshFrame(
-                                angle: FreshAngle.balance,
-                                child: Semantics(
-                                  tooltip: alt,
-                                  attributedLabel:
-                                      AttributedString(title ?? ''),
-                                  child: Image.network(
-                                    'https://raw.githubusercontent.com${uri.path}',
-                                    fit: BoxFit.cover,
-                                    width: double.maxFinite,
+                  SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          MarkdownBody(
+                            data: _content,
+                            imageDirectory: 'https://raw.githubusercontent.com',
+                            imageBuilder: (uri, title, alt) => Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: AspectRatio(
+                                aspectRatio: 1.4,
+                                child: FreshFrame(
+                                  angle: FreshAngle.balance,
+                                  child: Semantics(
+                                    tooltip: alt,
+                                    attributedLabel:
+                                        AttributedString(title ?? ''),
+                                    child: Image.network(
+                                      'https://raw.githubusercontent.com${uri.path}',
+                                      fit: BoxFit.cover,
+                                      width: double.maxFinite,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          onTapLink: (text, href, title) {
-                            if (href == null) return;
-                            final uri = Uri.tryParse(href);
-                            if (uri == null) return;
-                            launchUrl(uri);
-                          },
-                          selectable: true,
-                          softLineBreak: true,
-                          styleSheet: MarkdownStyleSheet(
-                            horizontalRuleDecoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(
-                                  width: 1.0,
-                                  color: theme.dividerColor,
+                            onTapLink: (text, href, title) {
+                              if (href == null) return;
+                              final uri = Uri.tryParse(href);
+                              if (uri == null) return;
+                              launchUrl(uri);
+                            },
+                            selectable: false,
+                            softLineBreak: true,
+                            styleSheet: MarkdownStyleSheet(
+                              horizontalRuleDecoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    width: 1.0,
+                                    color: theme.dividerColor,
+                                  ),
                                 ),
                               ),
                             ),
+                            builders: {
+                              'crs': CarouselBuilder(),
+                            },
+                            blockSyntaxes: [
+                              CarouselSyntax(),
+                            ],
                           ),
-                          builders: {
-                            'crs': CarouselBuilder(),
-                          },
-                          blockSyntaxes: [
-                            CarouselSyntax(),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          SafeArea(
-            top: false,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: FreshDottedButton(
-                child: const Text('Ủng hộ'),
-                onPressed: () {},
+                ],
               ),
             ),
-          ),
-        ],
+            SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                child: FreshDottedButton(
+                  child: const Text('Ủng hộ'),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

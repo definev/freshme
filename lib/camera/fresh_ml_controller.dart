@@ -23,6 +23,7 @@ Future<String> _getModel(String assetPath) async {
     await file.writeAsBytes(byteData.buffer
         .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
   }
+
   return file.path;
 }
 
@@ -177,46 +178,64 @@ class ObjectDetectorPainter extends CustomPainter {
 
       builder.pop();
 
-      final left = translateX(
-        detectedObject.boundingBox.left,
-        rotation,
-        size,
-        absoluteSize,
-      );
-      final top = translateY(
-        detectedObject.boundingBox.top,
-        rotation,
-        size,
-        absoluteSize,
-      );
-      final right = translateX(
-        detectedObject.boundingBox.right,
-        rotation,
-        size,
-        absoluteSize,
-      );
-      final bottom = translateY(
-        detectedObject.boundingBox.bottom,
-        rotation,
-        size,
-        absoluteSize,
-      );
+      final rect = _getRect(detectedObject, size);
 
-      canvas.drawRect(
-        Rect.fromLTRB(left, top, right, bottom),
-        paint,
-      );
-
-      canvas.drawParagraph(
-        builder.build()
-          ..layout(ui.ParagraphConstraints(
-            width: right - left,
-          )),
-        Offset(left, top),
-      );
+      _paintFrame(canvas, paint, rect: rect);
+      _paintText(canvas, paint, rect: rect, builder: builder);
     }
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+
+  ui.Rect _getRect(
+    DetectedObject detectedObject,
+    ui.Size size,
+  ) {
+    final left = translateX(
+      detectedObject.boundingBox.left,
+      rotation,
+      size,
+      absoluteSize,
+    );
+    final top = translateY(
+      detectedObject.boundingBox.top,
+      rotation,
+      size,
+      absoluteSize,
+    );
+    final right = translateX(
+      detectedObject.boundingBox.right,
+      rotation,
+      size,
+      absoluteSize,
+    );
+    final bottom = translateY(
+      detectedObject.boundingBox.bottom,
+      rotation,
+      size,
+      absoluteSize,
+    );
+
+    return Rect.fromLTRB(left, top, right, bottom);
+  }
+
+  void _paintFrame(ui.Canvas canvas, ui.Paint paint, {required Rect rect}) {
+    canvas.drawRect(rect, paint);
+  }
+
+  void _paintText(
+    ui.Canvas canvas,
+    ui.Paint paint, {
+    required ui.Rect rect,
+    required ui.ParagraphBuilder builder,
+  }) {
+    canvas.drawParagraph(
+      builder.build()
+        ..layout(ui.ParagraphConstraints(
+          width: rect.width,
+        )),
+      Offset(rect.left, rect.top),
+    );
+  }
 }

@@ -298,6 +298,7 @@ class _ImageClipping extends CustomClipper<Path> {
     );
     path.lineTo(size.width, 0.0);
     path.close();
+    
     return path;
   }
 
