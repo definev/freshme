@@ -11,12 +11,14 @@ class FreshFrame extends HookWidget {
     Key? key,
     required this.angle,
     required this.child,
+    this.noise = 0.15,
     this.padding = const EdgeInsets.all(6),
   }) : super(key: key);
 
   final FreshAngle angle;
   final Widget child;
   final EdgeInsets padding;
+  final double noise;
 
   static const _angle = [
     -.6,
@@ -30,16 +32,18 @@ class FreshFrame extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final random = useMemoized(() => Random());
-    final rotateVibrant =
-        useState(random.nextInt(3) + (angle == FreshAngle.left ? 0 : 3));
+    final rotateVibrant = useState(() {
+      if (angle == FreshAngle.balance) {
+        return random.nextInt(6);
+      }
+      return random.nextInt(3) + (angle == FreshAngle.left ? 0 : 3);
+    }());
 
     return Stack(
       children: [
         Positioned.fill(
           child: Transform.rotate(
-            angle: angle == FreshAngle.balance
-                ? 0.03
-                : _angle[rotateVibrant.value] * 0.15,
+            angle: _angle[rotateVibrant.value] * noise,
             child: Transform.scale(
               scale: 1.01,
               child: Container(
@@ -55,7 +59,7 @@ class FreshFrame extends HookWidget {
           child: Transform.rotate(
             angle: angle == FreshAngle.balance
                 ? 0
-                : _angle[rotateVibrant.value] * 0.05,
+                : _angle[rotateVibrant.value] * 0.07,
             child: DottedBorder(
               strokeWidth: 2,
               borderType: BorderType.RRect,

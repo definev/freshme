@@ -57,7 +57,7 @@ class FreshDottedButton extends HookWidget {
           Positioned.fill(
             child: TweenAnimationBuilder<double>(
               tween: Tween(begin: 0, end: isPressed.value ? 1 : 0),
-              duration: 300.ms,
+              duration: 150.ms,
               curve: Curves.ease,
               builder: (context, value, child) => Transform.translate(
                 offset: const Offset(2, 2) * value,
@@ -72,9 +72,6 @@ class FreshDottedButton extends HookWidget {
                         cornerSmoothing: 1,
                       ),
                     ),
-                    side: innerBordered
-                        ? BorderSide(width: 2, color: innerBorderColor)
-                        : BorderSide.none,
                   ),
                   color: innerColor,
                 ),
@@ -89,6 +86,9 @@ class FreshDottedButton extends HookWidget {
                               cornerSmoothing: 1,
                             ),
                           ),
+                          side: innerBordered
+                              ? BorderSide(width: 2, color: innerBorderColor)
+                              : BorderSide.none,
                         ),
                       ),
                       backgroundColor: MaterialStateProperty.all(Colors.white),
@@ -101,9 +101,9 @@ class FreshDottedButton extends HookWidget {
                     onPressed: () {
                       if (isPressed.value) return;
                       isPressed.value = true;
-                      Future.delayed(300.ms, () {
+                      Future.delayed(150.ms, () {
                         isPressed.value = false;
-                        Future.delayed(300.ms, onPressed);
+                        Future.delayed(150.ms, onPressed);
                       });
                     },
                     child: child,

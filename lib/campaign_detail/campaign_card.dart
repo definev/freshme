@@ -4,8 +4,8 @@ import 'package:freshme/fresh_widget/fresh_frame.dart';
 import 'package:freshme/fresh_widget/fresh_progress_bar.dart';
 import 'package:gap/gap.dart';
 
-class CampaignDetailCard extends StatelessWidget {
-  const CampaignDetailCard({
+class CampaignCard extends StatelessWidget {
+  const CampaignCard({
     Key? key,
     required this.angle,
     required this.image,

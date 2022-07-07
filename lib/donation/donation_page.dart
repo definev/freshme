@@ -1,7 +1,10 @@
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/camera_page.dart';
-import 'package:freshme/campaign_detail/campaign_detail_page.dart';
+import 'package:freshme/campaign_detail/campaign_page.dart';
+import 'package:freshme/campaign_detail/controller/campaign_controller.dart';
+import 'package:freshme/campaign_detail/model/donate_campaign.dart';
 import 'package:freshme/donation/dependencies.dart';
 import 'package:freshme/donation/widgets/donation_app_bar.dart';
 import 'package:freshme/fresh_widget/fresh_frame.dart';
@@ -98,28 +101,55 @@ class DonationPage extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 220,
-                  child: ListView.separated(
-                    clipBehavior: Clip.none,
-                    scrollDirection: Axis.horizontal,
-                    separatorBuilder: (_, __) => const Gap(30),
-                    itemCount: 4,
-                    itemBuilder: (context, index) => CampaignDetailCard(
-                      angle:
-                          index % 2 == 0 ? FreshAngle.right : FreshAngle.left,
-                      image:
-                          'http://chungtadidau.com/wp-content/uploads/2016/07/quyen-gop-sach-giao-khoa-cho-tre-em-vung-cao-576.jpg',
-                      category: 'Sức khỏe',
-                      title: 'HÀNH TRÌNH ĐỎ BẮC NINH 2022',
-                      subtitle: 'THPT Hàn Thuyên',
-                      finishedGoal: 0.6,
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const CampaignDetailPage(),
-                        ),
-                      ),
-                    ),
-                  ),
+                  child: Consumer(builder: (context, ref, child) {
+                    return ListView.separated(
+                      clipBehavior: Clip.none,
+                      scrollDirection: Axis.horizontal,
+                      separatorBuilder: (_, __) => const Gap(30),
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        final campaignFuture =
+                            ref.read(fetchCampaignProvider(index.toString()));
+                        final campaign = campaignFuture.mapOrNull(
+                          data: (data) =>
+                              data.value.mapOrNull((value) => value),
+                        );
+
+                        if (campaign == null) {
+                          return AspectRatio(
+                            aspectRatio: 1.4,
+                            child: Container(
+                              height: 220,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.3),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        }
+
+                        return CampaignCard(
+                          angle: index % 2 == 0
+                              ? FreshAngle.right
+                              : FreshAngle.left,
+                          image: campaign.thumbnails.first,
+                          category: campaign.categories.first,
+                          title: campaign.name,
+                          subtitle: 'THPT Hàn Thuyên',
+                          finishedGoal: campaign.target.finishedGoal,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const CampaignPage(id: '0'),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
                 ),
               ],
             ),

@@ -1,1 +1,1 @@
-export '../campaign_detail/campaign_detail_card.dart';
+export '../campaign_detail/campaign_card.dart';
