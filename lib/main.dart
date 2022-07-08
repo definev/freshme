@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:animations/animations.dart';
 import 'package:camera/camera.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/fresh_ml_controller.dart';
@@ -12,7 +13,8 @@ import 'package:fps_widget/fps_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isAndroid || Platform.isIOS) {
+
+  if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     cameras = await availableCameras();
   }
   runApp(const ProviderScope(child: MyApp()));
