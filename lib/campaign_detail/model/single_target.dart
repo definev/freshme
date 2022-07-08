@@ -30,7 +30,7 @@ class SingleTarget with _$SingleTarget {
     required String name,
     required String unit,
     required int greaterThan,
-    required int lowerThan,
+    required int lessThan,
     @Default(0) int currentValue,
   }) = _BetweenSingleTarget;
 

@@ -26,7 +26,7 @@ extension CampaignTargetMethod on CampaignTarget {
             target.map(
               exact: (e) => e.goal,
               minimum: (m) => m.goal,
-              between: (b) => b.lowerThan,
+              between: (b) => b.lessThan,
             ),
       );
 }

@@ -75,12 +75,13 @@ class TrendingCampaignSection extends ConsumerWidget {
                       .copyWith(color: Colors.white),
                 ),
                 finishedGoal: campaign.target.finishedGoal,
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
+                onTap: () async {
+                  final page = MaterialPageRoute(
                     builder: (_) => const CampaignPage(id: '0'),
-                  ),
-                ),
+                  );
+                  await Future.delayed(Duration.zero);
+                  Navigator.push(context, page);
+                },
               );
             },
           ),

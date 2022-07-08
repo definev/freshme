@@ -48,34 +48,36 @@ class FreshProgressBar extends HookWidget {
       return null;
     }, []);
 
-    return SizedBox(
-      height: thickness,
-      width: length,
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              height: thickness / 2,
-              decoration: BoxDecoration(
-                border: Border.all(width: 2),
+    return RepaintBoundary(
+      child: SizedBox(
+        height: thickness,
+        width: length,
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                height: thickness / 2,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 2),
+                ),
               ),
             ),
-          ),
-          FractionallySizedBox(
-            widthFactor: percent,
-            child: Container(
-              height: thickness,
-              decoration: BoxDecoration(
-                border: Border.all(width: 2),
-                color: Colors.green,
-              ),
-              child: CustomPaint(
-                foregroundPainter: _DashedPainter(movingAnimation),
+            FractionallySizedBox(
+              widthFactor: percent,
+              child: Container(
+                height: thickness,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 2),
+                  color: Colors.green,
+                ),
+                child: CustomPaint(
+                  foregroundPainter: _DashedPainter(movingAnimation),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

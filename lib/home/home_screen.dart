@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:freshme/donation/donation_page.dart';
+import 'package:freshme/donation/page/donation_page.dart';
 import 'package:freshme/fresh_widget/fresh_menu_bar.dart';
 
 class HomeScreen extends HookWidget {

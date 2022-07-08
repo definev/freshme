@@ -19,7 +19,9 @@ class SplashScreen extends StatelessWidget {
           children: [
             Expanded(
               flex: 4,
-              child: const SplashOrbit().animate().fadeIn(),
+              child: RepaintBoundary(
+                child: const SplashOrbit().animate().fadeIn(),
+              ),
             ),
             Expanded(
               flex: 5,
@@ -94,12 +96,14 @@ class SplashScreen extends StatelessWidget {
                                   width: 200,
                                   child: FreshDottedButton(
                                     radius: 15,
-                                    onPressed: () => Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const HomeScreen(),
-                                      ),
-                                    ),
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => const HomeScreen(),
+                                        ),
+                                      );
+                                    },
                                     child: const Text('Signup Now'),
                                   ),
                                 ) //ƒ

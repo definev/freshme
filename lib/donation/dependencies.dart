@@ -1,5 +1,5 @@
 export 'package:freshme/campaign_detail/widgets/campaign_card.dart';
-export 'package:freshme/campaign_detail/pages/campaign_page.dart';
+export 'package:freshme/campaign_detail/page/campaign_page.dart';
 export 'package:freshme/campaign_detail/controller/campaign_controller.dart';
 export 'package:freshme/campaign_detail/model/donate_campaign.dart';
 export 'package:freshme/fresh_widget/fresh_text_button.dart';

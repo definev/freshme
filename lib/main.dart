@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animations/animations.dart';
 import 'package:camera/camera.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart' hide MenuItem;
@@ -7,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/fresh_ml_controller.dart';
 import 'package:freshme/splash/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:fps_widget/fps_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +34,20 @@ class MyApp extends StatelessWidget {
         ),
         appBarStyle: FlexAppBarStyle.surface,
         textTheme: GoogleFonts.beVietnamProTextTheme(),
-      ).toTheme,
+      ).toTheme.copyWith(
+            pageTransitionsTheme: const PageTransitionsTheme(
+              builders: {
+                TargetPlatform.android: FadeThroughPageTransitionsBuilder(),
+                TargetPlatform.fuchsia: FadeThroughPageTransitionsBuilder(),
+                TargetPlatform.iOS: FadeThroughPageTransitionsBuilder(),
+                TargetPlatform.macOS: FadeThroughPageTransitionsBuilder(),
+                TargetPlatform.windows: FadeThroughPageTransitionsBuilder(),
+              },
+            ),
+          ),
+      builder: (context, child) => Material(
+        child: SafeArea(child: FPSWidget(child: child ?? const SizedBox())),
+      ),
       scrollBehavior: FreshmeScrollBehavior(),
       home: const SplashScreen(),
     );
@@ -55,4 +70,8 @@ class FreshmeScrollBehavior extends ScrollBehavior {
     ScrollableDetails details,
   ) =>
       child;
+
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) =>
+      const BouncingScrollPhysics();
 }

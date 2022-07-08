@@ -26,9 +26,9 @@ class FreshChip extends StatelessWidget {
       height: height,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white,
+          onPrimary: Colors.white,
           surfaceTintColor: color,
-          backgroundColor: color,
+          primary: color,
           shape: const RoundedRectangleBorder(
             side: BorderSide(color: Colors.black, width: 1.5),
           ),

@@ -48,7 +48,7 @@ const _defaultCampaign = DonateCampaign(
       resource: TargetResource.people,
       name: 'Tình nguyện viên',
       unit: 'người',
-      lowerThan: 10,
+      lessThan: 10,
       greaterThan: 5,
     ),
     SingleTarget.minimum(

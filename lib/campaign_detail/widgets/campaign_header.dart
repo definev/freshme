@@ -2,8 +2,10 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshme/campaign_detail/model/campaign_target.dart';
 import 'package:freshme/campaign_detail/model/donate_campaign.dart';
 import 'package:freshme/campaign_detail/widgets/campaign_organization_text.dart';
+import 'package:freshme/campaign_detail/widgets/campaign_target_widget.dart';
 import 'package:freshme/fresh_widget/fresh_carousel.dart';
 import 'package:freshme/fresh_widget/fresh_chip.dart';
 import 'package:freshme/fresh_widget/fresh_progress_bar.dart';
@@ -74,14 +76,23 @@ class CampaignHeader extends ConsumerWidget {
                 ),
               ],
             ),
-            const Gap(30),
-            const FreshProgressBar(
-              percent: 0.6,
+            const Gap(12),
+            FreshProgressBar(
+              percent: campaign.target.finishedGoal,
               direction: Axis.horizontal,
               length: double.maxFinite,
               thickness: 20,
             ),
-            const Gap(12),
+            const Gap(18),
+            SeparatedColumn(
+              separatorBuilder: () => const Divider(height: 1),
+              children: campaign //
+                  .target
+                  .list
+                  .map<Widget>(CampaignTargetWidget.new)
+                  .toList(),
+            ),
+            const Gap(18),
             const Divider(
               height: 1,
               thickness: 1,

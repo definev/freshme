@@ -149,7 +149,6 @@ class _DonateTypeChoiceCard extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shape: const RoundedRectangleBorder(),
           shadowColor: Colors.transparent,
-          backgroundColor: Colors.transparent,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
