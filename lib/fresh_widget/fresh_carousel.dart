@@ -102,7 +102,7 @@ class _FreshCarouselState extends State<FreshCarousel>
         _disablePan = true;
 
         setState(() {});
-        
+
         return;
       }
 
@@ -192,7 +192,113 @@ class _FreshCarouselState extends State<FreshCarousel>
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   _constraints = constraints.biggest;
-       
+
+                  final indexer = Indexer(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Indexed(
+                        index: _lerpPoint > 0.5 ? 1 : 0,
+                        child: Positioned(
+                          top: 0,
+                          bottom: 0,
+                          left: -left,
+                          width: _constraints.width,
+                          child: Transform.rotate(
+                            angle: lerpDouble(_rotateAngle, 0, _lerpPoint)!,
+                            child: Transform.scale(
+                              scale: lerpDouble(_scale, 1, _lerpPoint)!,
+                              child: ColoredBox(
+                                color: Color.lerp(
+                                  const Color(0xFFfac70d),
+                                  Colors.white,
+                                  haftLerpPoint,
+                                )!,
+                                child: DottedBorder(
+                                  strokeWidth:
+                                      2 * lerpDouble(1, _scale, _lerpPoint)!,
+                                  borderType: BorderType.Rect,
+                                  padding: EdgeInsets.zero,
+                                  dashPattern: [
+                                    3,
+                                    lerpDouble(0, 5, haftLerpPoint)!
+                                  ],
+                                  strokeCap: StrokeCap.round,
+                                  child: Padding(
+                                    padding: _scrollState == _ScrollState.none
+                                        ? EdgeInsets.zero
+                                        : const EdgeInsets.all(6),
+                                    child: _potentialIndex == null
+                                        ? const SizedBox()
+                                        : Image.network(
+                                            widget.imageUrls[_potentialIndex!],
+                                            width: double.infinity,
+                                            height: double.infinity,
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Indexed(
+                        index: _lerpPoint > 0.5 ? 0 : 1,
+                        child: Positioned(
+                          top: 0,
+                          bottom: 0,
+                          left: left,
+                          width: _constraints.width,
+                          child: Transform.rotate(
+                            angle: lerpDouble(0, _rotateAngle, _lerpPoint)!,
+                            child: Transform.scale(
+                              scale: lerpDouble(1, _scale, _lerpPoint)!,
+                              child: Stack(
+                                children: [
+                                  Positioned.fill(
+                                    child: Container(
+                                      color: Color.lerp(
+                                        Colors.white,
+                                        const Color(0xFFfac70d),
+                                        haftLerpPoint,
+                                      )!,
+                                      padding: const EdgeInsets.all(6),
+                                      child: Opacity(
+                                        opacity:
+                                            lerpDouble(1, 0, haftLerpPoint)!,
+                                        child: Image.network(
+                                          widget.imageUrls[_currentIndex],
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned.fill(
+                                    child: DottedBorder(
+                                      strokeWidth: 2 *
+                                          lerpDouble(1, _scale, _lerpPoint)!,
+                                      borderType: BorderType.Rect,
+                                      padding: EdgeInsets.zero,
+                                      dashPattern: [
+                                        3,
+                                        lerpDouble(5, 0, haftLerpPoint)!
+                                      ],
+                                      strokeCap: StrokeCap.round,
+                                      child: const SizedBox(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+
+                  if (widget.imageUrls.length <= 1) return indexer;
                   return GestureDetector(
                     onPanStart: (details) {
                       _startPoint = details.localPosition.dx;
@@ -200,127 +306,23 @@ class _FreshCarouselState extends State<FreshCarousel>
                     },
                     onPanUpdate: onPanUpdate,
                     onPanEnd: onPanEnd,
-                    child: Indexer(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Indexed(
-                          index: _lerpPoint > 0.5 ? 1 : 0,
-                          child: Positioned(
-                            top: 0,
-                            bottom: 0,
-                            left: -left,
-                            width: _constraints.width,
-                            child: Transform.rotate(
-                              angle: lerpDouble(_rotateAngle, 0, _lerpPoint)!,
-                              child: Transform.scale(
-                                scale: lerpDouble(_scale, 1, _lerpPoint)!,
-                                child: ColoredBox(
-                                  color: Color.lerp(
-                                    const Color(0xFFfac70d),
-                                    Colors.white,
-                                    haftLerpPoint,
-                                  )!,
-                                  child: DottedBorder(
-                                    strokeWidth:
-                                        2 * lerpDouble(1, _scale, _lerpPoint)!,
-                                    borderType: BorderType.Rect,
-                                    padding: EdgeInsets.zero,
-                                    dashPattern: [
-                                      3,
-                                      lerpDouble(0, 5, haftLerpPoint)!
-                                    ],
-                                    strokeCap: StrokeCap.round,
-                                    child: Padding(
-                                      padding: _scrollState == _ScrollState.none
-                                          ? EdgeInsets.zero
-                                          : const EdgeInsets.all(6),
-                                      child: _potentialIndex == null
-                                          ? const SizedBox()
-                                          : Image.network(
-                                              widget
-                                                  .imageUrls[_potentialIndex!],
-                                              width: double.infinity,
-                                              height: double.infinity,
-                                              fit: BoxFit.cover,
-                                            ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Indexed(
-                          index: _lerpPoint > 0.5 ? 0 : 1,
-                          child: Positioned(
-                            top: 0,
-                            bottom: 0,
-                            left: left,
-                            width: _constraints.width,
-                            child: Transform.rotate(
-                              angle: lerpDouble(0, _rotateAngle, _lerpPoint)!,
-                              child: Transform.scale(
-                                scale: lerpDouble(1, _scale, _lerpPoint)!,
-                                child: Stack(
-                                  children: [
-                                    Positioned.fill(
-                                      child: Container(
-                                        color: Color.lerp(
-                                          Colors.white,
-                                          const Color(0xFFfac70d),
-                                          haftLerpPoint,
-                                        )!,
-                                        padding: const EdgeInsets.all(6),
-                                        child: Opacity(
-                                          opacity:
-                                              lerpDouble(1, 0, haftLerpPoint)!,
-                                          child: Image.network(
-                                            widget.imageUrls[_currentIndex],
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned.fill(
-                                      child: DottedBorder(
-                                        strokeWidth: 2 *
-                                            lerpDouble(1, _scale, _lerpPoint)!,
-                                        borderType: BorderType.Rect,
-                                        padding: EdgeInsets.zero,
-                                        dashPattern: [
-                                          3,
-                                          lerpDouble(5, 0, haftLerpPoint)!
-                                        ],
-                                        strokeCap: StrokeCap.round,
-                                        child: const SizedBox(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: indexer,
                   );
                 },
               ),
             ),
           ),
           if (widget.imageUrls.length > 1)
-          Align(
-            alignment: Alignment.bottomCenter,
-            widthFactor: 1.0,
-            child: _CarouselIndicator(
-              widget: widget,
-              potentialIndex: _potentialIndex,
-              currentIndex: _currentIndex,
-              lerpPoint: _lerpPoint,
+            Align(
+              alignment: Alignment.bottomCenter,
+              widthFactor: 1.0,
+              child: _CarouselIndicator(
+                widget: widget,
+                potentialIndex: _potentialIndex,
+                currentIndex: _currentIndex,
+                lerpPoint: _lerpPoint,
+              ),
             ),
-          ),
         ],
       ),
     );

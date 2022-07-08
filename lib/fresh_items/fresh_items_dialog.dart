@@ -90,7 +90,7 @@ class FreshItemsDialog extends HookWidget {
         return const SizedBox();
       case _DonateType.people:
         return Column(
-          children: [
+          children: const [
             Text(''),
           ],
         );

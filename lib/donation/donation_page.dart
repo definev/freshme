@@ -13,15 +13,15 @@ class DonationPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          children: [
-            const DonationAppBar(),
+          children: const [
+            DonationAppBar(),
             PaddedColumn(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 64),
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 64),
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const DonationHeader(),
-                const DonationActions(),
-                const TrendingCampaignSection(),
+                DonationHeader(),
+                DonationActions(),
+                TrendingCampaignSection(),
               ],
             ),
           ],

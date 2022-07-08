@@ -46,6 +46,7 @@ class SingleTarget with _$SingleTarget {
 
 @freezed
 class SingleTargetUnit with _$SingleTargetUnit {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory SingleTargetUnit(
     SingleTarget target, {
     required int unit,

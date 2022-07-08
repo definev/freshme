@@ -20,7 +20,7 @@ class CampaignCard extends StatelessWidget {
   final String image;
   final String category;
   final String title;
-  final String subtitle;
+  final Widget subtitle;
   final double finishedGoal;
   final VoidCallback onTap;
 
@@ -85,15 +85,7 @@ class CampaignCard extends StatelessWidget {
                                       ),
                                 ),
                                 const Gap(10),
-                                Text(
-                                  subtitle,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                        color: Colors.white,
-                                      ),
-                                ),
+                                subtitle,
                                 const Gap(5),
                               ],
                             ),
