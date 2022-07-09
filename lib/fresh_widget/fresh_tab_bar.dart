@@ -109,16 +109,14 @@ class _FreshTabBarState extends State<FreshTabBar> {
   }
 
   final activeButtonStyle = ElevatedButton.styleFrom(
-    onPrimary: Colors.white,
+    foregroundColor: Colors.white, backgroundColor: const Color(0xFF127681),
     minimumSize: const Size(0, 48),
-    primary: const Color(0xFF127681),
     shape: const RoundedRectangleBorder(),
     padding: const EdgeInsets.all(0),
     surfaceTintColor: Colors.white,
   );
   final deactiveButtonStyle = TextButton.styleFrom(
-    onSurface: const Color(0xFF127681),
-    minimumSize: const Size(0, 48),
+    minimumSize: const Size(0, 48), disabledForegroundColor: const Color(0xFF127681).withOpacity(0.38),
     shape: const RoundedRectangleBorder(),
     padding: const EdgeInsets.all(0),
     surfaceTintColor: Colors.white,

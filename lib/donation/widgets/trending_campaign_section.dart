@@ -79,7 +79,6 @@ class TrendingCampaignSection extends ConsumerWidget {
                   final page = MaterialPageRoute(
                     builder: (_) => const CampaignPage(id: '0'),
                   );
-                  await Future.delayed(Duration.zero);
                   Navigator.push(context, page);
                 },
               );

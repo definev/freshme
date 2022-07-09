@@ -91,7 +91,7 @@ class FreshItemsDialog extends HookWidget {
       case _DonateType.people:
         return Column(
           children: const [
-            Text(''),
+            Text('Hello'),
           ],
         );
       case null:
@@ -149,6 +149,7 @@ class _DonateTypeChoiceCard extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shape: const RoundedRectangleBorder(),
           shadowColor: Colors.transparent,
+          padding: EdgeInsets.zero,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -160,7 +161,7 @@ class _DonateTypeChoiceCard extends StatelessWidget {
               color: theme.colorScheme.primary,
             ),
             const Gap(16),
-            Center(child: Text(title)),
+            Center(child: Text(title, textAlign: TextAlign.center)),
           ],
         ),
       ),

@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/fresh_ml_controller.dart';
 import 'package:freshme/splash/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fps_widget/fps_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,9 +46,6 @@ class MyApp extends StatelessWidget {
               },
             ),
           ),
-      builder: (context, child) => Material(
-        child: SafeArea(child: FPSWidget(child: child ?? const SizedBox())),
-      ),
       scrollBehavior: FreshmeScrollBehavior(),
       home: const SplashScreen(),
     );

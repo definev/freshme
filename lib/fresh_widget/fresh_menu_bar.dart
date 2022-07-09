@@ -89,21 +89,19 @@ class MenuItemButton extends StatelessWidget {
     return ElevatedButton(
       style: show
           ? ElevatedButton.styleFrom(
-              onPrimary: Colors.white,
+              foregroundColor: Colors.white, backgroundColor: const Color(0xFFfac70d),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero,
                 side: BorderSide(width: show ? 2 : 0),
               ),
-              primary: const Color(0xFFfac70d),
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
               elevation: 0,
               shadowColor: Colors.white,
             )
           : TextButton.styleFrom(
-              onSurface: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
-              ),
+              ), disabledForegroundColor: Colors.white.withOpacity(0.38),
               shadowColor: Colors.transparent,
               surfaceTintColor: Colors.transparent,
               backgroundColor: const Color(0xFFfac70d).withOpacity(0.0),

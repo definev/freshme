@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freshme/donation/dependencies.dart';
+import 'package:freshme/home/home_screen.dart';
 
 class DonationActions extends StatelessWidget {
   const DonationActions({super.key});
@@ -21,10 +22,21 @@ class DonationActions extends StatelessWidget {
           title: 'Send your love',
           isCenter: true,
           onPressed: () {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (_) => const CameraPage(),
+                builder: (context) => WillPopScope(
+                  onWillPop: () async {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const HomeScreen(),
+                      ),
+                    );
+                    return false;
+                  },
+                  child: const CameraPage(),
+                ),
               ),
             );
           },

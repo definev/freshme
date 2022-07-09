@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:freshme/camera/fresh_ml_controller.dart';
 import 'package:freshme/fresh_widget/dotted_button.dart';
 import 'package:freshme/fresh_widget/fresh_chip.dart';
+import 'package:freshme/home/home_screen.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 
 class CameraPage extends StatefulWidget {
@@ -119,7 +120,12 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
                             height: 56,
                             width: 56,
                             child: FreshDottedButton(
-                              onPressed: () => Navigator.pop(context),
+                              onPressed: () => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const HomeScreen(),
+                                ),
+                              ),
                               child:
                                   const Icon(CommunityMaterialIcons.arrow_left),
                             ),

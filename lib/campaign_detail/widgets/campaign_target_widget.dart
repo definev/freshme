@@ -58,7 +58,7 @@ class CampaignTargetWidget extends StatelessWidget {
               icon: CommunityMaterialIcons.greater_than_or_equal,
               title: '${between.greaterThan} ${between.unit}',
             ),
-            Gap(8),
+            const Gap(8),
             _CompareTile(
               icon: CommunityMaterialIcons.less_than_or_equal,
               title: '${between.lessThan} ${between.unit}',
@@ -100,7 +100,7 @@ class CampaignTargetWidget extends StatelessWidget {
                           .bodyMedium!
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
-                    Gap(16),
+                    const Gap(16),
                     Text(
                       'Đã đạt',
                       style: theme //
@@ -138,7 +138,7 @@ class _CompareTile extends StatelessWidget {
       mainAxisAlignment: mainAxisAlignment,
       children: [
         Icon(icon, size: 18),
-        Gap(4),
+        const Gap(4),
         Text(title),
       ],
     );
