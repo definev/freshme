@@ -9,7 +9,7 @@ enum TargetResource { people, item }
 @freezed
 class PersonalDonate with _$PersonalDonate {
   @JsonSerializable(fieldRename: FieldRename.snake)
-  const factory PersonalDonate(List<SingleTargetUnit> targetUnits) =
+  const factory PersonalDonate(List<TargetUnit> targetUnits) =
       _PersonalDonate;
 
   factory PersonalDonate.fromJson(Map<String, dynamic> json) =>

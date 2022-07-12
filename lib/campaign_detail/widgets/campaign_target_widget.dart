@@ -20,13 +20,13 @@ class CampaignTargetWidget extends StatelessWidget {
             children: [
               _CompareTile(
                 icon: CommunityMaterialIcons.equal,
-                title: '${exact.goal} ${exact.unit}',
+                title: '${exact.goal} ${exact.detail.unit}',
               ),
               Divider(
                 height: 16,
                 color: theme.colorScheme.onBackground,
               ),
-              Text('${exact.currentValue} ${exact.unit}'),
+              Text('${exact.currentValue} ${exact.detail.unit}'),
             ],
           ),
         );
@@ -38,13 +38,13 @@ class CampaignTargetWidget extends StatelessWidget {
             children: [
               _CompareTile(
                 icon: CommunityMaterialIcons.greater_than_or_equal,
-                title: '${minimum.goal} ${minimum.unit}',
+                title: '${minimum.goal} ${minimum.detail.unit}',
               ),
               Divider(
                 height: 16,
                 color: theme.colorScheme.onBackground,
               ),
-              Text('${minimum.currentValue} ${minimum.unit}'),
+              Text('${minimum.currentValue} ${minimum.detail.unit}'),
             ],
           ),
         );
@@ -56,17 +56,17 @@ class CampaignTargetWidget extends StatelessWidget {
             _CompareTile(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               icon: CommunityMaterialIcons.greater_than_or_equal,
-              title: '${between.greaterThan} ${between.unit}',
+              title: '${between.greaterThan} ${between.detail.unit}',
             ),
             const Gap(8),
             _CompareTile(
               icon: CommunityMaterialIcons.less_than_or_equal,
-              title: '${between.lessThan} ${between.unit}',
+              title: '${between.lessThan} ${between.detail.unit}',
             ),
             Divider(color: theme.colorScheme.onBackground),
             Padding(
               padding: const EdgeInsets.only(right: 0.6),
-              child: Text('${between.currentValue} ${between.unit}'),
+              child: Text('${between.currentValue} ${between.detail.unit}'),
             ),
           ],
         ),
@@ -79,7 +79,7 @@ class CampaignTargetWidget extends StatelessWidget {
     final theme = Theme.of(context);
 
     return ExpansionTile(
-      title: Text(target.name),
+      title: Text(target.detail.name),
       children: [
         const Divider(height: 1, thickness: 2),
         Padding(

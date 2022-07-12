@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/campaign_detail/controller/campaign_controller.dart';
 import 'package:freshme/campaign_detail/utils/custom_md.dart';
 import 'package:freshme/campaign_detail/widgets/campaign_header.dart';
-import 'package:freshme/fresh_items/fresh_items_dialog.dart';
+import 'package:freshme/campaign_detail/widgets/donation_items_dialog.dart';
 import 'package:freshme/fresh_widget/dotted_button.dart';
 import 'package:freshme/fresh_widget/fresh_frame.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -140,7 +140,10 @@ class _CampaignPageState extends ConsumerState<CampaignPage> {
                     onPressed: () {
                       showModalBottomSheet(
                         context: context,
-                        builder: (_) => FreshItemsDialog(context),
+                        builder: (_) => DonationItemsDialog(
+                          context,
+                          campaignId: widget.id,
+                        ),
                         backgroundColor: Colors.transparent,
                         constraints: const BoxConstraints.expand(height: 500),
                       );

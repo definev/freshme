@@ -45,22 +45,28 @@ const _defaultCampaign = DonateCampaign(
   ],
   target: CampaignTarget([
     SingleTarget.between(
-      resource: TargetResource.people,
-      name: 'Tình nguyện viên',
-      unit: 'người',
+      detail: TargetDetail(
+        resource: TargetResource.people,
+        name: 'Tình nguyện viên',
+        unit: 'người',
+      ),
       lessThan: 10,
       greaterThan: 5,
     ),
     SingleTarget.minimum(
-      resource: TargetResource.item,
-      name: 'Quần',
-      unit: 'chiếc',
+      detail: TargetDetail(
+        resource: TargetResource.item,
+        name: 'Quần',
+        unit: 'chiếc',
+      ),
       goal: 20,
     ),
     SingleTarget.exact(
-      resource: TargetResource.item,
-      name: 'Đồ chơi trẻ em',
-      unit: 'chiếc',
+      detail: TargetDetail(
+        resource: TargetResource.item,
+        name: 'Đồ chơi trẻ em',
+        unit: 'chiếc',
+      ),
       goal: 30,
     ),
   ]),
