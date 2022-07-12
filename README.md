@@ -1,16 +1,9 @@
 # freshme
 
-Ứng dụng hỗ trợ quyên đồ từ thiện.
+The charity app helps connect people who want to help those in need.
 
-## Getting Started
+## Motivation
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Many people want to help others but they don't know how to connect with charity clubs that know where people in need are.
+Freshme wants to close that gap. Your good old clothes, toys, ... will have a new life with others in other places. 
+It's meaningful for both you and the recipient.
