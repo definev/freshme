@@ -10,6 +10,7 @@ import 'package:freshme/fresh_widget/fresh_carousel.dart';
 import 'package:freshme/fresh_widget/fresh_chip.dart';
 import 'package:freshme/fresh_widget/fresh_progress_bar.dart';
 import 'package:gap/gap.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 class CampaignHeader extends ConsumerWidget {
   const CampaignHeader(this.campaign, {super.key});
@@ -20,88 +21,114 @@ class CampaignHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    return SliverPadding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-      sliver: SliverList(
-        delegate: SliverChildListDelegate(
-          [
-            FreshCarousel(imageUrls: campaign.thumbnails),
-            const Gap(30),
-            Text(
-              campaign.name,
-              style: theme.textTheme.titleLarge!.copyWith(
-                fontWeight: FontWeight.bold,
-                height: 1.2,
-                letterSpacing: 1.3,
-                wordSpacing: 2,
-              ),
-            ),
-            const Gap(12),
-            CampaignOrganizationText(campaign.orgId),
-            const Gap(16),
-            Row(
+    return MultiSliver(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+          child: FreshCarousel(imageUrls: campaign.thumbnails),
+        ),
+        const Gap(30),
+        SliverPinnedHeader(
+          child: ColoredBox(
+            color: theme.scaffoldBackgroundColor,
+            child: Column(
               children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SeparatedRow(
-                      separatorBuilder: () => const Gap(8),
-                      children: campaign.categories
-                          .map(
-                            (e) => FreshChip(
-                              onPressed: () {},
-                              color: e.color,
-                              child: Text(e.name),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        campaign.name,
+                        style: theme.textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                          letterSpacing: 1.3,
+                          wordSpacing: 2,
+                        ),
+                      ),
+                      const Gap(12),
+                      CampaignOrganizationText(campaign.orgId),
+                      const Gap(16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: SeparatedRow(
+                                separatorBuilder: () => const Gap(8),
+                                children: campaign.categories
+                                    .map(
+                                      (e) => FreshChip(
+                                        onPressed: () {},
+                                        color: e.color,
+                                        child: Text(e.name),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
                             ),
-                          )
-                          .toList(),
-                    ),
+                          ),
+                          const Gap(4),
+                          Row(
+                            children: [
+                              const Icon(
+                                CommunityMaterialIcons.map_marker_outline,
+                                size: 18,
+                              ),
+                              const Gap(4),
+                              Text(
+                                campaign.location,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const Gap(12),
+                      FreshProgressBar(
+                        percent: campaign.target.finishedGoal,
+                        direction: Axis.horizontal,
+                        length: double.maxFinite,
+                        thickness: 20,
+                      ),
+                      const Gap(18),
+                    ],
                   ),
                 ),
-                const Gap(4),
-                Row(
-                  children: [
-                    const Icon(
-                      CommunityMaterialIcons.map_marker_outline,
-                      size: 18,
-                    ),
-                    const Gap(4),
-                    Text(
-                      campaign.location,
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
-                    ),
-                  ],
+                const Divider(
+                  height: 6,
+                  thickness: 1,
+                  color: Colors.black,
                 ),
               ],
             ),
-            const Gap(12),
-            FreshProgressBar(
-              percent: campaign.target.finishedGoal,
-              direction: Axis.horizontal,
-              length: double.maxFinite,
-              thickness: 20,
-            ),
-            const Gap(18),
-            SeparatedColumn(
-              separatorBuilder: () => const Divider(height: 1),
-              children: campaign //
-                  .target
-                  .list
-                  .map<Widget>(CampaignTargetWidget.new)
-                  .toList(),
-            ),
-            const Gap(18),
-            const Divider(
-              height: 1,
-              thickness: 1,
-              color: Colors.black,
-            ),
-            const Gap(12),
-          ],
+          ),
         ),
-      ),
+        const Gap(6),
+        SeparatedColumn(
+          separatorBuilder: () => const Divider(height: 1),
+          children: campaign //
+              .target
+              .list
+              .map<Widget>(CampaignTargetWidget.new)
+              .toList(),
+        ),
+        const Gap(12),
+        const Divider(
+          height: 1,
+          thickness: 0.5,
+          color: Colors.black87,
+        ),
+        const Gap(12),
+      ],
     );
   }
 }

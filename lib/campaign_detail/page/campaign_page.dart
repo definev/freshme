@@ -1,6 +1,5 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/campaign_detail/controller/campaign_controller.dart';
@@ -8,7 +7,6 @@ import 'package:freshme/campaign_detail/utils/custom_md.dart';
 import 'package:freshme/campaign_detail/widgets/campaign_header.dart';
 import 'package:freshme/campaign_detail/widgets/donation_items_dialog.dart';
 import 'package:freshme/fresh_widget/dotted_button.dart';
-import 'package:freshme/fresh_widget/fresh_frame.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CampaignPage extends ConsumerStatefulWidget {
@@ -51,8 +49,10 @@ class _CampaignPageState extends ConsumerState<CampaignPage> {
         ),
         title: Text(
           'Chi tiết chiến dịch',
-          style:
-              theme.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+          style: theme //
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [
@@ -78,25 +78,6 @@ class _CampaignPageState extends ConsumerState<CampaignPage> {
                       [
                         MarkdownBody(
                           data: campaign.content,
-                          imageDirectory: 'https://raw.githubusercontent.com',
-                          imageBuilder: (uri, title, alt) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: AspectRatio(
-                              aspectRatio: 1.4,
-                              child: FreshFrame(
-                                angle: FreshAngle.balance,
-                                child: Semantics(
-                                  attributedLabel:
-                                      AttributedString(title ?? ''),
-                                  child: Image.network(
-                                    'https://raw.githubusercontent.com${uri.path}',
-                                    fit: BoxFit.cover,
-                                    width: double.maxFinite,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
                           onTapLink: (text, href, title) {
                             if (href == null) return;
                             final uri = Uri.tryParse(href);

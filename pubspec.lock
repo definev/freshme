@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "39.0.0"
   analyzer:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
@@ -211,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
+  csv:
+    dependency: transitive
+    description:
+      name: csv
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.1"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -714,6 +721,34 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slang:
+    dependency: "direct main"
+    description:
+      name: slang
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.6.1"
+  slang_build_runner:
+    dependency: "direct dev"
+    description:
+      name: slang_build_runner
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.6.0"
+  slang_flutter:
+    dependency: "direct main"
+    description:
+      name: slang_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.6.0"
+  sliver_tools:
+    dependency: "direct main"
+    description:
+      name: sliver_tools
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.7"
   source_gen:
     dependency: transitive
     description:
