@@ -27,79 +27,94 @@ class CampaignHeader extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
           child: FreshCarousel(imageUrls: campaign.thumbnails),
         ),
-        const Gap(30),
+        const Gap(18),
+        SliverPinnedHeader(
+          child: ColoredBox(
+            color: theme.scaffoldBackgroundColor,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    campaign.name,
+                    style: theme.textTheme.titleLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      height: 1.2,
+                      letterSpacing: 1.3,
+                      wordSpacing: 2,
+                    ),
+                  ),
+                  const Gap(6),
+                  CampaignOrganizationText(campaign.orgId),
+                  const Gap(6),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: SeparatedRow(
+                        separatorBuilder: () => const Gap(8),
+                        children: campaign.categories
+                            .map(
+                              (e) => FreshChip(
+                                onPressed: () {},
+                                color: e.color,
+                                child: Text(e.name),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                  const Gap(4),
+                  Row(
+                    children: [
+                      const Icon(
+                        CommunityMaterialIcons.map_marker_outline,
+                        size: 18,
+                      ),
+                      const Gap(4),
+                      Text(
+                        campaign.location,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
         SliverPinnedHeader(
           child: ColoredBox(
             color: theme.scaffoldBackgroundColor,
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        campaign.name,
-                        style: theme.textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          height: 1.2,
-                          letterSpacing: 1.3,
-                          wordSpacing: 2,
-                        ),
-                      ),
-                      const Gap(12),
-                      CampaignOrganizationText(campaign.orgId),
-                      const Gap(16),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: SeparatedRow(
-                                separatorBuilder: () => const Gap(8),
-                                children: campaign.categories
-                                    .map(
-                                      (e) => FreshChip(
-                                        onPressed: () {},
-                                        color: e.color,
-                                        child: Text(e.name),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                          ),
-                          const Gap(4),
-                          Row(
-                            children: [
-                              const Icon(
-                                CommunityMaterialIcons.map_marker_outline,
-                                size: 18,
-                              ),
-                              const Gap(4),
-                              Text(
-                                campaign.location,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const Gap(12),
+                      const Gap(6),
                       FreshProgressBar(
                         percent: campaign.target.finishedGoal,
                         direction: Axis.horizontal,
                         length: double.maxFinite,
                         thickness: 20,
                       ),
-                      const Gap(18),
+                      const Gap(12),
                     ],
                   ),
                 ),

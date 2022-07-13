@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           primary: Color(0xFF127681),
           secondary: Color(0xFFfac70d),
         ),
-        appBarStyle: FlexAppBarStyle.surface,
+        appBarStyle: FlexAppBarStyle.material,
         textTheme: GoogleFonts.beVietnamProTextTheme(),
       ).toTheme.copyWith(
             pageTransitionsTheme: const PageTransitionsTheme(
@@ -46,6 +46,11 @@ class MyApp extends StatelessWidget {
               },
             ),
           ),
+      builder: (context, child) => GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => Focus.of(context).unfocus(),
+        child: child,
+      ),
       scrollBehavior: FreshmeScrollBehavior(),
       home: const SplashScreen(),
     );

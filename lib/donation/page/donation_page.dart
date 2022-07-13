@@ -17,7 +17,7 @@ class DonationPage extends StatelessWidget {
           slivers: [
             MultiSliver(children: const [DonationAppBar()]),
             MultiSliver(
-              children: [
+              children: const [
                 DonationHeader(),
                 PaddedColumn(
                   padding: EdgeInsets.fromLTRB(16, 0, 16, 64),

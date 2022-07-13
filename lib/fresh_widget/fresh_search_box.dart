@@ -9,7 +9,7 @@ class FreshSearchBox extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 8, 10),
       child: Transform.rotate(
-        angle: -0.01,
+        angle: -0.004,
         child: SizedBox(
           height: 48,
           child: Stack(
@@ -36,8 +36,9 @@ class FreshSearchBox extends StatelessWidget {
                   child: TextField(
                     cursorColor: Theme.of(context).primaryColor,
                     decoration: const InputDecoration(
+                      fillColor: Colors.transparent,
                       contentPadding: EdgeInsets.fromLTRB(16, 8, 16, 14),
-                      hintText: 'Search here ...',
+                      hintText: 'Tìm kiếm tổ chức, chiến dịch, ...',
                       border: InputBorder.none,
                     ),
                   ),
