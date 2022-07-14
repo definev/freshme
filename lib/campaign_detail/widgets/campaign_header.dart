@@ -6,6 +6,7 @@ import 'package:freshme/campaign_detail/model/campaign_target.dart';
 import 'package:freshme/campaign_detail/model/donate_campaign.dart';
 import 'package:freshme/campaign_detail/widgets/campaign_organization_text.dart';
 import 'package:freshme/campaign_detail/widgets/campaign_target_widget.dart';
+import 'package:freshme/fresh_widget/color_gap.dart';
 import 'package:freshme/fresh_widget/fresh_carousel.dart';
 import 'package:freshme/fresh_widget/fresh_chip.dart';
 import 'package:freshme/fresh_widget/fresh_progress_bar.dart';
@@ -29,8 +30,8 @@ class CampaignHeader extends ConsumerWidget {
         ),
         const Gap(18),
         SliverPinnedHeader(
-          child: ColoredBox(
-            color: theme.scaffoldBackgroundColor,
+          child: ColorGap(
+            backgroundColor: theme.scaffoldBackgroundColor,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Column(

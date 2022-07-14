@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freshme/donation/dependencies.dart';
+import 'package:freshme/fresh_widget/color_gap.dart';
 import 'package:gap/gap.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -13,8 +14,8 @@ class DonationHeader extends StatelessWidget {
     return MultiSliver(
       children: [
         SliverPinnedHeader(
-          child: ColoredBox(
-            color: theme.scaffoldBackgroundColor,
+          child: ColorGap(
+            backgroundColor: theme.scaffoldBackgroundColor,
             child: Column(
               children: [
                 const Gap(12),
@@ -30,14 +31,16 @@ class DonationHeader extends StatelessWidget {
                         ),
                   ),
                 ),
+                const Gap(12),
               ],
             ),
           ),
         ),
-        Column(
-          children: [
-            const Gap(12),
-            Text(
+        Align(
+          alignment: Alignment.center,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
               'Good people help each other',
               style: Theme.of(context) //
                   .textTheme
@@ -46,14 +49,14 @@ class DonationHeader extends StatelessWidget {
                     fontWeight: FontWeight.w200,
                   ),
             ),
-          ],
+          ),
         ),
         SliverPinnedHeader(
           child: ColoredBox(
             color: theme.scaffoldBackgroundColor,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-              child: const FreshSearchBox(),
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: FreshSearchBox(),
             ),
           ),
         ),

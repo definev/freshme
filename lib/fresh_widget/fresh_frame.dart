@@ -33,9 +33,7 @@ class FreshFrame extends HookWidget {
   Widget build(BuildContext context) {
     final random = useMemoized(() => Random());
     final rotateVibrant = useState(() {
-      if (angle == FreshAngle.balance) {
-        return random.nextInt(6);
-      }
+      if (angle == FreshAngle.balance) return random.nextInt(6);
       return random.nextInt(3) + (angle == FreshAngle.left ? 0 : 3);
     }());
 
@@ -59,7 +57,7 @@ class FreshFrame extends HookWidget {
           child: Transform.rotate(
             angle: angle == FreshAngle.balance
                 ? 0
-                : _angle[rotateVibrant.value] * 0.07,
+                : _angle[rotateVibrant.value] * 0.03,
             child: DottedBorder(
               strokeWidth: 2,
               borderType: BorderType.RRect,

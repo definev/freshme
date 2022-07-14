@@ -39,7 +39,7 @@ class TrendingCampaignSection extends ConsumerWidget {
           child: ListView.separated(
             clipBehavior: Clip.none,
             scrollDirection: Axis.horizontal,
-            separatorBuilder: (_, __) => const Gap(30),
+            separatorBuilder: (_, __) => const Gap(25),
             itemCount: 4,
             itemBuilder: (context, index) {
               final campaignFuture =
