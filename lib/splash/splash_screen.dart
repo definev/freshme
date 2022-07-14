@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:freshme/fresh_widget/dotted_button.dart';
 import 'package:freshme/home/home_screen.dart';
+import 'package:freshme/splash/dependencies.dart';
 import 'package:freshme/splash/splash_orbit.dart';
 import 'package:gap/gap.dart';
 
@@ -38,81 +39,7 @@ class SplashScreen extends StatelessWidget {
                     Positioned.fill(
                       child: Align(
                         alignment: Alignment.bottomCenter,
-                        child: Container(
-                          margin: const EdgeInsets.fromLTRB(32, 16, 32, 110),
-                          padding: const EdgeInsets.all(20),
-                          decoration: ShapeDecoration(
-                            shape: const SmoothRectangleBorder(
-                              borderRadius: SmoothBorderRadius.all(
-                                SmoothRadius(
-                                  cornerRadius: 40,
-                                  cornerSmoothing: 1,
-                                ),
-                              ),
-                              side: BorderSide(width: 2),
-                            ),
-                            shadows: [
-                              BoxShadow(
-                                blurRadius: 10,
-                                offset: const Offset(0, 10),
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(0.1),
-                              ),
-                            ],
-                            color: Colors.white,
-                          ),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: ListView(
-                                  padding: EdgeInsets.zero,
-                                  children: [
-                                    Text(
-                                      'Bắt đầu thay đổi thế giới\nngay từ hôm nay',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ) //
-                                        .animate()
-                                        .fade(duration: 500.ms),
-                                    const Gap(20),
-                                    const Text(
-                                      'Hãy ủng hộ FRESHME, cung cấp những vật dụng cũ mà bạn không sử dụng, sứ mệnh của FRESHME sẽ là đưa nó đến những người thực sự cần. Mọi đóng góp của bạn có thể góp phần giúp đỡ trẻ em nghèo và gia đình của các em có được sự bảo vệ, chăm sóc sức khỏe và giáo dục quan trọng.',
-                                      textAlign: TextAlign.center,
-                                    ) //
-                                        .animate()
-                                        .fade(duration: 500.ms),
-                                  ],
-                                ),
-                              ),
-                              const Gap(20),
-                              Center(
-                                child: SizedBox(
-                                  width: 200,
-                                  child: FreshDottedButton(
-                                    radius: 15,
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => const HomeScreen(),
-                                        ),
-                                      );
-                                    },
-                                    child: const Text('Signup Now'),
-                                  ),
-                                ) //ƒ
-                                    .animate()
-                                    .fade(duration: 500.ms),
-                              ),
-                            ],
-                          ),
-                        ) //
+                        child: const RegisterSection() //
                             .animate()
                             .move(),
                       ),

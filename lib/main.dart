@@ -8,7 +8,6 @@ import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/fresh_ml_controller.dart';
 import 'package:freshme/splash/splash_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +33,7 @@ class MyApp extends StatelessWidget {
           secondary: Color(0xFFfac70d),
         ),
         appBarStyle: FlexAppBarStyle.material,
-        textTheme: GoogleFonts.beVietnamProTextTheme(),
+        fontFamily: 'BeVietnamPro',
       ).toTheme.copyWith(
             pageTransitionsTheme: const PageTransitionsTheme(
               builders: {
@@ -51,7 +50,7 @@ class MyApp extends StatelessWidget {
         onTap: () => Focus.of(context).unfocus(),
         child: child,
       ),
-      scrollBehavior: FreshmeScrollBehavior(),
+      // scrollBehavior: FreshmeScrollBehavior(),
       home: const SplashScreen(),
     );
   }
@@ -73,8 +72,8 @@ class FreshmeScrollBehavior extends ScrollBehavior {
     ScrollableDetails details,
   ) =>
       child;
-
-  @override
-  ScrollPhysics getScrollPhysics(BuildContext context) =>
-      const BouncingScrollPhysics();
+  //
+  // @override
+  // ScrollPhysics getScrollPhysics(BuildContext context) =>
+  //     const BouncingScrollPhysics();
 }

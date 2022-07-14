@@ -255,8 +255,8 @@ class _SplashOrbitState extends State<SplashOrbit> {
                 ),
                 clipBehavior: Clip.none,
                 child: MirrorAnimation<double>(
-                  duration: 2000.ms,
-                  curve: Curves.easeOutBack,
+                  duration: 1200.ms,
+                  curve: Curves.decelerate,
                   tween: Tween(begin: 0, end: 1),
                   builder: (context, child, value) => Transform.translate(
                     offset: Offset(0, 5 + -20 * value),
