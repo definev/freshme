@@ -51,6 +51,7 @@ class DonationHeader extends StatelessWidget {
             ),
           ),
         ),
+        const Gap(6),
         SliverPinnedHeader(
           child: ColoredBox(
             color: theme.scaffoldBackgroundColor,

@@ -3,7 +3,7 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:freshme/fresh_widget/dotted_button.dart';
+import 'package:freshme/fresh_widget/fresh_dotted_button.dart';
 import 'package:freshme/home/home_screen.dart';
 import 'package:freshme/splash/dependencies.dart';
 import 'package:freshme/splash/splash_orbit.dart';

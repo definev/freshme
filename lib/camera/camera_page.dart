@@ -2,7 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:freshme/camera/fresh_ml_controller.dart';
-import 'package:freshme/fresh_widget/dotted_button.dart';
+import 'package:freshme/fresh_widget/fresh_dotted_button.dart';
 import 'package:freshme/fresh_widget/fresh_chip.dart';
 import 'package:freshme/home/home_screen.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';

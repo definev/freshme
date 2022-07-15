@@ -36,7 +36,7 @@ class FreshDottedButton extends HookWidget {
           Positioned.fill(
             child: Transform.translate(
               offset: const Offset(4, 4),
-              child: Container(
+              child: DecoratedBox(
                 decoration: ShapeDecoration(
                   shape: SmoothRectangleBorder(
                     borderRadius: SmoothBorderRadius.all(
@@ -63,7 +63,7 @@ class FreshDottedButton extends HookWidget {
                 offset: const Offset(2, 2) * value,
                 child: child,
               ),
-              child: Container(
+              child: DecoratedBox(
                 decoration: ShapeDecoration(
                   shape: SmoothRectangleBorder(
                     borderRadius: SmoothBorderRadius.all(
@@ -75,39 +75,37 @@ class FreshDottedButton extends HookWidget {
                   ),
                   color: innerColor,
                 ),
-                child: GestureDetector(
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        SmoothRectangleBorder(
-                          borderRadius: SmoothBorderRadius.all(
-                            SmoothRadius(
-                              cornerRadius: radius,
-                              cornerSmoothing: 1,
-                            ),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      SmoothRectangleBorder(
+                        borderRadius: SmoothBorderRadius.all(
+                          SmoothRadius(
+                            cornerRadius: radius,
+                            cornerSmoothing: 1,
                           ),
-                          side: innerBordered
-                              ? BorderSide(width: 2, color: innerBorderColor)
-                              : BorderSide.none,
                         ),
-                      ),
-                      backgroundColor: MaterialStateProperty.all(Colors.white),
-                      surfaceTintColor: MaterialStateProperty.all(Colors.white),
-                      animationDuration: 300.ms,
-                      padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+                        side: innerBordered
+                            ? BorderSide(width: 2, color: innerBorderColor)
+                            : BorderSide.none,
                       ),
                     ),
-                    onPressed: () {
-                      if (isPressed.value) return;
-                      isPressed.value = true;
-                      Future.delayed(150.ms, () {
-                        isPressed.value = false;
-                        Future.delayed(150.ms, onPressed);
-                      });
-                    },
-                    child: child,
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    surfaceTintColor: MaterialStateProperty.all(Colors.white),
+                    animationDuration: 300.ms,
+                    padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+                    ),
                   ),
+                  onPressed: () {
+                    if (isPressed.value) return;
+                    isPressed.value = true;
+                    Future.delayed(150.ms, () {
+                      isPressed.value = false;
+                      Future.delayed(150.ms, onPressed);
+                    });
+                  },
+                  child: child,
                 ),
               ),
             ),

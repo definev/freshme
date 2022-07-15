@@ -134,9 +134,10 @@ class MenuItemButton extends StatelessWidget {
               const Gap(10),
               Text(
                 item.title,
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      fontWeight: FontWeight.w900,
-                    ),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(fontWeight: FontWeight.w500),
               ),
             ],
           ],
