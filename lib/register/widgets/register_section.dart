@@ -36,10 +36,10 @@ class RegisterSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final section = ref.watch(registerSectionProvider);
+    final theme = Theme.of(context);
 
     return Container(
       margin: const EdgeInsets.fromLTRB(32, 16, 32, 110),
-      padding: const EdgeInsets.all(20),
       decoration: ShapeDecoration(
         shape: const SmoothRectangleBorder(
           borderRadius: SmoothBorderRadius.all(
@@ -57,7 +57,7 @@ class RegisterSection extends ConsumerWidget {
             color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
           ),
         ],
-        color: Colors.white,
+        color: theme.colorScheme.background,
       ),
       child: AnimatedSwitcher(
         duration: 1200.ms,
@@ -65,6 +65,7 @@ class RegisterSection extends ConsumerWidget {
         transitionBuilder: (child, animation) => FadeThroughTransition(
           animation: animation,
           secondaryAnimation: ReverseAnimation(animation),
+          fillColor: Colors.transparent,
           child: child,
         ),
         child: section.widget,

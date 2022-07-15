@@ -80,7 +80,7 @@ class CampaignCard extends StatelessWidget {
                                       .textTheme
                                       .titleLarge!
                                       .copyWith(
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w600,
                                         color: Colors.white,
                                       ),
                                 ),

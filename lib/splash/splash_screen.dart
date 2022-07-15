@@ -3,6 +3,7 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:freshme/fresh_widget/fresh_dotted_button.dart';
 import 'package:freshme/home/home_screen.dart';
 import 'package:freshme/splash/dependencies.dart';
@@ -16,39 +17,43 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 4,
-              child: RepaintBoundary(
-                child: const SplashOrbit().animate().fadeIn(),
-              ),
-            ),
-            Expanded(
-              flex: 5,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 500),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: const _BottomSplashContainer() //
-                          .animate()
-                          .move(),
-                    ),
-                    Positioned.fill(
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: const RegisterSection() //
-                            .animate()
-                            .move(),
-                      ),
-                    ),
-                  ],
+        child: KeyboardVisibilityBuilder(
+          builder: (context, isKeyboardVisible) {
+            return Column(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: !isKeyboardVisible
+                      ? const RepaintBoundary(child: SplashOrbit())
+                      : const SizedBox(),
                 ),
-              ),
-            ),
-          ],
+                Expanded(
+                  flex: isKeyboardVisible ? 100 : 5,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: const _BottomSplashContainer() //
+                              .animate()
+                              .move(),
+                        ),
+                        Positioned.fill(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: const RegisterSection() //
+                                .animate()
+                                .move(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

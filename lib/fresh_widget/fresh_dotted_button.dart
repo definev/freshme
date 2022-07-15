@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -32,25 +34,27 @@ class FreshDottedButton extends HookWidget {
     return SizedBox(
       height: 48,
       child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Positioned.fill(
-            child: Transform.translate(
-              offset: const Offset(4, 4),
-              child: DecoratedBox(
-                decoration: ShapeDecoration(
-                  shape: SmoothRectangleBorder(
-                    borderRadius: SmoothBorderRadius.all(
-                      SmoothRadius(
-                        cornerRadius: radius,
-                        cornerSmoothing: 1,
-                      ),
+          Positioned(
+            top: 4,
+            bottom: -4,
+            left: 4,
+            right: -4,
+            child: DecoratedBox(
+              decoration: ShapeDecoration(
+                shape: SmoothRectangleBorder(
+                  borderRadius: SmoothBorderRadius.all(
+                    SmoothRadius(
+                      cornerRadius: radius,
+                      cornerSmoothing: 0.6,
                     ),
-                    side: outterBordered
-                        ? const BorderSide(width: 2)
-                        : BorderSide.none,
                   ),
-                  color: outterColor,
+                  side: outterBordered
+                      ? const BorderSide(width: 2)
+                      : BorderSide.none,
                 ),
+                color: outterColor,
               ),
             ),
           ),
@@ -69,7 +73,7 @@ class FreshDottedButton extends HookWidget {
                     borderRadius: SmoothBorderRadius.all(
                       SmoothRadius(
                         cornerRadius: radius,
-                        cornerSmoothing: 1,
+                        cornerSmoothing: 0.6,
                       ),
                     ),
                   ),
@@ -81,8 +85,8 @@ class FreshDottedButton extends HookWidget {
                       SmoothRectangleBorder(
                         borderRadius: SmoothBorderRadius.all(
                           SmoothRadius(
-                            cornerRadius: radius,
-                            cornerSmoothing: 1,
+                            cornerRadius: max(0, radius - 1),
+                            cornerSmoothing: 0.6,
                           ),
                         ),
                         side: innerBordered
@@ -90,8 +94,10 @@ class FreshDottedButton extends HookWidget {
                             : BorderSide.none,
                       ),
                     ),
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    surfaceTintColor: MaterialStateProperty.all(Colors.white),
+                    backgroundColor: MaterialStateProperty.all(innerColor),
+                    surfaceTintColor: MaterialStateProperty.all(
+                      innerColor.withOpacity(0.3),
+                    ),
                     animationDuration: 300.ms,
                     padding: MaterialStateProperty.all(
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
