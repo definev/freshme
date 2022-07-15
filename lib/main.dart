@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         onTap: () => Focus.of(context).unfocus(),
         child: child,
       ),
-      // scrollBehavior: FreshmeScrollBehavior(),
+      scrollBehavior: FreshmeScrollBehavior(),
       home: const SplashScreen(),
     );
   }
@@ -72,8 +72,8 @@ class FreshmeScrollBehavior extends ScrollBehavior {
     ScrollableDetails details,
   ) =>
       child;
-  //
-  // @override
-  // ScrollPhysics getScrollPhysics(BuildContext context) =>
-  //     const BouncingScrollPhysics();
+  
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) =>
+      const BouncingScrollPhysics();
 }
