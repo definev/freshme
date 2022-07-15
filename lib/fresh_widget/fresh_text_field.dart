@@ -65,7 +65,7 @@ class FreshTextField extends StatelessWidget {
                   fillColor: theme.colorScheme.surface,
                   enabledBorder: InputSmoothRectangleBorder(
                     borderRadius: borderRadius!,
-                    borderSide: BorderSide(color: Colors.black, width: 2),
+                    borderSide: const BorderSide(color: Colors.black, width: 2),
                   ),
                   focusedBorder: InputSmoothRectangleBorder(
                     borderRadius: borderRadius!,
