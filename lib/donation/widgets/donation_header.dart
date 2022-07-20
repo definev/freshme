@@ -24,7 +24,7 @@ class DonationHeader extends StatelessWidget {
                     'Let\'s share goodness',
                     style: Theme.of(context) //
                         .textTheme
-                        .titleLarge!
+                        .titleMedium!
                         .copyWith(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,

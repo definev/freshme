@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
                 TargetPlatform.windows: FadeThroughPageTransitionsBuilder(),
               },
             ),
+            visualDensity: VisualDensity.comfortable,
           ),
       builder: (context, child) => GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -72,7 +73,7 @@ class FreshmeScrollBehavior extends ScrollBehavior {
     ScrollableDetails details,
   ) =>
       child;
-  
+
   @override
   ScrollPhysics getScrollPhysics(BuildContext context) =>
       const BouncingScrollPhysics();

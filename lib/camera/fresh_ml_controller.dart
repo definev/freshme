@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/translator.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 
@@ -38,10 +39,7 @@ class FreshMLController {
     required Function(Object e) onError,
   }) async {
     final controller = FreshMLController._();
-    controller.cameraController = CameraController(
-      desc,
-      ResolutionPreset.veryHigh,
-    );
+    controller.cameraController = CameraController(desc, ResolutionPreset.high);
 
     try {
       await controller.cameraController.initialize();
@@ -55,8 +53,8 @@ class FreshMLController {
   }
 
   late CameraController cameraController;
-
   late final ObjectDetector _objectDetector;
+
   Future<void> _initializeObjectDetector() async {
     const path = 'assets/ml/object_labeler.tflite';
     final modelPath = await _getModel(path);
@@ -69,75 +67,33 @@ class FreshMLController {
     _objectDetector = ObjectDetector(options: options);
   }
 
+  void toggleFlash(bool value) {
+    cameraController.setFlashMode(value ? FlashMode.torch : FlashMode.off);
+  }
+
   void dispose() async {
     await cameraController.stopImageStream();
     await cameraController.dispose();
-    _objectStreamController.close();
     await _objectDetector.close();
   }
 
-  InputImage _convertImage(CameraImage cameraImage) {
-    final WriteBuffer allBytes = WriteBuffer();
-    for (final Plane plane in cameraImage.planes) {
-      allBytes.putUint8List(plane.bytes);
-    }
-    final bytes = allBytes.done().buffer.asUint8List();
-
-    final Size imageSize =
-        Size(cameraImage.width.toDouble(), cameraImage.height.toDouble());
-
-    final InputImageRotation imageRotation =
-        InputImageRotationValue.fromRawValue(
-      cameraController.description.sensorOrientation,
-    )!;
-
-    final InputImageFormat inputImageFormat =
-        InputImageFormatValue.fromRawValue(cameraImage.format.raw)!;
-
-    final planeData = cameraImage.planes.map(
-      (Plane plane) {
-        return InputImagePlaneMetadata(
-          bytesPerRow: plane.bytesPerRow,
-          height: plane.height,
-          width: plane.width,
-        );
-      },
-    ).toList();
-
-    final inputImageData = InputImageData(
-      size: imageSize,
-      imageRotation: imageRotation,
-      inputImageFormat: inputImageFormat,
-      planeData: planeData,
-    );
-
-    final inputImage =
-        InputImage.fromBytes(bytes: bytes, inputImageData: inputImageData);
-
-    return inputImage;
+  void takePicture(WidgetRef ref) async {
+    final imageFile = await cameraController.takePicture();
+    await cameraController.pausePreview();
+    ref.read(capturedImageProvider.notifier).state = imageFile;
   }
 
-  final _objectStreamController =
-      StreamController<List<DetectedObject>>.broadcast();
-  Stream<List<DetectedObject>> get objectStream =>
-      _objectStreamController.stream;
+  void continueScanning(WidgetRef ref) async {
+    ref.read(capturedImageProvider.notifier).state = null;
+    await cameraController.resumePreview();
+  }
 
-  InputImageRotation? imageRotation;
-  Size? imageDimension;
-
-  void startStreamImage() {
-    List<DetectedObject> objects = [];
-    cameraController.startImageStream(
-      (image) async {
-        final convertedImage = _convertImage(image);
-        imageRotation ??= convertedImage.inputImageData!.imageRotation;
-        imageDimension ??= convertedImage.inputImageData!.size;
-
-        objects = await _objectDetector.processImage(convertedImage);
-
-        _objectStreamController.sink.add(objects);
-      },
+  Future<List<DetectedObject>> processImageFromXFile(XFile file) async {
+    final detectedObjects = await _objectDetector.processImage(
+      InputImage.fromFilePath(file.path),
     );
+
+    return detectedObjects;
   }
 }
 
@@ -239,3 +195,5 @@ class ObjectDetectorPainter extends CustomPainter {
     );
   }
 }
+
+final capturedImageProvider = StateProvider<XFile?>((ref) => null);

@@ -1,20 +1,23 @@
 import 'package:camera/camera.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/fresh_ml_controller.dart';
+import 'package:freshme/camera/scan_me.dart';
 import 'package:freshme/fresh_widget/fresh_dotted_button.dart';
-import 'package:freshme/fresh_widget/fresh_chip.dart';
 import 'package:freshme/home/home_screen.dart';
-import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
+import 'package:gap/gap.dart';
 
-class CameraPage extends StatefulWidget {
+class CameraPage extends ConsumerStatefulWidget {
   const CameraPage({super.key});
 
   @override
-  State<CameraPage> createState() => _CameraPageState();
+  ConsumerState<CameraPage> createState() => _CameraPageState();
 }
 
-class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
+class _CameraPageState extends ConsumerState<CameraPage>
+    with WidgetsBindingObserver {
   void onNewCameraSelected(CameraDescription description) {}
 
   FreshMLController? controller;
@@ -46,7 +49,6 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
           if (!mounted) {
             return;
           }
-          controller.startStreamImage();
           setState(() {});
         },
         onError: (e) {
@@ -72,119 +74,109 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ColoredBox(
-        color: Colors.blue,
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Stack(
-            children: [
-              Positioned.fill(
-                child: controller == null
-                    ? const SizedBox()
-                    : Center(
-                        child: CameraPreview(
-                          controller!.cameraController,
-                        ),
-                      ),
-              ),
-              Positioned.fill(
-                child: StreamBuilder<List<DetectedObject>?>(
-                  stream: controller?.objectStream,
-                  builder: (context, snapshot) {
-                    final data = snapshot.data;
-                    if (data == null || data.isEmpty) {
-                      return const SizedBox();
-                    }
-
-                    return CustomPaint(
-                      painter: ObjectDetectorPainter(
-                        data,
-                        controller?.imageRotation ??
-                            InputImageRotation.rotation0deg,
-                        controller?.imageDimension ?? const Size(0, 0),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              SafeArea(
+      backgroundColor: const Color(0xFF444442),
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: controller == null
+                  ? const SizedBox()
+                  : CameraPreview(controller!.cameraController),
+            ),
+            Positioned.fill(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 56),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            height: 56,
-                            width: 56,
-                            child: FreshDottedButton(
-                              onPressed: () => Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const HomeScreen(),
-                                ),
-                              ),
-                              child:
-                                  const Icon(CommunityMaterialIcons.arrow_left),
+                    const SafeArea(child: ScanMe()),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Gap(32),
+                        IgnorePointer(
+                          child: Opacity(
+                            opacity: 0,
+                            child: HookBuilder(
+                              builder: (context) {
+                                return ElevatedButton(
+                                  onPressed: () {},
+                                  child: Row(
+                                    children: const [
+                                      Icon(
+                                        CommunityMaterialIcons.flash_off,
+                                        size: 20,
+                                      ),
+                                      Gap(8),
+                                      Text('Off'),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(80, 80),
+                          ),
+                          onPressed: () => controller?.takePicture(ref),
+                          child: const Icon(Icons.camera),
+                        ),
+                        HookBuilder(
+                          builder: (context) {
+                            final flashToggle = useState(false);
+
+                            return ElevatedButton(
+                              onPressed: () {
+                                flashToggle.value = !flashToggle.value;
+                                controller!.toggleFlash(flashToggle.value);
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    flashToggle.value
+                                        ? CommunityMaterialIcons.flash
+                                        : CommunityMaterialIcons.flash_off,
+                                    size: 20,
+                                  ),
+                                  const Gap(8),
+                                  flashToggle.value
+                                      ? const Text('On')
+                                      : const Text('Off'),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                        const Gap(32),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(32, 0, 16, 0),
-              child: FreshChip(
-                height: 56,
-                onPressed: () {},
-                color: Theme.of(context).colorScheme.secondary,
-                child: const Text('Chụp đồ của bạn'),
+            ),
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: SizedBox(
+                  height: 56,
+                  width: 56,
+                  child: FreshDottedButton(
+                    onPressed: () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const HomeScreen(),
+                      ),
+                    ),
+                    child: const Icon(CommunityMaterialIcons.arrow_left),
+                  ),
+                ),
               ),
             ),
-          ),
-          FloatingActionButton(
-            onPressed: () {},
-            shape: const RoundedRectangleBorder(
-              side: BorderSide(
-                color: Colors.black,
-                width: 2,
-              ),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            child: const Icon(CommunityMaterialIcons.camera),
-          ),
-        ],
-      ),
-      backgroundColor: Colors.black,
-      bottomSheet: DraggableScrollableSheet(
-        expand: false,
-        initialChildSize: 0.1,
-        snap: true,
-        maxChildSize: 0.7,
-        minChildSize: 0.1,
-        snapSizes: const [0.5, 0.7],
-        builder: (context, scrollController) => DecoratedBox(
-          decoration: const BoxDecoration(color: Colors.white),
-          child: ListView.builder(
-            controller: scrollController,
-            itemBuilder: (context, index) => SizedBox(
-              height: 0.3 * MediaQuery.of(context).size.height,
-              child: const Center(child: Text('Chụp đồ của bạn')),
-            ),
-          ),
+          ],
         ),
       ),
     );

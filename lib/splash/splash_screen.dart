@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flextras/flextras.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -15,47 +18,58 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+      return Scaffold(
+        body: SafeArea(
+          child: _splashBody(false),
+        ),
+      );
+    }
+
     return Scaffold(
       body: SafeArea(
         child: KeyboardVisibilityBuilder(
-          builder: (context, isKeyboardVisible) {
-            return Column(
+          builder: (context, isKeyboardVisible) =>
+              _splashBody(isKeyboardVisible),
+        ),
+      ),
+    );
+  }
+
+  Widget _splashBody(bool isKeyboardVisible) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 4,
+          child: !isKeyboardVisible
+              ? const RepaintBoundary(child: SplashOrbit())
+              : const SizedBox(),
+        ),
+        Expanded(
+          flex: isKeyboardVisible ? 100 : 5,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Stack(
               children: [
-                Expanded(
-                  flex: 4,
-                  child: !isKeyboardVisible
-                      ? const RepaintBoundary(child: SplashOrbit())
-                      : const SizedBox(),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: const _BottomSplashContainer() //
+                      .animate()
+                      .move(),
                 ),
-                Expanded(
-                  flex: isKeyboardVisible ? 100 : 5,
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 500),
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: const _BottomSplashContainer() //
-                              .animate()
-                              .move(),
-                        ),
-                        Positioned.fill(
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: const RegisterSection() //
-                                .animate()
-                                .move(),
-                          ),
-                        ),
-                      ],
-                    ),
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: const RegisterSection() //
+                        .animate()
+                        .move(),
                   ),
                 ),
               ],
-            );
-          },
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }

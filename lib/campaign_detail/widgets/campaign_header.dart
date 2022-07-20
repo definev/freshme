@@ -119,9 +119,9 @@ class CampaignHeader extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const Divider(
-                  height: 6,
-                  thickness: 1,
+                Container(
+                  height: 1,
+                  width: double.maxFinite,
                   color: Colors.black,
                 ),
               ],
