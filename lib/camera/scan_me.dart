@@ -28,11 +28,13 @@ class ScanMe extends StatelessWidget {
                           cornerRadius: 40,
                           cornerSmoothing: 1,
                         ),
-                        color: theme.colorScheme.primary,
+                        color: theme.colorScheme.secondary,
                       ),
                     ),
                   ),
-                  const Positioned.fill(child: _ScanMeBar()),
+                  Positioned.fill(
+                    child: _ScanMeBar(theme.colorScheme.secondary),
+                  ),
                 ],
               ),
             ),
@@ -44,7 +46,9 @@ class ScanMe extends StatelessWidget {
 }
 
 class _ScanMeBar extends StatefulWidget {
-  const _ScanMeBar({super.key});
+  const _ScanMeBar(this.color);
+
+  final Color color;
 
   @override
   State<_ScanMeBar> createState() => _ScanMeBarState();
@@ -122,8 +126,8 @@ class _ScanMeBarState extends State<_ScanMeBar>
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        theme.colorScheme.secondary.withOpacity(0.05),
-                        theme.colorScheme.secondary.withOpacity(0.3),
+                        widget.color.withOpacity(0.05),
+                        widget.color.withOpacity(0.3),
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,

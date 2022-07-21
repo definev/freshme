@@ -1,9 +1,14 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:camera/camera.dart';
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/fresh_ml_controller.dart';
+import 'package:freshme/camera/fresh_modal_bottom_sheet.dart';
 import 'package:freshme/camera/scan_me.dart';
 import 'package:freshme/fresh_widget/fresh_dotted_button.dart';
 import 'package:freshme/home/home_screen.dart';
@@ -118,12 +123,18 @@ class _CameraPageState extends ConsumerState<CameraPage>
                             ),
                           ),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(80, 80),
-                          ),
-                          onPressed: () => controller?.takePicture(ref),
-                          child: const Icon(Icons.camera),
+                        Builder(
+                          builder: (context) {
+                            return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(80, 80),
+                              ),
+                              onPressed: () {
+                                controller?.takePicture(context, this);
+                              },
+                              child: const Icon(Icons.camera),
+                            );
+                          },
                         ),
                         HookBuilder(
                           builder: (context) {
@@ -132,7 +143,7 @@ class _CameraPageState extends ConsumerState<CameraPage>
                             return ElevatedButton(
                               onPressed: () {
                                 flashToggle.value = !flashToggle.value;
-                                controller!.toggleFlash(flashToggle.value);
+                                controller?.toggleFlash(flashToggle.value);
                               },
                               child: Row(
                                 children: [

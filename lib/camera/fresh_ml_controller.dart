@@ -2,9 +2,13 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshme/camera/fresh_modal_bottom_sheet.dart';
+import 'package:freshme/camera/image_processing_sheet.dart';
 import 'package:freshme/camera/translator.dart';
+import 'package:freshme/donation/dependencies.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 
 import 'dart:io' as io;
@@ -39,10 +43,11 @@ class FreshMLController {
     required Function(Object e) onError,
   }) async {
     final controller = FreshMLController._();
-    controller.cameraController = CameraController(desc, ResolutionPreset.high);
+    controller.cameraController = CameraController(desc, ResolutionPreset.max);
 
     try {
       await controller.cameraController.initialize();
+      controller.cameraController.setFlashMode(FlashMode.off);
       await controller._initializeObjectDetector();
       onSuccess(controller);
     } catch (e) {
@@ -72,128 +77,53 @@ class FreshMLController {
   }
 
   void dispose() async {
-    await cameraController.stopImageStream();
-    await cameraController.dispose();
-    await _objectDetector.close();
+    cameraController.dispose();
+    _objectDetector.close();
   }
 
-  void takePicture(WidgetRef ref) async {
+  void takePicture(BuildContext context, ConsumerState state) async {
+    final sm = ScaffoldMessenger.of(context);
+    sm.showMaterialBanner(
+      const MaterialBanner(
+        content: Text('Đang xử lí ảnh ...'),
+        actions: [SizedBox()],
+      ),
+    );
     final imageFile = await cameraController.takePicture();
+    sm.clearMaterialBanners();
     await cameraController.pausePreview();
-    ref.read(capturedImageProvider.notifier).state = imageFile;
+    final mounted = state.mounted;
+    if (!mounted) return;
+    await showFreshModalBottomSheet(
+      context,
+      onClosing: continueScanning,
+      child: WillPopScope(
+        onWillPop: () async {
+          continueScanning();
+          return true;
+        },
+        child: ProviderScope(
+          overrides: [
+            freshMLControllerProvider.overrideWithValue(this),
+          ],
+          child: ImageProcessingSheet(imageFile),
+        ),
+      ),
+    );
   }
 
-  void continueScanning(WidgetRef ref) async {
-    ref.read(capturedImageProvider.notifier).state = null;
+  void continueScanning() async {
     await cameraController.resumePreview();
   }
 
-  Future<List<DetectedObject>> processImageFromXFile(XFile file) async {
-    final detectedObjects = await _objectDetector.processImage(
-      InputImage.fromFilePath(file.path),
-    );
-
-    return detectedObjects;
-  }
-}
-
-class ObjectDetectorPainter extends CustomPainter {
-  ObjectDetectorPainter(this._objects, this.rotation, this.absoluteSize);
-
-  final List<DetectedObject> _objects;
-  final Size absoluteSize;
-  final InputImageRotation rotation;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.0
-      ..color = Colors.lightGreenAccent;
-
-    final Paint background = Paint()..color = const Color(0x99000000);
-
-    for (final DetectedObject detectedObject in _objects) {
-      final ui.ParagraphBuilder builder = ui.ParagraphBuilder(
-        ui.ParagraphStyle(
-          textAlign: TextAlign.left,
-          fontSize: 16,
-          textDirection: TextDirection.ltr,
-        ),
-      );
-      builder.pushStyle(
-        ui.TextStyle(
-          color: Colors.lightGreenAccent,
-          background: background,
-        ),
-      );
-
-      for (final Label label in detectedObject.labels) {
-        builder.addText('${label.text} ${label.confidence}\n');
-      }
-
-      builder.pop();
-
-      final rect = _getRect(detectedObject, size);
-
-      _paintFrame(canvas, paint, rect: rect);
-      _paintText(canvas, paint, rect: rect, builder: builder);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
-
-  ui.Rect _getRect(
-    DetectedObject detectedObject,
-    ui.Size size,
-  ) {
-    final left = translateX(
-      detectedObject.boundingBox.left,
-      rotation,
-      size,
-      absoluteSize,
-    );
-    final top = translateY(
-      detectedObject.boundingBox.top,
-      rotation,
-      size,
-      absoluteSize,
-    );
-    final right = translateX(
-      detectedObject.boundingBox.right,
-      rotation,
-      size,
-      absoluteSize,
-    );
-    final bottom = translateY(
-      detectedObject.boundingBox.bottom,
-      rotation,
-      size,
-      absoluteSize,
-    );
-
-    return Rect.fromLTRB(left, top, right, bottom);
-  }
-
-  void _paintFrame(ui.Canvas canvas, ui.Paint paint, {required Rect rect}) {
-    canvas.drawRect(rect, paint);
-  }
-
-  void _paintText(
-    ui.Canvas canvas,
-    ui.Paint paint, {
-    required ui.Rect rect,
-    required ui.ParagraphBuilder builder,
-  }) {
-    canvas.drawParagraph(
-      builder.build()
-        ..layout(ui.ParagraphConstraints(
-          width: rect.width,
-        )),
-      Offset(rect.left, rect.top),
+  Future<FreshMLImageResult> processImageFromXFile(XFile file) async {
+    final inputImage = InputImage.fromFilePath(file.path);
+    final detectedObjects = await _objectDetector.processImage(inputImage);
+    final image = await decodeImageFromList(await file.readAsBytes());
+    return FreshMLImageResult(
+      detectedObjects,
+      Size(image.width.toDouble(), image.height.toDouble()),
+      InputImageRotation.rotation0deg,
     );
   }
 }
-
-final capturedImageProvider = StateProvider<XFile?>((ref) => null);
