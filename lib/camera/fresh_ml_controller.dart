@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
@@ -64,7 +65,7 @@ class FreshMLController {
     const path = 'assets/ml/object_labeler.tflite';
     final modelPath = await _getModel(path);
     final options = LocalObjectDetectorOptions(
-      mode: DetectionMode.stream,
+      mode: DetectionMode.single,
       modelPath: modelPath,
       classifyObjects: true,
       multipleObjects: true,
@@ -119,6 +120,7 @@ class FreshMLController {
   Future<FreshMLImageResult> processImageFromXFile(XFile file) async {
     final inputImage = InputImage.fromFilePath(file.path);
     final detectedObjects = await _objectDetector.processImage(inputImage);
+    log('DETECTED OBJECTS: $detectedObjects');
     final image = await decodeImageFromList(await file.readAsBytes());
     return FreshMLImageResult(
       detectedObjects,

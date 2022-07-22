@@ -38,7 +38,8 @@ class ImageProcessingSheet extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Image Processing'),
+        title: const Text('ĐỒ VẬT LIÊN QUAN'),
+        centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
@@ -46,7 +47,7 @@ class ImageProcessingSheet extends ConsumerWidget {
         label: const Text('Submit'),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+        padding: const EdgeInsets.all(16),
         child: Card(
           shape: shape,
           child: DecoratedBox(
@@ -91,23 +92,20 @@ class ImageProcessingSheet extends ConsumerWidget {
                       ),
                       Flexible(
                         flex: 1,
-                        child: _ImageProcessingInfo(),
+                        child: SizedBox(),
                       ),
                     ],
                   ),
                   Positioned.fill(
-                    child: HookBuilder(
-                      builder: (context) {
-                        final imageResultFuture = useFuture(
-                          controller.processImageFromXFile(imageFile),
-                        );
-
-                        if (imageResultFuture.data == null) {
+                    child: FutureBuilder<FreshMLImageResult>(
+                      future: controller.processImageFromXFile(imageFile),
+                      builder: (context, resultData) {
+                        if (resultData.data == null) {
                           return const SizedBox();
                         } else {
                           return CustomPaint(
                             painter: _FreshImageDectectorPainter(
-                              imageResultFuture.data!,
+                              resultData.data!,
                             ),
                           );
                         }
@@ -120,32 +118,6 @@ class ImageProcessingSheet extends ConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _ImageProcessingInfo extends StatelessWidget {
-  const _ImageProcessingInfo();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Column(
-      children: [
-        Stack(
-          children: [
-            Text(
-              'ĐỒ VẬT LIÊN QUAN',
-              style: theme.textTheme.titleLarge!.copyWith(
-                fontWeight: FontWeight.w300,
-                foreground: Paint()
-                  ..color = theme.colorScheme.onSecondaryContainer,
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
@@ -167,43 +139,31 @@ class _FreshImageDectectorPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.0
-      ..color = Colors.lightGreenAccent;
-
-    final Paint background = Paint()..color = const Color(0x99000000);
+      ..strokeWidth = 1
+      ..color = Colors.black;
 
     final List<DetectedObject> objects = result.objects;
 
     for (final DetectedObject detectedObject in objects) {
-      final ui.ParagraphBuilder builder = ui.ParagraphBuilder(
-        ui.ParagraphStyle(
-          textAlign: TextAlign.left,
-          fontSize: 16,
-          textDirection: TextDirection.ltr,
-        ),
-      );
-      builder.pushStyle(
-        ui.TextStyle(
-          color: Colors.lightGreenAccent,
-          background: background,
-        ),
-      );
-
-      for (final Label label in detectedObject.labels) {
-        builder.addText('${label.text} ${label.confidence}\n');
-      }
-
-      builder.pop();
-
       final rect = _getRect(detectedObject, size);
 
       _paintFrame(canvas, paint, rect: rect);
-      _paintText(canvas, paint, rect: rect, builder: builder);
+      _paintText(
+        canvas,
+        paint,
+        rect: rect,
+        text: detectedObject.labels
+            .reduce(
+              (value, element) =>
+                  value.confidence > element.confidence ? value : element,
+            )
+            .text,
+      );
     }
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 
   ui.Rect _getRect(
     DetectedObject detectedObject,
@@ -241,21 +201,49 @@ class _FreshImageDectectorPainter extends CustomPainter {
   }
 
   void _paintFrame(ui.Canvas canvas, ui.Paint paint, {required Rect rect}) {
-    canvas.drawRect(rect, paint);
+    rect = Rect.fromPoints(
+      rect.topLeft.translate(-5, -10),
+      rect.bottomRight.translate(5, 10),
+    );
+    final innerPaint = Paint()
+      ..shader = LinearGradient(
+        colors: [
+          Colors.cyan.withOpacity(0.4),
+          Colors.red.withOpacity(0.4),
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ).createShader(rect);
+    final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(20));
+    canvas.drawRRect(rrect, innerPaint);
+    canvas.drawRRect(rrect, paint);
   }
 
   void _paintText(
     ui.Canvas canvas,
     ui.Paint paint, {
     required ui.Rect rect,
-    required ui.ParagraphBuilder builder,
+    required String text,
   }) {
+    final ui.ParagraphBuilder builder = ui.ParagraphBuilder(
+      ui.ParagraphStyle(
+        textAlign: TextAlign.center,
+        fontSize: 16,
+      ),
+    )
+      ..pushStyle(
+        ui.TextStyle(
+          color: Colors.white70,
+          fontFamily: 'BeVietnamPro',
+        ),
+      )
+      ..addText(text)
+      ..pop();
+
     canvas.drawParagraph(
-      builder.build()
-        ..layout(ui.ParagraphConstraints(
-          width: rect.width,
-        )),
-      Offset(rect.left, rect.top),
+      builder.build() //
+        ..layout(ui.ParagraphConstraints(width: rect.width)),
+      rect.bottomLeft.translate(0, -32),
     );
   }
 }
