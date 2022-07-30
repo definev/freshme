@@ -1,14 +1,9 @@
-import 'dart:io';
-import 'dart:ui';
-
 import 'package:camera/camera.dart';
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshme/camera/fresh_ml_controller.dart';
-import 'package:freshme/camera/fresh_modal_bottom_sheet.dart';
+import 'package:freshme/camera/controller/fresh_ml_controller.dart';
 import 'package:freshme/camera/scan_me.dart';
 import 'package:freshme/fresh_widget/fresh_dotted_button.dart';
 import 'package:freshme/home/home_screen.dart';
@@ -31,15 +26,12 @@ class _CameraPageState extends ConsumerState<CameraPage>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     final CameraController? cameraController = controller?.cameraController;
 
-    // App state changed before we got the chance to initialize.
     if (cameraController == null || !cameraController.value.isInitialized) {
       return;
     }
 
     if (state == AppLifecycleState.inactive) {
       cameraController.dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      onNewCameraSelected(cameraController.description);
     }
   }
 
@@ -78,17 +70,35 @@ class _CameraPageState extends ConsumerState<CameraPage>
 
   @override
   Widget build(BuildContext context) {
+    final md = MediaQuery.of(context);
+
     return Scaffold(
-      backgroundColor: const Color(0xFF444442),
+      backgroundColor: Colors.black,
       body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
+        height: md.size.height,
+        width: md.size.width,
         child: Stack(
           children: [
             Positioned.fill(
               child: controller == null
                   ? const SizedBox()
-                  : CameraPreview(controller!.cameraController),
+                  : () {
+                      final cameraRatio =
+                          controller!.cameraController.value.aspectRatio > 1
+                              ? 1 /
+                                  controller!.cameraController.value.aspectRatio
+                              : controller!.cameraController.value.aspectRatio;
+
+                      return SafeArea(
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: AspectRatio(
+                            aspectRatio: cameraRatio,
+                            child: CameraPreview(controller!.cameraController),
+                          ),
+                        ),
+                      );
+                    }(),
             ),
             Positioned.fill(
               child: Padding(
@@ -101,66 +111,51 @@ class _CameraPageState extends ConsumerState<CameraPage>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Gap(32),
-                        IgnorePointer(
-                          child: Opacity(
-                            opacity: 0,
-                            child: HookBuilder(
-                              builder: (context) {
-                                return ElevatedButton(
-                                  onPressed: () {},
-                                  child: Row(
-                                    children: const [
-                                      Icon(
-                                        CommunityMaterialIcons.flash_off,
-                                        size: 20,
-                                      ),
-                                      Gap(8),
-                                      Text('Off'),
-                                    ],
-                                  ),
-                                );
-                              },
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () {},
+                            icon: const Icon(
+                              CommunityMaterialIcons.image,
+                              size: 20,
+                            ),
+                            label: const Text(
+                              'Gallery',
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
-                        Builder(
-                          builder: (context) {
-                            return ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(80, 80),
-                              ),
-                              onPressed: () {
-                                controller?.takePicture(context, this);
-                              },
-                              child: const Icon(Icons.camera),
-                            );
-                          },
+                        Gap(12),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(80, 80),
+                          ),
+                          onPressed: () =>
+                              controller?.takePicture(context, this),
+                          child: const Icon(Icons.camera),
                         ),
-                        HookBuilder(
-                          builder: (context) {
-                            final flashToggle = useState(false);
+                        Gap(12),
+                        Expanded(
+                          child: HookBuilder(
+                            builder: (context) {
+                              final flashToggle = useState(false);
 
-                            return ElevatedButton(
-                              onPressed: () {
-                                flashToggle.value = !flashToggle.value;
-                                controller?.toggleFlash(flashToggle.value);
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    flashToggle.value
-                                        ? CommunityMaterialIcons.flash
-                                        : CommunityMaterialIcons.flash_off,
-                                    size: 20,
-                                  ),
-                                  const Gap(8),
+                              return ElevatedButton.icon(
+                                onPressed: () {
+                                  flashToggle.value = !flashToggle.value;
+                                  controller?.toggleFlash(flashToggle.value);
+                                },
+                                icon: Icon(
                                   flashToggle.value
-                                      ? const Text('On')
-                                      : const Text('Off'),
-                                ],
-                              ),
-                            );
-                          },
+                                      ? CommunityMaterialIcons.flash
+                                      : CommunityMaterialIcons.flash_off,
+                                  size: 20,
+                                ),
+                                label: flashToggle.value
+                                    ? const Text('On')
+                                    : const Text('Off'),
+                              );
+                            },
+                          ),
                         ),
                         const Gap(32),
                       ],

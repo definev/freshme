@@ -36,56 +36,74 @@ class TrendingCampaignSection extends ConsumerWidget {
         ),
         SizedBox(
           height: 220,
-          child: ListView.separated(
+          child: ListView(
             clipBehavior: Clip.none,
             scrollDirection: Axis.horizontal,
-            separatorBuilder: (_, __) => const Gap(25),
-            itemCount: 4,
-            itemBuilder: (context, index) {
-              final campaignFuture =
-                  ref.read(fetchCampaignProvider(index.toString()));
-              final campaign = campaignFuture.mapOrNull(
-                data: (data) => data.value.mapOrNull((value) => value),
-              );
-
-              if (campaign == null) {
-                return AspectRatio(
-                  aspectRatio: 1.4,
-                  child: Container(
-                    height: 220,
-                    color:
-                        Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                );
-              }
-
-              return CampaignCard(
-                angle: index % 2 == 0 ? FreshAngle.right : FreshAngle.left,
-                image: campaign.thumbnails.first,
-                category: campaign.categories.first.name,
-                title: campaign.name,
-                subtitle: CampaignOrganizationText(
-                  campaign.orgId,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall!
-                      .copyWith(color: Colors.white),
-                ),
-                finishedGoal: campaign.target.finishedGoal,
-                onTap: () async {
-                  final page = MaterialPageRoute(
-                    builder: (_) => const CampaignPage(id: '0'),
-                  );
-                  Navigator.push(context, page);
-                },
-              );
-            },
+            children: [
+              for (int index = 0; index < 4; index++)
+                _campaignCard(context, ref, index),
+            ],
           ),
         ),
       ],
     );
+  }
+
+  Widget _campaignCard(BuildContext context, WidgetRef ref, int index) {
+    final campaignFuture = ref.read(fetchCampaignProvider(index.toString()));
+    final campaign = campaignFuture.mapOrNull(
+      data: (data) => data.value.mapOrNull((value) => value),
+    );
+
+    if (campaign == null) {
+      return AspectRatio(
+        aspectRatio: 1.4,
+        child: Container(
+          height: 220,
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+
+    final campaignCardWidget = CampaignCard(
+      angle: index % 2 == 0 ? FreshAngle.right : FreshAngle.left,
+      image: campaign.thumbnails.first,
+      category: campaign.categories.first.name,
+      title: campaign.name,
+      subtitle: CampaignOrganizationText(
+        campaign.orgId,
+        style: Theme.of(context)
+            .textTheme
+            .bodySmall!
+            .copyWith(color: Colors.white),
+      ),
+      finishedGoal: campaign.target.finishedGoal,
+      onTap: () async {
+        final page = MaterialPageRoute(
+          builder: (_) => const CampaignPage(id: '0'),
+        );
+        Navigator.push(context, page);
+      },
+    );
+
+    if (index == 3) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 15),
+        child: campaignCardWidget,
+      );
+    } else if (index == 0) {
+      return Padding(
+        padding: const EdgeInsets.only(right: 15),
+        child: campaignCardWidget,
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: campaignCardWidget,
+      );
+    }
   }
 }

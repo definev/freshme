@@ -256,16 +256,14 @@ class _FreshCarouselState extends State<FreshCarousel>
                               child: Stack(
                                 children: [
                                   Positioned.fill(
-                                    child: Container(
+                                    child: ColoredBox(
                                       color: Color.lerp(
                                         Colors.white,
                                         const Color(0xFFfac70d),
                                         haftLerpPoint,
                                       )!,
-                                      padding: const EdgeInsets.all(6),
-                                      child: Opacity(
-                                        opacity:
-                                            lerpDouble(1, 0, haftLerpPoint)!,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(6),
                                         child: Image.network(
                                           widget.imageUrls[_currentIndex],
                                           width: double.infinity,
@@ -387,7 +385,7 @@ class _CarouselIndicator extends StatelessWidget {
                       color: _potentialIndex == null
                           ? index == _currentIndex
                               ? Theme.of(context).colorScheme.primary
-                              : Colors.transparent
+                              : Colors.white
                           : Color.lerp(
                               Theme.of(context).colorScheme.primary,
                               Colors.transparent,

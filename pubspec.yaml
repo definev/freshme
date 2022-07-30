@@ -37,9 +37,11 @@ dependencies:
   google_fonts: ^3.0.1
   google_mlkit_object_detection: ^0.4.0
   hooks_riverpod: ^2.0.0-dev.9
+  image_size_getter: ^2.1.2
   indexed: ^0.0.8
   line_icons: ^2.0.1
   markdown: ^5.0.0
+  modal_bottom_sheet: ^2.1.0
   path: ^1.8.1
   path_provider: ^2.0.11
   riverpod: ^2.0.0-dev.9

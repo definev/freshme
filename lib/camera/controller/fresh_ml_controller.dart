@@ -1,19 +1,14 @@
 import 'dart:async';
-import 'dart:developer';
-import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshme/camera/fresh_modal_bottom_sheet.dart';
 import 'package:freshme/camera/image_processing_sheet.dart';
-import 'package:freshme/camera/translator.dart';
-import 'package:freshme/donation/dependencies.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 
 import 'dart:io' as io;
 import 'package:flutter/services.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -69,6 +64,7 @@ class FreshMLController {
       modelPath: modelPath,
       classifyObjects: true,
       multipleObjects: true,
+      maximumLabelsPerObject: 1,
     );
     _objectDetector = ObjectDetector(options: options);
   }
@@ -95,10 +91,10 @@ class FreshMLController {
     await cameraController.pausePreview();
     final mounted = state.mounted;
     if (!mounted) return;
-    await showFreshModalBottomSheet(
-      context,
-      onClosing: continueScanning,
-      child: WillPopScope(
+    showCupertinoModalBottomSheet(
+      context: context,
+      enableDrag: false,
+      builder: (context) => WillPopScope(
         onWillPop: () async {
           continueScanning();
           return true;
@@ -120,8 +116,9 @@ class FreshMLController {
   Future<FreshMLImageResult> processImageFromXFile(XFile file) async {
     final inputImage = InputImage.fromFilePath(file.path);
     final detectedObjects = await _objectDetector.processImage(inputImage);
-    log('DETECTED OBJECTS: $detectedObjects');
+
     final image = await decodeImageFromList(await file.readAsBytes());
+
     return FreshMLImageResult(
       detectedObjects,
       Size(image.width.toDouble(), image.height.toDouble()),

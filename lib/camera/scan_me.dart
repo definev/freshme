@@ -66,7 +66,6 @@ class _ScanMeBarState extends State<_ScanMeBar>
       vsync: this,
       duration: const Duration(milliseconds: 2000),
     );
-    ;
     _processScanAnimation = TweenSequence<double>(
       [
         TweenSequenceItem(

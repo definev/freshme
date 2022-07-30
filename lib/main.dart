@@ -6,7 +6,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshme/camera/fresh_ml_controller.dart';
+import 'package:freshme/camera/controller/fresh_ml_controller.dart';
 import 'package:freshme/splash/splash_screen.dart';
 
 void main() async {

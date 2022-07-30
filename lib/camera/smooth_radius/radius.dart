@@ -159,7 +159,6 @@ extension PathSmoothCornersExtensions on Path {
           width,
           math.min(height / 2, p),
         );
-      ;
     } else {
       this
         ..moveTo(width / 2, 0)
@@ -205,7 +204,6 @@ extension PathSmoothCornersExtensions on Path {
           math.max(width / 2, width - p),
           height,
         );
-      ;
     } else {
       this
         ..lineTo(width, height)

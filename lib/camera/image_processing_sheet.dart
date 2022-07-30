@@ -1,13 +1,11 @@
-import 'dart:io';
-import 'dart:ui' as ui;
-
 import 'package:camera/camera.dart';
-import 'package:figma_squircle/figma_squircle.dart';
+import 'package:dartx/dartx.dart';
+import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshme/camera/fresh_ml_controller.dart';
-import 'package:freshme/camera/translator.dart';
+import 'package:freshme/camera/controller/fresh_ml_controller.dart';
+import 'package:freshme/camera/widgets/image_selector.dart';
+import 'package:gap/gap.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -15,109 +13,190 @@ final freshMLControllerProvider = Provider<FreshMLController>(
   (ref) => throw UnimplementedError(),
 );
 
-class ImageProcessingSheet extends ConsumerWidget {
-  const ImageProcessingSheet(
-    this.imageFile, {
-    Key? key,
-  }) : super(key: key);
+class ImageProcessingSheet extends ConsumerStatefulWidget {
+  const ImageProcessingSheet(this.imageFile, {super.key});
 
   final XFile imageFile;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    const shape = SmoothRectangleBorder(
-      borderRadius: SmoothBorderRadius.all(
-        SmoothRadius(
-          cornerRadius: 30,
-          cornerSmoothing: 1.0,
-        ),
-      ),
-    );
-    final controller = ref.read(freshMLControllerProvider);
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ImageProcessingSheetState();
+}
 
+class _ImageProcessingSheetState extends ConsumerState<ImageProcessingSheet> {
+  FreshMLImageResult? result;
+
+  late PageController pageController;
+
+  List<Rect> _rects = [];
+  List<String> _labels = [];
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(initialPage: 0);
+    final controller = ref.read(freshMLControllerProvider);
+    () async {
+      await Future.delayed(1.seconds);
+      final receivedResult =
+          await controller.processImageFromXFile(widget.imageFile);
+      result = receivedResult;
+      _rects = receivedResult.objects
+              .map(
+                (e) => Rect.fromLTRB(
+                  e.boundingBox.left / receivedResult.absoluteSize.width,
+                  e.boundingBox.top / receivedResult.absoluteSize.height,
+                  e.boundingBox.right / receivedResult.absoluteSize.width,
+                  e.boundingBox.bottom / receivedResult.absoluteSize.height,
+                ),
+              )
+              .toList() ??
+          [];
+      _labels = result?.objects
+              .map(
+                (e) => e.labels.isEmpty
+                    ? ''
+                    : e.labels
+                        .reduce((value, element) =>
+                            value.confidence > element.confidence
+                                ? value
+                                : element)
+                        .text,
+              )
+              .toList() ??
+          [];
+      setState(() {});
+    }();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ĐỒ VẬT LIÊN QUAN'),
+        title: const Text('Phân loại ảnh'),
         centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        icon: const Icon(Icons.check),
-        label: const Text('Submit'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Card(
-          shape: shape,
-          child: DecoratedBox(
-            decoration: ShapeDecoration(
-              shape: shape.copyWith(
-                side: const BorderSide(width: 2),
-              ),
-            ),
-            position: DecorationPosition.foreground,
-            child: ClipSmoothRect(
-              radius: shape.borderRadius,
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Image.file(
-                      File(imageFile.path),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.transparent,
-                            theme.colorScheme.secondaryContainer,
-                          ],
-                          stops: const [0.3, 1.0],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: const [
-                      Flexible(
-                        flex: 5,
-                        fit: FlexFit.tight,
-                        child: SizedBox(),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: SizedBox(),
-                      ),
-                    ],
-                  ),
-                  Positioned.fill(
-                    child: FutureBuilder<FreshMLImageResult>(
-                      future: controller.processImageFromXFile(imageFile),
-                      builder: (context, resultData) {
-                        if (resultData.data == null) {
-                          return const SizedBox();
-                        } else {
-                          return CustomPaint(
-                            painter: _FreshImageDectectorPainter(
-                              resultData.data!,
-                            ),
+      body: result == null
+          ? const Center(child: CircularProgressIndicator())
+          : Center(
+              child: AspectRatio(
+                aspectRatio:
+                    result!.absoluteSize.width / result!.absoluteSize.height,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: PageView.builder(
+                        controller: pageController,
+                        itemCount: _rects.length,
+                        itemBuilder: (context, index) {
+                          final rect = _rects[index];
+                          final label = _labels[index];
+
+                          return LayoutBuilder(
+                            builder: (context, constraints) {
+                              final width = constraints.maxWidth;
+                              final height = constraints.maxHeight;
+                              final topLeft = rect.topLeft;
+                              final bottomRight = rect.bottomRight;
+
+                              return Stack(
+                                children: [
+                                  ImageSelector(
+                                    widget.imageFile.path,
+                                    initStartOffset: Offset(
+                                      topLeft.dx * width,
+                                      topLeft.dy * height,
+                                    ),
+                                    initEndOffset: Offset(
+                                      bottomRight.dx * width,
+                                      bottomRight.dy * height,
+                                    ),
+                                    onStartOffsetChanged: (value) {
+                                      _rects[index] = Rect.fromPoints(
+                                        Offset(
+                                          value.dx / width,
+                                          value.dy / height,
+                                        ),
+                                        rect.bottomRight,
+                                      );
+                                    },
+                                    onEndOffsetChanged: (value) {
+                                      _rects[index] = Rect.fromPoints(
+                                        rect.topLeft,
+                                        Offset(
+                                          value.dx / width,
+                                          value.dy / height,
+                                        ),
+                                      );
+                                    },
+                                    key: ValueKey(index),
+                                  ),
+                                  SizedBox(
+                                    height: 56,
+                                    width: double.maxFinite,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.white.withOpacity(0.9),
+                                            Colors.white.withOpacity(0.0),
+                                          ],
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                        ),
+                                      ),
+                                      child: Center(child: Text(label)),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           );
-                        }
-                      },
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: PaddedRow(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 16),
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              if (pageController.page == 0) {
+                                return;
+                              }
+                              pageController.previousPage(
+                                duration: 200.milliseconds,
+                                curve: Curves.decelerate,
+                              );
+                            },
+                            child: Icon(Icons.chevron_left_rounded),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Text('Loại bỏ'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              if (pageController.page == _rects.length - 1) {
+                                return;
+                              }
+
+                              pageController.nextPage(
+                                duration: 200.milliseconds,
+                                curve: Curves.decelerate,
+                              );
+                            },
+                            child: Icon(Icons.chevron_right_rounded),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }
@@ -128,122 +207,4 @@ class FreshMLImageResult {
   final InputImageRotation rotation;
 
   FreshMLImageResult(this.objects, this.absoluteSize, this.rotation);
-}
-
-class _FreshImageDectectorPainter extends CustomPainter {
-  _FreshImageDectectorPainter(this.result);
-
-  final FreshMLImageResult result;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1
-      ..color = Colors.black;
-
-    final List<DetectedObject> objects = result.objects;
-
-    for (final DetectedObject detectedObject in objects) {
-      final rect = _getRect(detectedObject, size);
-
-      _paintFrame(canvas, paint, rect: rect);
-      _paintText(
-        canvas,
-        paint,
-        rect: rect,
-        text: detectedObject.labels
-            .reduce(
-              (value, element) =>
-                  value.confidence > element.confidence ? value : element,
-            )
-            .text,
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-
-  ui.Rect _getRect(
-    DetectedObject detectedObject,
-    ui.Size size,
-  ) {
-    final Size absoluteSize = result.absoluteSize;
-    final InputImageRotation rotation = result.rotation;
-
-    final left = translateX(
-      detectedObject.boundingBox.left,
-      rotation,
-      size,
-      absoluteSize,
-    );
-    final top = translateY(
-      detectedObject.boundingBox.top,
-      rotation,
-      size,
-      absoluteSize,
-    );
-    final right = translateX(
-      detectedObject.boundingBox.right,
-      rotation,
-      size,
-      absoluteSize,
-    );
-    final bottom = translateY(
-      detectedObject.boundingBox.bottom,
-      rotation,
-      size,
-      absoluteSize,
-    );
-
-    return Rect.fromLTRB(left, top, right, bottom);
-  }
-
-  void _paintFrame(ui.Canvas canvas, ui.Paint paint, {required Rect rect}) {
-    rect = Rect.fromPoints(
-      rect.topLeft.translate(-5, -10),
-      rect.bottomRight.translate(5, 10),
-    );
-    final innerPaint = Paint()
-      ..shader = LinearGradient(
-        colors: [
-          Colors.cyan.withOpacity(0.4),
-          Colors.red.withOpacity(0.4),
-        ],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-      ).createShader(rect);
-    final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(20));
-    canvas.drawRRect(rrect, innerPaint);
-    canvas.drawRRect(rrect, paint);
-  }
-
-  void _paintText(
-    ui.Canvas canvas,
-    ui.Paint paint, {
-    required ui.Rect rect,
-    required String text,
-  }) {
-    final ui.ParagraphBuilder builder = ui.ParagraphBuilder(
-      ui.ParagraphStyle(
-        textAlign: TextAlign.center,
-        fontSize: 16,
-      ),
-    )
-      ..pushStyle(
-        ui.TextStyle(
-          color: Colors.white70,
-          fontFamily: 'BeVietnamPro',
-        ),
-      )
-      ..addText(text)
-      ..pop();
-
-    canvas.drawParagraph(
-      builder.build() //
-        ..layout(ui.ParagraphConstraints(width: rect.width)),
-      rect.bottomLeft.translate(0, -32),
-    );
-  }
 }

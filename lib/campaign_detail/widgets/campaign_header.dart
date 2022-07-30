@@ -26,7 +26,10 @@ class CampaignHeader extends ConsumerWidget {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-          child: FreshCarousel(imageUrls: campaign.thumbnails),
+          child: FreshCarousel(imageUrls: [
+            ...campaign.thumbnails,
+            ...campaign.thumbnails,
+          ]),
         ),
         const Gap(18),
         SliverPinnedHeader(
