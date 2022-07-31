@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/controller/fresh_ml_controller.dart';
 import 'package:freshme/camera/widgets/image_selector.dart';
 import 'package:gap/gap.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 final freshMLControllerProvider = Provider<FreshMLController>(
   (ref) => throw UnimplementedError(),
@@ -30,47 +34,58 @@ class _ImageProcessingSheetState extends ConsumerState<ImageProcessingSheet> {
 
   List<Rect> _rects = [];
   List<String> _labels = [];
+  List<bool> _selectedList = [];
+
+  int currentPage = 0;
 
   @override
   void initState() {
     super.initState();
     pageController = PageController(initialPage: 0);
+    initializeMLResult();
+  }
+
+  void initializeMLResult() async {
     final controller = ref.read(freshMLControllerProvider);
-    () async {
-      await Future.delayed(1.seconds);
-      final receivedResult =
-          await controller.processImageFromXFile(widget.imageFile);
-      result = receivedResult;
-      _rects = receivedResult.objects
-              .map(
-                (e) => Rect.fromLTRB(
-                  e.boundingBox.left / receivedResult.absoluteSize.width,
-                  e.boundingBox.top / receivedResult.absoluteSize.height,
-                  e.boundingBox.right / receivedResult.absoluteSize.width,
-                  e.boundingBox.bottom / receivedResult.absoluteSize.height,
-                ),
-              )
-              .toList() ??
-          [];
-      _labels = result?.objects
-              .map(
-                (e) => e.labels.isEmpty
-                    ? ''
-                    : e.labels
-                        .reduce((value, element) =>
-                            value.confidence > element.confidence
-                                ? value
-                                : element)
-                        .text,
-              )
-              .toList() ??
-          [];
-      setState(() {});
-    }();
+    await Future.delayed(1.seconds);
+    final receivedResult =
+        await controller.processImageFromXFile(widget.imageFile);
+    result = receivedResult;
+    _rects = receivedResult.objects
+        .map(
+          (e) => Rect.fromLTRB(
+            e.boundingBox.left / receivedResult.absoluteSize.width,
+            e.boundingBox.top / receivedResult.absoluteSize.height,
+            e.boundingBox.right / receivedResult.absoluteSize.width,
+            e.boundingBox.bottom / receivedResult.absoluteSize.height,
+          ),
+        )
+        .toList();
+    _labels = result?.objects
+            .map(
+              (e) => e.labels.isEmpty
+                  ? ''
+                  : e.labels
+                      .reduce((value, element) =>
+                          value.confidence > element.confidence
+                              ? value
+                              : element)
+                      .text,
+            )
+            .toList() ??
+        [];
+    _selectedList = List.generate(
+      _rects.length,
+      (index) => true,
+    );
+
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Phân loại ảnh'),
@@ -86,109 +101,135 @@ class _ImageProcessingSheetState extends ConsumerState<ImageProcessingSheet> {
                   children: [
                     Positioned.fill(
                       child: PageView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
                         controller: pageController,
                         itemCount: _rects.length,
                         itemBuilder: (context, index) {
                           final rect = _rects[index];
                           final label = _labels[index];
+                          final selected = _selectedList[index];
 
-                          return LayoutBuilder(
-                            builder: (context, constraints) {
-                              final width = constraints.maxWidth;
-                              final height = constraints.maxHeight;
-                              final topLeft = rect.topLeft;
-                              final bottomRight = rect.bottomRight;
-
-                              return Stack(
-                                children: [
-                                  ImageSelector(
-                                    widget.imageFile.path,
-                                    initStartOffset: Offset(
-                                      topLeft.dx * width,
-                                      topLeft.dy * height,
-                                    ),
-                                    initEndOffset: Offset(
-                                      bottomRight.dx * width,
-                                      bottomRight.dy * height,
-                                    ),
-                                    onStartOffsetChanged: (value) {
-                                      _rects[index] = Rect.fromPoints(
-                                        Offset(
-                                          value.dx / width,
-                                          value.dy / height,
-                                        ),
-                                        rect.bottomRight,
-                                      );
-                                    },
-                                    onEndOffsetChanged: (value) {
-                                      _rects[index] = Rect.fromPoints(
-                                        rect.topLeft,
-                                        Offset(
-                                          value.dx / width,
-                                          value.dy / height,
-                                        ),
-                                      );
-                                    },
-                                    key: ValueKey(index),
-                                  ),
-                                  SizedBox(
-                                    height: 56,
-                                    width: double.maxFinite,
-                                    child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Colors.white.withOpacity(0.9),
-                                            Colors.white.withOpacity(0.0),
-                                          ],
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                        ),
-                                      ),
-                                      child: Center(child: Text(label)),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
+                          return _MLResultPreview(
+                            imagePath: widget.imageFile.path,
+                            rect: rect,
+                            label: label,
+                            selected: selected,
+                            onRectChanged: (value) => _rects[index] = value,
                           );
                         },
                       ),
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: PaddedRow(
-                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 16),
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              if (pageController.page == 0) {
-                                return;
-                              }
-                              pageController.previousPage(
-                                duration: 200.milliseconds,
-                                curve: Curves.decelerate,
-                              );
-                            },
-                            child: Icon(Icons.chevron_left_rounded),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: Text('Loại bỏ'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              if (pageController.page == _rects.length - 1) {
-                                return;
-                              }
+                          if (currentPage == _rects.length - 1)
+                            FloatingActionButton.extended(
+                              onPressed: () {},
+                              icon: const Icon(Icons.check),
+                              label: const Text('Xác nhận'),
+                            ),
+                          PaddedRow(
+                            padding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (pageController.page == 0) return;
+                                  currentPage =
+                                      (pageController.page! - 1).toInt();
+                                  pageController.previousPage(
+                                    duration: 200.milliseconds,
+                                    curve: Curves.decelerate,
+                                  );
+                                  await Future.delayed(200.milliseconds);
+                                  if (mounted) setState(() {});
+                                },
+                                child: const Icon(Icons.chevron_left_rounded),
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  _selectedList[currentPage]
+                                      ? ElevatedButton(
+                                          key: ValueKey(
+                                              'select_button : $currentPage'),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                theme.colorScheme.error,
+                                          ),
+                                          onPressed: () {
+                                            _selectedList[currentPage] =
+                                                !_selectedList[currentPage];
+                                            setState(() {});
+                                          },
+                                          child: Text(
+                                            'Loại bỏ',
+                                            style: theme.textTheme.bodyMedium!
+                                                .copyWith(
+                                                    color: theme
+                                                        .colorScheme.onError),
+                                          ),
+                                        )
+                                      : ElevatedButton(
+                                          key: ValueKey(
+                                              'select_button : $currentPage'),
+                                          onPressed: () {
+                                            _selectedList[currentPage] =
+                                                !_selectedList[currentPage];
+                                            setState(() {});
+                                          },
+                                          child: const Text('Xác nhận'),
+                                        ),
+                                  if (currentPage == _rects.length - 1) ...[
+                                    const Gap(12),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        final res =
+                                            await showCupertinoModalBottomSheet<
+                                                SelfClassificationResult>(
+                                          context: context,
+                                          enableDrag: false,
+                                          builder: (_) => SelfClassification(
+                                            imagePath: widget.imageFile.path,
+                                            aspectRatio:
+                                                result!.absoluteSize.width /
+                                                    result!.absoluteSize.height,
+                                          ),
+                                        );
 
-                              pageController.nextPage(
-                                duration: 200.milliseconds,
-                                curve: Curves.decelerate,
-                              );
-                            },
-                            child: Icon(Icons.chevron_right_rounded),
+                                        if (res != null) {
+                                          _rects.add(res.rect);
+                                          _labels.add(res.label);
+                                          _selectedList.add(true);
+                                          setState(() {});
+                                        }
+                                      },
+                                      child: const Icon(Icons.add),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (pageController.page ==
+                                      _rects.length - 1) {
+                                    return;
+                                  }
+
+                                  currentPage =
+                                      (pageController.page! + 1).toInt();
+                                  pageController.nextPage(
+                                    duration: 200.milliseconds,
+                                    curve: Curves.decelerate,
+                                  );
+                                  await Future.delayed(200.milliseconds);
+                                  if (mounted) setState(() {});
+                                },
+                                child: const Icon(Icons.chevron_right_rounded),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -197,6 +238,148 @@ class _ImageProcessingSheetState extends ConsumerState<ImageProcessingSheet> {
                 ),
               ),
             ),
+    );
+  }
+}
+
+class SelfClassificationResult {
+  final String label;
+  final Rect rect;
+
+  SelfClassificationResult(this.label, this.rect);
+}
+
+class SelfClassification extends HookWidget {
+  const SelfClassification({
+    super.key,
+    required this.imagePath,
+    required this.aspectRatio,
+  });
+
+  final String imagePath;
+  final double aspectRatio;
+
+  @override
+  Widget build(BuildContext context) {
+    final labelHook = useState<String>('');
+    final rectHook = useState<Rect?>(null);
+
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Tự phân loại'),
+        actions: [
+          IconButton(
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              final rect = rectHook.value;
+              if (rect == null || rect.topLeft == rect.bottomRight) return;
+
+              Navigator.pop(
+                context,
+                SelfClassificationResult(labelHook.value, rect),
+              );
+            },
+            icon: const SizedBox(
+              width: 56,
+              child: Icon(Icons.check),
+            ),
+          ),
+        ],
+      ),
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+              child: TextField(
+                decoration: const InputDecoration(hintText: 'Nhập tên'),
+                onChanged: (value) => labelHook.value = value,
+              ),
+            ),
+            Expanded(
+              child: AspectRatio(
+                aspectRatio: aspectRatio,
+                child: ImageSelector(
+                  imagePath,
+                  onStartOffsetChanged: (value) //
+                      =>
+                      rectHook.value = Rect.fromPoints(
+                    value,
+                    rectHook.value?.bottomRight ?? value,
+                  ),
+                  onEndOffsetChanged: (value) //
+                      =>
+                      rectHook.value = Rect.fromPoints(
+                    rectHook.value?.topLeft ?? value,
+                    value,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MLResultPreview extends StatelessWidget {
+  const _MLResultPreview({
+    super.key,
+    required this.rect,
+    required this.label,
+    required this.imagePath,
+    required this.selected,
+    required this.onRectChanged,
+  });
+
+  final Rect rect;
+  final String label;
+  final String imagePath;
+  final bool selected;
+  final ValueChanged<Rect> onRectChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final topLeft = rect.topLeft;
+    final bottomRight = rect.bottomRight;
+
+    return Stack(
+      children: [
+        ImageSelector(
+          imagePath,
+          initStartOffset: topLeft,
+          initEndOffset: bottomRight,
+          onStartOffsetChanged: (value) => Rect.fromPoints(
+            value,
+            rect.bottomRight,
+          ),
+          onEndOffsetChanged: (value) => Rect.fromPoints(
+            rect.topLeft,
+            value,
+          ),
+        ),
+        SizedBox(
+          height: 56,
+          width: double.maxFinite,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white,
+                  Colors.white.withOpacity(0.0),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: Center(child: Text(label.isBlank ? 'Không rõ' : label)),
+          ),
+        ),
+      ],
     );
   }
 }

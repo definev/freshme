@@ -11,8 +11,7 @@ import 'package:freshme/splash/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+  if (kIsWeb || (Platform.isAndroid || Platform.isIOS)) {
     cameras = await availableCameras();
   }
   runApp(const ProviderScope(child: MyApp()));

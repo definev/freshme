@@ -41,20 +41,26 @@ class CampaignCard extends StatelessWidget {
                   children: [
                     Positioned.fill(
                       child: ShaderMask(
-                        shaderCallback: (bounds) => LinearGradient(
-                          colors: [
-                            Colors.white12,
-                            Colors.black.withOpacity(0.6),
-                            Colors.black.withOpacity(0.8),
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ).createShader(bounds),
+                        shaderCallback: (bounds) {
+                          print(bounds);
+                          return LinearGradient(
+                            colors: [
+                              Colors.white12,
+                              Colors.black.withOpacity(0.6),
+                              Colors.black.withOpacity(0.8),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ).createShader(bounds);
+                        },
                         blendMode: BlendMode.srcOver,
-                        child: Image.network(
-                          image,
-                          fit: BoxFit.cover,
-                          width: double.maxFinite,
+                        child: ColoredBox(
+                          color: Colors.white,
+                          child: Image.network(
+                            image,
+                            fit: BoxFit.cover,
+                            width: double.maxFinite,
+                          ),
                         ),
                       ),
                     ),
@@ -84,9 +90,11 @@ class CampaignCard extends StatelessWidget {
                                         color: Colors.white,
                                       ),
                                 ),
-                                const Gap(10),
-                                subtitle,
-                                const Gap(5),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 12, 0, 5),
+                                  child: subtitle,
+                                ),
                               ],
                             ),
                           ],
