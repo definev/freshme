@@ -124,7 +124,7 @@ class _CameraPageState extends ConsumerState<CameraPage>
                             ),
                           ),
                         ),
-                        Gap(12),
+                        const Gap(12),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(80, 80),
@@ -133,7 +133,7 @@ class _CameraPageState extends ConsumerState<CameraPage>
                               controller?.takePicture(context, this),
                           child: const Icon(Icons.camera),
                         ),
-                        Gap(12),
+                        const Gap(12),
                         Expanded(
                           child: HookBuilder(
                             builder: (context) {

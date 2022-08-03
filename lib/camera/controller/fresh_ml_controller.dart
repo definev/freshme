@@ -12,6 +12,14 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
+class FreshMLImageResult {
+  final List<DetectedObject> objects;
+  final Size absoluteSize;
+  final InputImageRotation rotation;
+
+  FreshMLImageResult(this.objects, this.absoluteSize, this.rotation);
+}
+
 Future<String> _getModel(String assetPath) async {
   if (io.Platform.isAndroid) {
     return 'flutter_assets/$assetPath';

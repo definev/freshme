@@ -385,7 +385,7 @@ class _CarouselIndicator extends StatelessWidget {
                       color: _potentialIndex == null
                           ? index == _currentIndex
                               ? Theme.of(context).colorScheme.primary
-                              : Colors.white
+                              : Colors.transparent
                           : Color.lerp(
                               Theme.of(context).colorScheme.primary,
                               Colors.transparent,

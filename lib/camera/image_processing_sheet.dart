@@ -1,17 +1,14 @@
-import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/controller/fresh_ml_controller.dart';
 import 'package:freshme/camera/widgets/image_selector.dart';
+import 'package:freshme/camera/widgets/self_classification_sheet.dart';
 import 'package:gap/gap.dart';
-import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 final freshMLControllerProvider = Provider<FreshMLController>(
   (ref) => throw UnimplementedError(),
@@ -187,16 +184,12 @@ class _ImageProcessingSheetState extends ConsumerState<ImageProcessingSheet> {
                                     ElevatedButton(
                                       onPressed: () async {
                                         final res =
-                                            await showCupertinoModalBottomSheet<
-                                                SelfClassificationResult>(
-                                          context: context,
-                                          enableDrag: false,
-                                          builder: (_) => SelfClassification(
-                                            imagePath: widget.imageFile.path,
-                                            aspectRatio:
-                                                result!.absoluteSize.width /
-                                                    result!.absoluteSize.height,
-                                          ),
+                                            await SelfClassificationSheet.show(
+                                          context,
+                                          imagePath: widget.imageFile.path,
+                                          aspectRatio:
+                                              result!.absoluteSize.width /
+                                                  result!.absoluteSize.height,
                                         );
 
                                         if (res != null) {
@@ -238,90 +231,6 @@ class _ImageProcessingSheetState extends ConsumerState<ImageProcessingSheet> {
                 ),
               ),
             ),
-    );
-  }
-}
-
-class SelfClassificationResult {
-  final String label;
-  final Rect rect;
-
-  SelfClassificationResult(this.label, this.rect);
-}
-
-class SelfClassification extends HookWidget {
-  const SelfClassification({
-    super.key,
-    required this.imagePath,
-    required this.aspectRatio,
-  });
-
-  final String imagePath;
-  final double aspectRatio;
-
-  @override
-  Widget build(BuildContext context) {
-    final labelHook = useState<String>('');
-    final rectHook = useState<Rect?>(null);
-
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Tự phân loại'),
-        actions: [
-          IconButton(
-            padding: EdgeInsets.zero,
-            onPressed: () {
-              final rect = rectHook.value;
-              if (rect == null || rect.topLeft == rect.bottomRight) return;
-
-              Navigator.pop(
-                context,
-                SelfClassificationResult(labelHook.value, rect),
-              );
-            },
-            icon: const SizedBox(
-              width: 56,
-              child: Icon(Icons.check),
-            ),
-          ),
-        ],
-      ),
-      extendBody: true,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-              child: TextField(
-                decoration: const InputDecoration(hintText: 'Nhập tên'),
-                onChanged: (value) => labelHook.value = value,
-              ),
-            ),
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: aspectRatio,
-                child: ImageSelector(
-                  imagePath,
-                  onStartOffsetChanged: (value) //
-                      =>
-                      rectHook.value = Rect.fromPoints(
-                    value,
-                    rectHook.value?.bottomRight ?? value,
-                  ),
-                  onEndOffsetChanged: (value) //
-                      =>
-                      rectHook.value = Rect.fromPoints(
-                    rectHook.value?.topLeft ?? value,
-                    value,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
@@ -382,12 +291,4 @@ class _MLResultPreview extends StatelessWidget {
       ],
     );
   }
-}
-
-class FreshMLImageResult {
-  final List<DetectedObject> objects;
-  final Size absoluteSize;
-  final InputImageRotation rotation;
-
-  FreshMLImageResult(this.objects, this.absoluteSize, this.rotation);
 }

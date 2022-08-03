@@ -42,7 +42,6 @@ class CampaignCard extends StatelessWidget {
                     Positioned.fill(
                       child: ShaderMask(
                         shaderCallback: (bounds) {
-                          print(bounds);
                           return LinearGradient(
                             colors: [
                               Colors.white12,
@@ -109,7 +108,7 @@ class CampaignCard extends StatelessWidget {
                 child: Column(
                   children: [
                     const Gap(10),
-                    FreshProgressBar(
+                    const FreshProgressBar(
                       percent: 0.1,
                       direction: Axis.horizontal,
                       length: 220 * 1.4 - 12,
