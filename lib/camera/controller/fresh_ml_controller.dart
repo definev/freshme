@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshme/camera/image_processing_sheet.dart';
+import 'package:freshme/camera/page/image_processing_sheet.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 
 import 'dart:io' as io;

@@ -8,7 +8,7 @@ export 'package:freshme/_internal/presentation/fresh_widget/fresh_text_button.da
 export 'package:freshme/_internal/presentation/fresh_widget/fresh_search_box.dart';
 export 'package:freshme/resources/resources.dart';
 // -> camera feature
-export 'package:freshme/camera/camera_page.dart';
+export 'package:freshme/camera/page/camera_page.dart';
 // -> donation feature
 export 'package:freshme/donation/widgets/donation_action_tile.dart';
 export 'package:freshme/donation/dependencies.dart';

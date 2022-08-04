@@ -1,4 +1,3 @@
-
 import 'package:camera/camera.dart';
 import 'package:dartx/dartx.dart';
 import 'package:flextras/flextras.dart';
@@ -255,6 +254,7 @@ class _MLResultPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final topLeft = rect.topLeft;
     final bottomRight = rect.bottomRight;
+    final theme = Theme.of(context);
 
     return Stack(
       children: [
@@ -279,13 +279,18 @@ class _MLResultPreview extends StatelessWidget {
               gradient: LinearGradient(
                 colors: [
                   Colors.white,
-                  Colors.white.withOpacity(0.0),
+                  Colors.white.withOpacity(0.3),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
             ),
-            child: Center(child: Text(label.isBlank ? 'Không rõ' : label)),
+            child: Center(
+              child: Text(
+                label.isBlank ? 'Không rõ' : label,
+                style: theme.textTheme.bodyLarge,
+              ),
+            ),
           ),
         ),
       ],
