@@ -26,7 +26,7 @@ class _CampaignPageState extends ConsumerState<CampaignPage> {
     final campaignFuture = ref.watch(campaignControllerProvider(widget.id));
 
     final campaign = campaignFuture.mapOrNull(
-      (value) => value,
+      data: (value) => value.value,
       loading: (_) => null,
       error: (e) => null,
     );

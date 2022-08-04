@@ -22,6 +22,29 @@ class _CameraPageState extends ConsumerState<CameraPage>
 
   FreshMLController? controller;
 
+  void _initController() async {
+    if (cameras.isEmpty) return;
+    controller = await FreshMLController.startController(
+      cameras[0],
+      onSuccess: (controller) {
+        if (!mounted) {
+          return;
+        }
+        setState(() {});
+      },
+      onError: (e) {
+        if (e is CameraException) {
+          switch (e.code) {
+            case 'CameraAccessDenied':
+              break;
+            default:
+              break;
+          }
+        }
+      },
+    );
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     final CameraController? cameraController = controller?.cameraController;
@@ -38,28 +61,7 @@ class _CameraPageState extends ConsumerState<CameraPage>
   @override
   void initState() {
     super.initState();
-    () async {
-      if (cameras.isEmpty) return;
-      controller = await FreshMLController.startController(
-        cameras[0],
-        onSuccess: (controller) {
-          if (!mounted) {
-            return;
-          }
-          setState(() {});
-        },
-        onError: (e) {
-          if (e is CameraException) {
-            switch (e.code) {
-              case 'CameraAccessDenied':
-                break;
-              default:
-                break;
-            }
-          }
-        },
-      );
-    }();
+    _initController();
   }
 
   @override

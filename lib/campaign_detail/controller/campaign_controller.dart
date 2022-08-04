@@ -1,22 +1,29 @@
 import 'package:freshme/_internal/domain/campaign/donate_campaign.dart';
+import 'package:freshme/backend_simulator/campaign_server.dart';
 import 'package:freshme/campaign_detail/model/_default.dart';
 import 'package:riverpod/riverpod.dart';
 
+final fetchCampaignProvider =
+    FutureProvider.family<DonateCampaign, String>((ref, campaignId) {
+  final server = ref.watch(campaignServerProvider);
+  return server.getCampaign(campaignId);
+});
+
 final campaignControllerProvider = StateNotifierProvider //
-    .family<CampaignController, DonateCampaign, String>(
+    .family<CampaignController, AsyncValue<DonateCampaign>, String>(
   (ref, campaignId) {
     final fetchCampaign = ref.watch(fetchCampaignProvider(campaignId));
 
-    final campaign = fetchCampaign.map(
-      data: (data) => data.value,
-      loading: (_) => const DonateCampaign.loading(),
-      error: (error) => DonateCampaign.error(error.toString()),
+    final campaign = fetchCampaign.map<AsyncValue<DonateCampaign>>(
+      data: (data) => AsyncValue.data(data.value),
+      error: (error) => AsyncValue.error(error.toString()),
+      loading: (_) => const AsyncValue.loading(),
     );
 
     return CampaignController(campaign);
   },
 );
 
-class CampaignController extends StateNotifier<DonateCampaign> {
-  CampaignController(DonateCampaign campaign) : super(campaign);
+class CampaignController extends StateNotifier<AsyncValue<DonateCampaign>> {
+  CampaignController(AsyncValue<DonateCampaign> campaign) : super(campaign);
 }

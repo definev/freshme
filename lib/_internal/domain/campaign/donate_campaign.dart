@@ -17,10 +17,7 @@ class DonateCampaign with _$DonateCampaign {
     required String content,
     required List<DonateCategory> categories,
     required CampaignTarget target,
-  }) = DonateCampaignData;
-
-  const factory DonateCampaign.loading() = _Loading;
-  const factory DonateCampaign.error(String error) = _Error;
+  }) = _DonateCampaignData;
 
   factory DonateCampaign.fromJson(Map<String, dynamic> json) =>
       _$DonateCampaignFromJson(json);

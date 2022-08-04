@@ -1,6 +1,6 @@
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
-import 'package:freshme/camera/smooth_radius/radius.dart';
+import 'package:freshme/camera/util/smooth_radius/radius.dart';
 
 class ScanMe extends StatelessWidget {
   const ScanMe({super.key});

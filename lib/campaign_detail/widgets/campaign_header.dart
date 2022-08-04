@@ -16,7 +16,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 class CampaignHeader extends ConsumerWidget {
   const CampaignHeader(this.campaign, {super.key});
 
-  final DonateCampaignData campaign;
+  final DonateCampaign campaign;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

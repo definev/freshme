@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/num_duration_extensions.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class FreshProgressBar extends HookWidget {
@@ -17,36 +18,35 @@ class FreshProgressBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final animationController = useAnimationController(duration: 600.ms);
-    // final movingAnimation = useAnimation(
-    //   animationController.drive(
-    //     TweenSequence<double>(
-    //       [
-    //         TweenSequenceItem<double>(
-    //           tween: CurveTween(curve: Curves.linear),
-    //           weight: 100,
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
-    // final animateState = useRef<AnimationStatus?>(null);
-    // useEffect(() {
-    //   animationController.forward();
-    //   animationController.addStatusListener((status) {
-    //     if (animateState.value == AnimationStatus.forward) {
-    //       if (status == AnimationStatus.completed) {
-    //         animationController.value = 0;
-    //         animationController.forward();
-    //       }
-    //     }
-    //   });
-    //   animateState.value = AnimationStatus.forward;
-    //   animationController.forward();
+    final animationController = useAnimationController(duration: 600.ms);
+    final movingAnimation = useAnimation(
+      animationController.drive(
+        TweenSequence<double>(
+          [
+            TweenSequenceItem<double>(
+              tween: CurveTween(curve: Curves.linear),
+              weight: 100,
+            ),
+          ],
+        ),
+      ),
+    );
+    final animateState = useRef<AnimationStatus?>(null);
+    useEffect(() {
+      animationController.forward();
+      animationController.addStatusListener((status) {
+        if (animateState.value == AnimationStatus.forward) {
+          if (status == AnimationStatus.completed) {
+            animationController.value = 0;
+            animationController.forward();
+          }
+        }
+      });
+      animateState.value = AnimationStatus.forward;
+      animationController.forward();
 
-    //   return null;
-    // }, []);
-    const movingAnimation = 0.0;
+      return null;
+    }, []);
 
     return RepaintBoundary(
       child: SizedBox(
@@ -71,7 +71,7 @@ class FreshProgressBar extends HookWidget {
                   border: Border.all(width: 2),
                   color: Colors.green,
                 ),
-                child: const CustomPaint(
+                child: CustomPaint(
                   foregroundPainter: _DashedPainter(movingAnimation),
                 ),
               ),

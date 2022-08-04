@@ -108,8 +108,8 @@ class CampaignCard extends StatelessWidget {
                 child: Column(
                   children: [
                     const Gap(10),
-                    const FreshProgressBar(
-                      percent: 0.1,
+                    FreshProgressBar(
+                      percent: finishedGoal,
                       direction: Axis.horizontal,
                       length: 220 * 1.4 - 12,
                     ),

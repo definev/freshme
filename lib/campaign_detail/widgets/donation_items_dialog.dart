@@ -16,7 +16,7 @@ final _targetUnitsProvider =
     StateProvider.autoDispose.family<List<TargetUnit>, String>(
   (ref, campaignId) {
     final campaignDetails = ref.watch(campaignControllerProvider(campaignId));
-    final data = campaignDetails.mapOrNull((data) => data);
+    final data = campaignDetails.mapOrNull(data: (data) => data.value);
     if (data == null) return [];
 
     return data //

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freshme/_internal/domain/campaign/donate_campaign.dart';
 import 'package:freshme/campaign_detail/model/_default.dart';
 import 'package:freshme/_internal/domain/campaign/campaign_target.dart';
 import 'package:freshme/campaign_detail/widgets/campaign_organization_text.dart';
+import 'package:freshme/donation/controller/donation_controller.dart';
 import 'package:freshme/donation/dependencies.dart';
 import 'package:freshme/_internal/presentation/fresh_widget/fresh_frame.dart';
 
@@ -13,6 +15,9 @@ class TrendingCampaignSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final campaignCount =
+        ref.watch(DonationController.donateCampaignCountProvider);
+
     return Column(
       children: [
         Padding(
@@ -35,25 +40,55 @@ class TrendingCampaignSection extends ConsumerWidget {
         ),
         SizedBox(
           height: 220,
-          child: ListView(
-            clipBehavior: Clip.none,
-            scrollDirection: Axis.horizontal,
-            children: [
-              for (int index = 0; index < 4; index++)
-                _campaignCard(context, ref, index),
-            ],
+          child: campaignCount.map(
+            data: (data) => ListView.builder(
+              clipBehavior: Clip.none,
+              scrollDirection: Axis.horizontal,
+              itemCount: data.value,
+              itemBuilder: (context, index) {
+                final page = index ~/ kCampaignPerPage;
+                final newIndex = index % kCampaignPerPage;
+                final donateCampaignFuture =
+                    ref.watch(DonationController.donateCampaignsProvider(page));
+
+                return donateCampaignFuture.map(
+                  data: (data) {
+                    return _campaignCard(
+                      context,
+                      index: newIndex,
+                      campaign: data.value[newIndex],
+                    );
+                  },
+                  error: (error) => const SizedBox(),
+                  loading: (_) => AspectRatio(
+                    aspectRatio: 1.4,
+                    child: Container(
+                      height: 220,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.3),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            error: (error) => Text(error.toString()),
+            loading: (_) => const Center(child: CircularProgressIndicator()),
           ),
         ),
       ],
     );
   }
 
-  Widget _campaignCard(BuildContext context, WidgetRef ref, int index) {
-    final campaignFuture = ref.read(fetchCampaignProvider(index.toString()));
-    final campaign = campaignFuture.mapOrNull(
-      data: (data) => data.value.mapOrNull((value) => value),
-    );
-
+  Widget _campaignCard(
+    BuildContext context, {
+    required int index,
+    required DonateCampaign? campaign,
+  }) {
     if (campaign == null) {
       return AspectRatio(
         aspectRatio: 1.4,
