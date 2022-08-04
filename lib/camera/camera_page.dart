@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/controller/fresh_ml_controller.dart';
 import 'package:freshme/camera/scan_me.dart';
-import 'package:freshme/fresh_widget/fresh_dotted_button.dart';
+import 'package:freshme/_internal/presentation/fresh_widget/fresh_dotted_button.dart';
 import 'package:freshme/home/home_screen.dart';
 import 'package:gap/gap.dart';
 

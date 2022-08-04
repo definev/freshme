@@ -4,7 +4,7 @@ import 'package:freshme/campaign_detail/model/_default.dart';
 import 'package:freshme/campaign_detail/model/campaign_target.dart';
 import 'package:freshme/campaign_detail/widgets/campaign_organization_text.dart';
 import 'package:freshme/donation/dependencies.dart';
-import 'package:freshme/fresh_widget/fresh_frame.dart';
+import 'package:freshme/_internal/presentation/fresh_widget/fresh_frame.dart';
 
 class TrendingCampaignSection extends ConsumerWidget {
   const TrendingCampaignSection({

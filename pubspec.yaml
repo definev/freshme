@@ -21,6 +21,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   dartx: ^1.1.0
   dotted_border: ^2.0.0+2
+  equatable: ^2.0.3
   figma_squircle: ^0.5.3
   flex_color_scheme: ^5.0.1
   flextras: ^0.0.2
@@ -49,6 +50,7 @@ dependencies:
   slang: ^2.6.1
   slang_flutter: ^2.6.0
   sliver_tools: ^0.2.7
+  snapping_sheet: ^3.1.0
   url_launcher: ^6.1.4
   vector_math: ^2.1.2
 

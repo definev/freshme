@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:freshme/fresh_widget/fresh_carousel.dart';
+import 'package:freshme/_internal/presentation/fresh_widget/fresh_carousel.dart';
 import 'package:markdown/markdown.dart' as md;
 
 class CarouselBuilder extends MarkdownElementBuilder {

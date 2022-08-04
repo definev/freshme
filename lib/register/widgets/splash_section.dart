@@ -2,7 +2,7 @@ import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshme/fresh_widget/fresh_dotted_button.dart';
+import 'package:freshme/_internal/presentation/fresh_widget/fresh_dotted_button.dart';
 import 'package:freshme/register/widgets/register_section.dart';
 import 'package:gap/gap.dart';
 
