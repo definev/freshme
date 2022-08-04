@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/num_duration_extensions.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:freshme/campaign_detail/controller/campaign_controller.dart';
-import 'package:freshme/campaign_detail/model/single_target.dart';
+import 'package:freshme/_internal/domain/campaign/single_target.dart';
 import 'package:freshme/_internal/presentation/fresh_widget/fresh_dotted_button.dart';
 import 'package:freshme/_internal/presentation/fresh_widget/fresh_snack_bar.dart';
 import 'package:gap/gap.dart';

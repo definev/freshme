@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshme/campaign_detail/model/campaign_organization.dart';
+import 'package:freshme/_internal/domain/campaign/campaign_organization.dart';
 
 final campaignOrganizationRemote = Provider<CampaignOrganizationRemote>(
   (_) => CampaignOrganizationRemoteImpl(),

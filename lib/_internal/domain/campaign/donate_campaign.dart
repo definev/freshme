@@ -1,13 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:freshme/campaign_detail/model/campaign_target.dart';
-import 'package:freshme/campaign_detail/model/donate_category.dart';
+import 'package:freshme/_internal/domain/campaign/campaign_target.dart';
+import 'package:freshme/_internal/domain/campaign/donate_category.dart';
 
 part 'donate_campaign.freezed.dart';
 part 'donate_campaign.g.dart';
 
 @freezed
 class DonateCampaign with _$DonateCampaign {
-  @JsonSerializable(fieldRename: FieldRename.snake)
+  @JsonSerializable()
   const factory DonateCampaign({
     required String id,
     required String orgId,

@@ -1,11 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshme/campaign_detail/model/campaign_target.dart';
-import 'package:freshme/campaign_detail/model/donate_category.dart';
-import 'package:freshme/campaign_detail/model/personal_donate.dart';
-import 'package:freshme/campaign_detail/model/single_target.dart';
-import 'package:freshme/donation/dependencies.dart';
+import 'package:freshme/_internal/domain/campaign/campaign_target.dart';
+import 'package:freshme/_internal/domain/campaign/donate_campaign.dart';
+import 'package:freshme/_internal/domain/campaign/donate_category.dart';
+import 'package:freshme/_internal/domain/campaign/personal_donate.dart';
+import 'package:freshme/_internal/domain/campaign/single_target.dart';
 
 const _content = '''
 🩸 Hành trình Đỏ là Chiến dịch nhân đạo cấp Quốc gia do Ban chỉ đạo Quốc gia vận động hiến máu tình nguyện tổ chức với sự bảo trợ của các cơ quan Bộ, Ngành TW. Nhiệm vụ trọng tâm của chiến dịch là vận động toàn dân tham gia hiến máu nhân đạo và phòng chống căn bệnh tan máu bẩm sinh - Thalassemia. Trải qua 9 mùa tổ chức, Hành trình Đỏ đã thu về nhiều đơn vị máu quý giá vì sự sống người bệnh. Năm nay, Hành trình Đỏ Bắc Ninh sẽ diễn ra vào ngày 7/7/2022! 

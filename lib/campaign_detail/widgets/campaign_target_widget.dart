@@ -1,7 +1,7 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flextras/flextras.dart';
 import 'package:flutter/material.dart';
-import 'package:freshme/campaign_detail/model/single_target.dart';
+import 'package:freshme/_internal/domain/campaign/single_target.dart';
 import 'package:gap/gap.dart';
 
 class CampaignTargetWidget extends StatelessWidget {

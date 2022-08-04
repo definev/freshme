@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:freshme/campaign_detail/model/single_target.dart';
+import 'package:freshme/_internal/domain/campaign/single_target.dart';
 
 part 'campaign_target.freezed.dart';
 part 'campaign_target.g.dart';

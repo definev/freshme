@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:freshme/campaign_detail/model/campaign_organization.dart';
+import 'package:freshme/_internal/domain/campaign/campaign_organization.dart';
 
 class CampaignOrganizationText extends ConsumerWidget {
   const CampaignOrganizationText(

@@ -46,7 +46,7 @@ class HomeScreen extends HookWidget {
               ),
             ),
           ),
-          _DonationSheet(),
+          const _DonationSheet(),
         ],
       ),
     );
@@ -126,7 +126,7 @@ class _GrabbingWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10),
           bottomLeft: Radius.circular(10),
         ),
@@ -168,13 +168,13 @@ class NumberBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(left: 10),
-      child: Center(child: Text(number)),
       width: 75,
       height: double.infinity,
       decoration: BoxDecoration(
         color: Colors.lightGreen[300],
         borderRadius: const BorderRadius.all(Radius.circular(15)),
       ),
+      child: Center(child: Text(number)),
     );
   }
 }
