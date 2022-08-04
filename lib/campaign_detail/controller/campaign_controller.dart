@@ -1,6 +1,5 @@
 import 'package:freshme/_internal/domain/campaign/donate_campaign.dart';
 import 'package:freshme/backend_simulator/campaign_server.dart';
-import 'package:freshme/campaign_detail/model/_default.dart';
 import 'package:riverpod/riverpod.dart';
 
 final fetchCampaignProvider =

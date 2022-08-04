@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/_internal/domain/campaign/donate_campaign.dart';
-import 'package:freshme/campaign_detail/model/_default.dart';
 import 'package:freshme/_internal/domain/campaign/campaign_target.dart';
 import 'package:freshme/campaign_detail/widgets/campaign_organization_text.dart';
 import 'package:freshme/donation/controller/donation_controller.dart';
