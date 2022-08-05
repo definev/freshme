@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freshme/camera/page/image_processing_sheet.dart';
+import 'package:freshme/home/home_screen.dart';
 import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 
 import 'dart:io' as io;
@@ -88,6 +89,8 @@ class FreshMLController {
 
   void takePicture(BuildContext context, ConsumerState state) async {
     final sm = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+
     sm.showMaterialBanner(
       const MaterialBanner(
         content: Text('Đang xử lí ảnh ...'),
@@ -99,7 +102,7 @@ class FreshMLController {
     await cameraController.pausePreview();
     final mounted = state.mounted;
     if (!mounted) return;
-    showCupertinoModalBottomSheet(
+    final submitted = await showCupertinoModalBottomSheet(
       context: context,
       enableDrag: false,
       builder: (context) => WillPopScope(
@@ -115,6 +118,13 @@ class FreshMLController {
         ),
       ),
     );
+    if (submitted == true) {
+      navigator.pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => const HomeScreen(),
+        ),
+      );
+    }
   }
 
   void continueScanning() async {

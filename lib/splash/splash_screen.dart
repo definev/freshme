@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:freshme/_internal/presentation/fresh_widget/fresh_dotted_button.dart';
+import 'package:freshme/_internal/presentation/fresh_dotted_button.dart';
 import 'package:freshme/home/home_screen.dart';
 import 'package:freshme/splash/dependencies.dart';
 import 'package:freshme/splash/splash_orbit.dart';

@@ -52,6 +52,7 @@ dependencies:
   sliver_tools: ^0.2.7
   snapping_sheet: ^3.1.0
   url_launcher: ^6.1.4
+  uuid: ^3.0.6
   vector_math: ^2.1.2
 
 dev_dependencies:

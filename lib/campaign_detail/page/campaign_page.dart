@@ -6,7 +6,7 @@ import 'package:freshme/campaign_detail/controller/campaign_controller.dart';
 import 'package:freshme/campaign_detail/utils/custom_md.dart';
 import 'package:freshme/campaign_detail/widgets/campaign_header.dart';
 import 'package:freshme/campaign_detail/widgets/donation_items_dialog.dart';
-import 'package:freshme/_internal/presentation/fresh_widget/fresh_dotted_button.dart';
+import 'package:freshme/_internal/presentation/fresh_dotted_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CampaignPage extends ConsumerStatefulWidget {
@@ -32,6 +32,8 @@ class _CampaignPageState extends ConsumerState<CampaignPage> {
     );
     if (campaign == null) {
       return const Scaffold(
+        extendBody: true,
+        resizeToAvoidBottomInset: false,
         body: Center(
           child: CircularProgressIndicator(),
         ),
@@ -39,6 +41,8 @@ class _CampaignPageState extends ConsumerState<CampaignPage> {
     }
 
     return Scaffold(
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),

@@ -42,6 +42,8 @@ class SelfClassificationSheet extends HookWidget {
     final rectHook = useState<Rect?>(null);
 
     return Scaffold(
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Tự phân loại'),
@@ -64,8 +66,6 @@ class SelfClassificationSheet extends HookWidget {
           ),
         ],
       ),
-      extendBody: true,
-      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [

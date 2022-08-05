@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:freshme/_internal/presentation/fresh_widget/optimize_opacity.dart';
+import 'package:freshme/_internal/presentation/optimize_opacity.dart';
 import 'package:freshme/resources/resources.dart';
 import 'package:simple_animations/simple_animations.dart';
 

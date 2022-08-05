@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:freshme/_internal/presentation/fresh_widget/fresh_chip.dart';
-import 'package:freshme/_internal/presentation/fresh_widget/fresh_frame.dart';
-import 'package:freshme/_internal/presentation/fresh_widget/fresh_progress_bar.dart';
+import 'package:freshme/_internal/presentation/fresh_chip.dart';
+import 'package:freshme/_internal/presentation/fresh_frame.dart';
+import 'package:freshme/_internal/presentation/fresh_progress_bar.dart';
 import 'package:gap/gap.dart';
 
 class CampaignCard extends StatelessWidget {

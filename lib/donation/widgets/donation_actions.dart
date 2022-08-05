@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freshme/donation/dependencies.dart';
+import 'package:freshme/donation_items/donation_items_page.dart';
 import 'package:freshme/home/home_screen.dart';
 
 class DonationActions extends StatelessWidget {
@@ -14,7 +15,10 @@ class DonationActions extends StatelessWidget {
           color: const Color(0xFFbfdadd),
           image: Image.asset(Images.donation),
           title: 'Donations',
-          onPressed: () {},
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const DonationItemsPage()),
+          ),
         ),
         DonationActionTile(
           color: const Color(0xFFFFD5C9),

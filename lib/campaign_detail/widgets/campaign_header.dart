@@ -6,10 +6,10 @@ import 'package:freshme/_internal/domain/campaign/campaign_target.dart';
 import 'package:freshme/campaign_detail/widgets/campaign_organization_text.dart';
 import 'package:freshme/campaign_detail/widgets/campaign_target_widget.dart';
 import 'package:freshme/_internal/domain/campaign/donate_campaign.dart';
-import 'package:freshme/_internal/presentation/fresh_widget/color_gap.dart';
-import 'package:freshme/_internal/presentation/fresh_widget/fresh_carousel.dart';
-import 'package:freshme/_internal/presentation/fresh_widget/fresh_chip.dart';
-import 'package:freshme/_internal/presentation/fresh_widget/fresh_progress_bar.dart';
+import 'package:freshme/_internal/presentation/color_gap.dart';
+import 'package:freshme/_internal/presentation/fresh_carousel.dart';
+import 'package:freshme/_internal/presentation/fresh_chip.dart';
+import 'package:freshme/_internal/presentation/fresh_progress_bar.dart';
 import 'package:gap/gap.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 

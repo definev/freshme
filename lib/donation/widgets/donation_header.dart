@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freshme/donation/dependencies.dart';
-import 'package:freshme/_internal/presentation/fresh_widget/color_gap.dart';
+import 'package:freshme/_internal/presentation/color_gap.dart';
 import 'package:gap/gap.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
